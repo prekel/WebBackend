@@ -6,6 +6,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStope.ApiFSharp", "MyStop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Data", "MyStore.Data\MyStore.Data.csproj", "{BEA32B14-69A4-4530-870C-51A5E208204A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Console", "MyStore.Console\MyStore.Console.csproj", "{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{BEA32B14-69A4-4530-870C-51A5E208204A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEA32B14-69A4-4530-870C-51A5E208204A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEA32B14-69A4-4530-870C-51A5E208204A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
