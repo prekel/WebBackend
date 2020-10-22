@@ -1,13 +1,20 @@
 using System;
+using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
 
 using MyStore.Data.Entity;
+using MyStore.Data.Entity.Support;
 
 namespace MyStore.Data
 {
     public class Context : DbContext
     {
+        public Context()
+        {
+            
+        }
+        
         public Context(DbContextOptions<Context> options)
             : base(options)
         {
@@ -20,8 +27,16 @@ namespace MyStore.Data
         }
 
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartProduct> CartProducts { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<OrderedProduct> OrderedProducts { get; set; }
+        public DbSet<Answer> SupportAnswers { get; set; }
+        public DbSet<Operator> SupportOperators { get; set; }
+        public DbSet<Question> SupportQuestions { get; set; }
+        public DbSet<Ticket> SupportTickets { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>(
@@ -44,31 +59,10 @@ namespace MyStore.Data
                         .IsRequired();
                     e.Property(entity => entity.PasswordSalt)
                         .IsRequired();
-                    e.HasMany(entity => entity.Carts)
-                        .WithMany(cart => cart.Customers)
-                        .UsingEntity<CartCustomer>(
-                            j => j
-                                .HasOne(cc => cc.Cart)
-                                .WithMany(c => c.CartCustomers)
-                                .HasForeignKey(c => c.CartId), 
-                            j => j
-                                .HasOne(cc => cc.Customer)
-                                .WithMany(c => c.CartCustomers)
-                                .HasForeignKey(c => c.CustomerId),
-                            j =>
-                            {
-                                j.HasKey(cc => new {cc.CartId, cc.CustomerId});
-                                j.Property(cc => cc.NullIfPublic);
-                                j.Property(cc => cc.NullIfNotCurrent);
-                                j.HasIndex(ind => new {ind.CartId, ind.NullIfPublic});
-                                j.HasIndex(ind => new {ind.CustomerId, ind.NullIfNotCurrent});
-                                // TODO
-                                j.HasCheckConstraint("Check_NullIfPublic_NotFalse", "NullIfPublic <> false");
-                                j.HasCheckConstraint("Check_NullIfNotCurrent_NotFalse", "NullIfNotCurrent <> false");
-                            });
-                    e.HasOne(customer => customer.CurrentCart)
+                    e.HasOne(entity => entity.CurrentCart)
                         .WithMany(cart => cart.CurrentCustomers)
-                        .HasForeignKey(customer => customer.CurrentCartId);
+                        .HasForeignKey(customer => customer.CurrentCartId)
+                        .IsRequired(false);
                 });
 
             modelBuilder.Entity<Product>(
@@ -90,9 +84,25 @@ namespace MyStore.Data
                 {
                     e.HasKey(cart => cart.CartId);
                     e.HasMany(cart => cart.Products)
-                        .WithMany(product => product.Carts);
+                        .WithMany(product => product.Carts)
+                        .UsingEntity<CartProduct>(
+                            j => j
+                                .HasOne(cp => cp.Product)
+                                .WithMany(p => p.CartProducts)
+                                .HasForeignKey(cp => cp.ProductId),
+                            j => j
+                                .HasOne(cp => cp.Cart)
+                                .WithMany(c => c.CartProducts)
+                                .HasForeignKey(cp => cp.CartId),
+                            j =>
+                            {
+                                j.HasKey(cp => new { cp.CartId, cp.ProductId });
+                            });
+                    e.HasOne(cart => cart.OwnerCustomer)
+                        .WithMany(customer => customer.OwnedCarts)
+                        .HasForeignKey(cart => cart.OwnerCustomerId);
                 });
-            
+
             modelBuilder.Entity<Order>(
                 e =>
                 {
@@ -119,6 +129,72 @@ namespace MyStore.Data
                         .WithMany(o => o.OrderedProducts)
                         .HasForeignKey(op => op.OrderId);
                 });
+
+            modelBuilder.Entity<Answer>(
+                b =>
+                {
+                    b.ToTable("SupportAnswer");
+                    b.HasKey(answer => answer.SupportAnswerId);
+                    b.HasOne(answer => answer.SupportOperator)
+                        .WithMany(op => op.SupportAnswers)
+                        .HasForeignKey(answer => answer.SupportOperatorId);
+                    b.HasOne(answer => answer.SupportTicket)
+                        .WithMany(ticket => ticket.SupportAnswers)
+                        .HasForeignKey(answer => answer.SupportTicketId);
+                    b.Property(answer => answer.SendTimestamp)
+                        .HasDefaultValueSql("current_timestamp")
+                        .IsRequired();
+                    b.Property(answer => answer.Text)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity<Ticket>(
+                b =>
+                {
+                    b.ToTable("SupportTicket");
+                    b.HasKey(ticket => ticket.SupportTicketId);
+                    b.HasOne(ticket => ticket.SupportOperator)
+                        .WithMany(op => op.SupportTickets)
+                        .HasForeignKey(ticket => ticket.SupportOperatorId);
+                    b.HasOne(answer => answer.Customer)
+                        .WithMany(customer => customer.SupportTickets)
+                        .HasForeignKey(answer => answer.CustomerId);
+                });
+
+            modelBuilder.Entity<Operator>(
+                b =>
+                {
+                    b.ToTable("SupportOperator");
+                    b.HasKey(op => op.SupportOperatorId);
+                    b.Property(op => op.FirstName)
+                        .HasMaxLength(60)
+                        .IsRequired();
+                    b.Property(op => op.LastName)
+                        .HasMaxLength(60)
+                        .IsRequired();
+                    b.Property(op => op.Email)
+                        .HasMaxLength(60)
+                        .IsRequired();
+                    b.Property(op => op.PasswordHash)
+                        .IsRequired();
+                    b.Property(op => op.PasswordSalt)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity<Question>(b =>
+            {
+                b.ToTable("SupportQuestion");
+                b.HasKey(question => question.SupportQuestionId);
+                b.HasOne(question => question.SupportTicket)
+                    .WithMany(ticket => ticket.SupportQuestions)
+                    .HasForeignKey(question => question.SupportTicketId);
+                b.Property(question => question.SendTimestamp)
+                    .HasDefaultValueSql("current_timestamp")
+                    .IsRequired();
+                b.Property(question => question.ReadTimestamp);
+                b.Property(question => question.Text)
+                    .IsRequired();
+            });
         }
     }
 }

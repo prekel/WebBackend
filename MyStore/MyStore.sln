@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Data", "MyStore.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Console", "MyStore.Console\MyStore.Console.csproj", "{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Data.Populater", "MyStore.Data.Populater\MyStore.Data.Populater.csproj", "{FC9ADBE4-7ED8-4213-90FA-BC40FDEC4BD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE2BF3E0-AE46-48A1-8E90-EF66850EAA0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9ADBE4-7ED8-4213-90FA-BC40FDEC4BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9ADBE4-7ED8-4213-90FA-BC40FDEC4BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9ADBE4-7ED8-4213-90FA-BC40FDEC4BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9ADBE4-7ED8-4213-90FA-BC40FDEC4BD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

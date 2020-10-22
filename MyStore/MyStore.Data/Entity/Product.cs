@@ -15,5 +15,6 @@ namespace MyStore.Data.Entity
         public ICollection<Cart> Carts { get; set; }
         
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
+        public List<CartProduct> CartProducts { get; set; }
     }
 }

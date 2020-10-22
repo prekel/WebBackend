@@ -1,9 +1,16 @@
+using System.Collections.Generic;
+
 namespace MyStore.Data.Entity.Support
 {
     public class Ticket
     {
         public int SupportTicketId { get; set; }
         public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
         public int SupportOperatorId { get; set; }
+        public Operator SupportOperator { get; set; }
+        
+        public ICollection<Answer> SupportAnswers { get; set; }
+        public ICollection<Question> SupportQuestions { get; set; }
     }
 }
