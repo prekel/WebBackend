@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Api", "MyStore.Api\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStope.ApiFSharp", "MyStope.ApiFSharp\MyStope.ApiFSharp.fsproj", "{3D454836-DBF4-4E13-9FBB-37B4AE3F3B84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Data", "MyStore.Data\MyStore.Data.csproj", "{BEA32B14-69A4-4530-870C-51A5E208204A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{3D454836-DBF4-4E13-9FBB-37B4AE3F3B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D454836-DBF4-4E13-9FBB-37B4AE3F3B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D454836-DBF4-4E13-9FBB-37B4AE3F3B84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA32B14-69A4-4530-870C-51A5E208204A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA32B14-69A4-4530-870C-51A5E208204A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA32B14-69A4-4530-870C-51A5E208204A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA32B14-69A4-4530-870C-51A5E208204A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

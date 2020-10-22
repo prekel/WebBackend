@@ -2365,6 +2365,119 @@
 							"headNameLabel": {
 								"$ref": "AAAAAAF1DCj9IHfeeqc="
 							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAF1TydKCd9muyo=",
+							"_parent": {
+								"$ref": "AAAAAAF1C85InnOlZoA="
+							},
+							"model": {
+								"$ref": "AAAAAAF1TydKCN9kq3I="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF1TydKCd9nC34=",
+									"_parent": {
+										"$ref": "AAAAAAF1TydKCd9muyo="
+									},
+									"font": "Arial;13;1",
+									"left": 72,
+									"top": 61,
+									"width": 131.09912109375,
+									"height": 13,
+									"text": "CartCustomer"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAF1TydKCd9o0vQ=",
+									"_parent": {
+										"$ref": "AAAAAAF1TydKCd9muyo="
+									},
+									"model": {
+										"$ref": "AAAAAAF1TydKCN9kq3I="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAF1Tyd7Mt90PZM=",
+											"_parent": {
+												"$ref": "AAAAAAF1TydKCd9o0vQ="
+											},
+											"model": {
+												"$ref": "AAAAAAF1Tyd6099xHb4="
+											},
+											"font": "Arial;13;0",
+											"left": 77,
+											"top": 84,
+											"width": 121.09912109375,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAF1TyeuBN+AYT4=",
+											"_parent": {
+												"$ref": "AAAAAAF1TydKCd9o0vQ="
+											},
+											"model": {
+												"$ref": "AAAAAAF1Tyetzd991+4="
+											},
+											"font": "Arial;13;0",
+											"left": 77,
+											"top": 99,
+											"width": 121.09912109375,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAF1Tyjqg9+ISCc=",
+											"_parent": {
+												"$ref": "AAAAAAF1TydKCd9o0vQ="
+											},
+											"model": {
+												"$ref": "AAAAAAF1TyjqTt+FEcw="
+											},
+											"font": "Arial;13;0",
+											"left": 77,
+											"top": 114,
+											"width": 121.09912109375,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAF1Tyq1ZN+PO5I=",
+											"_parent": {
+												"$ref": "AAAAAAF1TydKCd9o0vQ="
+											},
+											"model": {
+												"$ref": "AAAAAAF1Tyq1Mt+Mtoc="
+											},
+											"font": "Arial;13;0",
+											"left": 77,
+											"top": 129,
+											"width": 121.09912109375,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 72,
+									"top": 79,
+									"width": 131.09912109375,
+									"height": 68
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 72,
+							"top": 56,
+							"width": 131.09912109375,
+							"height": 91,
+							"nameLabel": {
+								"$ref": "AAAAAAF1TydKCd9nC34="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAF1TydKCd9o0vQ="
+							}
 						}
 					]
 				},
@@ -2475,7 +2588,7 @@
 							},
 							"name": "Honorific",
 							"type": "VARCHAR",
-							"length": "30",
+							"length": "60",
 							"nullable": true
 						},
 						{
@@ -3424,6 +3537,52 @@
 							},
 							"name": "OrderedCost",
 							"type": "DECIMAL",
+							"length": 0
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAF1TydKCN9kq3I=",
+					"_parent": {
+						"$ref": "AAAAAAF1C85InXOkwp4="
+					},
+					"name": "CartCustomer",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAF1Tyd6099xHb4=",
+							"_parent": {
+								"$ref": "AAAAAAF1TydKCN9kq3I="
+							},
+							"name": "CartId",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAF1Tyetzd991+4=",
+							"_parent": {
+								"$ref": "AAAAAAF1TydKCN9kq3I="
+							},
+							"name": "CustomerId",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAF1TyjqTt+FEcw=",
+							"_parent": {
+								"$ref": "AAAAAAF1TydKCN9kq3I="
+							},
+							"name": "NullIfPublic",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAF1Tyq1Mt+Mtoc=",
+							"_parent": {
+								"$ref": "AAAAAAF1TydKCN9kq3I="
+							},
+							"name": "NullIfNotCurrent",
 							"length": 0
 						}
 					]
