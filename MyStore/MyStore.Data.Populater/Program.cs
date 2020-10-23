@@ -1,15 +1,18 @@
-﻿using System;
-
-using VkNet;
+﻿using VkNet;
 using VkNet.Enums;
 using VkNet.Model;
 
 namespace MyStore.Data.Populater
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            using (var context = new Context())
+            {
+                context.Database.EnsureCreated();
+            }
+
             var api = new VkApi();
             api.Authorize(new ApiAuthParams
             {
@@ -21,6 +24,10 @@ namespace MyStore.Data.Populater
             populater.PopulateCustomers(200);
             populater.PopulateProducts(200);
             populater.PopulateCarts(200, 2, 3);
+            populater.PopulateOrdersOrderedProducts(300, 4);
+            populater.PopulateSupportOperators(50);
+            populater.PopulateSupportTickets(70);
+            populater.PopulateAnswersQuestions();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace MyStore.Data.Entity.Support
@@ -9,7 +10,10 @@ namespace MyStore.Data.Entity.Support
         public Customer Customer { get; set; }
         public int SupportOperatorId { get; set; }
         public Operator SupportOperator { get; set; }
-        
+
+
+        public DateTimeOffset CreateTimestamp { get; set; }
+
         public ICollection<Answer> SupportAnswers { get; set; }
         public ICollection<Question> SupportQuestions { get; set; }
     }

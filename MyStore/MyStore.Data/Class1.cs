@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyStore.Data
+﻿namespace MyStore.Data
 {
     public class Class1
     {

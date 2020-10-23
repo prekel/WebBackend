@@ -1,5 +1,4 @@
 using System;
-using System.Data.Common;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -12,18 +11,11 @@ namespace MyStore.Data
     {
         public Context()
         {
-            
         }
-        
+
         public Context(DbContextOptions<Context> options)
             : base(options)
         {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=qwerty123");
         }
 
         public DbSet<Cart> Carts { get; set; }
@@ -36,7 +28,14 @@ namespace MyStore.Data
         public DbSet<Operator> SupportOperators { get; set; }
         public DbSet<Question> SupportQuestions { get; set; }
         public DbSet<Ticket> SupportTickets { get; set; }
-        
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                //.LogTo(Console.WriteLine)
+                .UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=qwerty123");
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>(
@@ -75,7 +74,7 @@ namespace MyStore.Data
                     e.Property(cart => cart.Description)
                         .IsRequired();
                     e.Property(cart => cart.Price)
-                        .HasColumnType("money")
+                        .HasColumnType("numeric(20, 2)")
                         .IsRequired();
                 });
 
@@ -94,10 +93,7 @@ namespace MyStore.Data
                                 .HasOne(cp => cp.Cart)
                                 .WithMany(c => c.CartProducts)
                                 .HasForeignKey(cp => cp.CartId),
-                            j =>
-                            {
-                                j.HasKey(cp => new { cp.CartId, cp.ProductId });
-                            });
+                            j => { j.HasKey(cp => new {cp.CartId, cp.ProductId}); });
                     e.HasOne(cart => cart.OwnerCustomer)
                         .WithMany(customer => customer.OwnedCarts)
                         .HasForeignKey(cart => cart.OwnerCustomerId);
@@ -118,12 +114,12 @@ namespace MyStore.Data
             modelBuilder.Entity<OrderedProduct>(
                 e =>
                 {
-                    e.HasKey(op => op.ProductId);
+                    e.HasKey(op => new {op.ProductId, op.OrderId});
                     e.HasOne(op => op.Product)
                         .WithMany(p => p.OrderedProducts)
                         .HasForeignKey(op => op.ProductId);
                     e.Property(op => op.OrderedPrice)
-                        .HasColumnType("money")
+                        .HasColumnType("numeric(20, 2)")
                         .IsRequired();
                     e.HasOne(op => op.Order)
                         .WithMany(o => o.OrderedProducts)
@@ -133,7 +129,6 @@ namespace MyStore.Data
             modelBuilder.Entity<Answer>(
                 b =>
                 {
-                    b.ToTable("SupportAnswer");
                     b.HasKey(answer => answer.SupportAnswerId);
                     b.HasOne(answer => answer.SupportOperator)
                         .WithMany(op => op.SupportAnswers)
@@ -151,20 +146,21 @@ namespace MyStore.Data
             modelBuilder.Entity<Ticket>(
                 b =>
                 {
-                    b.ToTable("SupportTicket");
                     b.HasKey(ticket => ticket.SupportTicketId);
                     b.HasOne(ticket => ticket.SupportOperator)
                         .WithMany(op => op.SupportTickets)
                         .HasForeignKey(ticket => ticket.SupportOperatorId);
-                    b.HasOne(answer => answer.Customer)
+                    b.HasOne(ticket => ticket.Customer)
                         .WithMany(customer => customer.SupportTickets)
-                        .HasForeignKey(answer => answer.CustomerId);
+                        .HasForeignKey(ticket => ticket.CustomerId);
+                    b.Property(ticket => ticket.CreateTimestamp)
+                        .HasDefaultValueSql("current_timestamp")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity<Operator>(
                 b =>
                 {
-                    b.ToTable("SupportOperator");
                     b.HasKey(op => op.SupportOperatorId);
                     b.Property(op => op.FirstName)
                         .HasMaxLength(60)
@@ -183,7 +179,6 @@ namespace MyStore.Data
 
             modelBuilder.Entity<Question>(b =>
             {
-                b.ToTable("SupportQuestion");
                 b.HasKey(question => question.SupportQuestionId);
                 b.HasOne(question => question.SupportTicket)
                     .WithMany(ticket => ticket.SupportQuestions)

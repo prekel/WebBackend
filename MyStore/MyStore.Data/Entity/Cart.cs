@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Dynamic;
 
 namespace MyStore.Data.Entity
 {
@@ -14,7 +13,7 @@ namespace MyStore.Data.Entity
         public ICollection<Product> Products { get; set; }
 
         public ICollection<Customer> CurrentCustomers { get; set; }
-        
+
         public List<CartProduct> CartProducts { get; set; }
     }
 }

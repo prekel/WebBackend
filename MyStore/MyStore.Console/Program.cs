@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,13 +8,40 @@ using MyStore.Data.Entity;
 
 namespace MyStore.Console
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             System.Console.OutputEncoding = Encoding.UTF8;
 
             using var context = new Context(new DbContextOptions<Context>());
+
+            context.Database.EnsureCreated();
+            context.SaveChanges();
+            return;
+
+            var s = (from f in context.Customers where f.Honorific == "Дор." select f).ToList();
+
+
+            var s1 = context.Orders.Include(order => order.OrderedProducts).ToList();
+
+            var s2 = context.Customers
+                .Include(customer => customer.Orders)
+                .Include(customer => customer.OwnedCarts)
+                .Include(customer => customer.SupportTickets)
+                .ToList();
+
+
+            var sums = context.Set<Order>()
+                .GroupJoin(context.Set<OrderedProduct>(),
+                    order => order.OrderId,
+                    orderedProduct => orderedProduct.OrderId,
+                    (order, orderedProducts) => new
+                    {
+                        Order = order
+                        //Sum = orderedProducts.Select(pr => pr.OrderedPrice).Sum()
+                    }
+                ).ToList();
 
             context.Database.EnsureCreated();
             context.SaveChanges();
