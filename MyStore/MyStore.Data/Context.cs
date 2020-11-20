@@ -156,6 +156,10 @@ namespace MyStore.Data
                     b.Property(ticket => ticket.CreateTimestamp)
                         .HasDefaultValueSql("current_timestamp")
                         .IsRequired();
+                    b.HasOne(ticket => ticket.Order)
+                        .WithOne(order => order.SupportTicket)
+                        .HasForeignKey<Ticket>(ticket => ticket.OrderId)
+                        .IsRequired(false);
                 });
 
             modelBuilder.Entity<Operator>(

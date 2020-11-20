@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using MyStore.Data.Entity.Support;
+
 namespace MyStore.Data.Entity
 {
     public class Order
@@ -13,5 +15,7 @@ namespace MyStore.Data.Entity
         public DateTimeOffset CreateTimeOffset { get; set; }
 
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
+        
+        public Ticket? SupportTicket { get; set; }
     }
 }

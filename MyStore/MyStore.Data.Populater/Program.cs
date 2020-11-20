@@ -16,7 +16,7 @@ namespace MyStore.Data.Populater
             var api = new VkApi();
             api.Authorize(new ApiAuthParams
             {
-                AccessToken = "ed62b222ed62b222ed62b222eeed04df6eeed62ed62b222b6d524f06b71e8ac2d2faeb3"
+                AccessToken = "1bb9ca221bb9ca221bb9ca22ad1bdfa76e11bb91bb9ca22441bbfc7d2cfe35c00c4a071"
             });
             api.SetLanguage(Language.Ru);
 

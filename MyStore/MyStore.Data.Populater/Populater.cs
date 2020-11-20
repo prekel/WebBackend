@@ -202,13 +202,15 @@ namespace MyStore.Data.Populater
 
             var customers = context.Customers.ToList();
             var operators = context.SupportOperators.ToList();
+            var orders = context.Orders.ToList();
 
             context.SupportTickets.AddRange(
                 Enumerable.Range(0, n)
                     .Select(_ => new Ticket
                     {
                         Customer = customers[r.Next(customers.Count - 1)],
-                        SupportOperator = operators[r.Next(operators.Count - 1)]
+                        SupportOperator = operators[r.Next(operators.Count - 1)],
+                        Order = r.NextDouble() < 0.4 ? orders[r.Next(orders.Count - 1)] : null
                     })
             );
 
