@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MyStore.Data.Entity.Support
 {
-    public class Ticket
+    public record Ticket
     {
         public int SupportTicketId { get; set; }
         public int CustomerId { get; set; }

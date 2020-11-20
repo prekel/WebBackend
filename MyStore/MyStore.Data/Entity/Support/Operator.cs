@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MyStore.Data.Entity.Support
 {
-    public class Operator
+    public record Operator
     {
         public int SupportOperatorId { get; set; }
         public string FirstName { get; set; }

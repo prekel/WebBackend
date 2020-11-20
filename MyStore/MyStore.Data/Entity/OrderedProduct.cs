@@ -1,6 +1,6 @@
 namespace MyStore.Data.Entity
 {
-    public class OrderedProduct
+    public record OrderedProduct
     {
         public int ProductId { get; set; }
         public Product Product { get; set; }

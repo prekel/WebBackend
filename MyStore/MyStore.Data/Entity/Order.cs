@@ -5,7 +5,7 @@ using MyStore.Data.Entity.Support;
 
 namespace MyStore.Data.Entity
 {
-    public class Order
+    public record Order
     {
         public int OrderId { get; set; }
 

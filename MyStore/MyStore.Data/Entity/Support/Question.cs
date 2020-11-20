@@ -2,7 +2,7 @@ using System;
 
 namespace MyStore.Data.Entity.Support
 {
-    public class Question
+    public record Question
     {
         public int SupportQuestionId { get; set; }
         public int SupportTicketId { get; set; }

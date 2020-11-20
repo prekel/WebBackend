@@ -32,7 +32,7 @@ namespace MyStore.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                //.LogTo(Console.WriteLine)
+                .LogTo(Console.WriteLine)
                 .UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=qwerty123");
         }
 

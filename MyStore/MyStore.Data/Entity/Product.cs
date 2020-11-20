@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MyStore.Data.Entity
 {
-    public class Product
+    public record Product
     {
         public int ProductId { get; set; }
 
