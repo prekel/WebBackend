@@ -223,28 +223,27 @@ namespace MyStore.Data.Populater
 
             var r = new Random();
 
-            var tickets = context.SupportTickets
-                .Include(ticket => ticket.SupportAnswers)
-                .Include(ticket => ticket.SupportQuestions)
-                .ToList();
+            var tickets = context.SupportTickets.ToList();
             var ops = context.SupportOperators.ToList();
 
             foreach (var ticket in tickets)
             {
                 var randomstring = String.Join("", Enumerable.Range(0, 8).Select(t => (char) r.Next('а', 'я')));
-                ticket.SupportQuestions.Add(new Question
+                var question = new Question
                 {
                     SupportTicket = ticket,
                     ReadTimestamp = DateTimeOffset.Now + TimeSpan.FromSeconds(10),
                     Text = $"Вопрос {randomstring}"
-                });
-                ticket.SupportAnswers.Add(new Answer
+                };
+                context.SupportQuestions.Add(question);
+                var answer = new Answer
                 {
                     SupportOperator = r.NextDouble() < 0.9 ? ticket.SupportOperator : ops[r.Next(ops.Count - 1)],
                     SupportTicket = ticket,
                     SendTimestamp = DateTimeOffset.Now + TimeSpan.FromSeconds(15),
                     Text = $"Ответ {randomstring}"
-                });
+                };
+                context.SupportAnswers.Add(answer);
                 if (r.NextDouble() > 0.5)
                 {
                     var isRead = r.NextDouble() > 0.6;
@@ -259,23 +258,24 @@ namespace MyStore.Data.Populater
                         q.ReadTimestamp = DateTimeOffset.Now + TimeSpan.FromSeconds(30);
                     }
 
-                    ticket.SupportQuestions.Add(q);
+                    context.SupportQuestions.Add(q);
 
                     if (r.NextDouble() > 0.5 && isRead)
                     {
-                        ticket.SupportAnswers.Add(new Answer
+                        var ans2 = new Answer
                         {
                             SupportOperator =
                                 r.NextDouble() < 0.9 ? ticket.SupportOperator : ops[r.Next(ops.Count - 1)],
                             SupportTicket = ticket,
                             SendTimestamp = DateTimeOffset.Now + TimeSpan.FromSeconds(35),
                             Text = $"Ответ на дополнительный вопрос {randomstring}"
-                        });
+                        };
+                        context.SupportAnswers.Add(ans2);
                     }
                 }
-
-                context.SaveChanges();
             }
+
+            context.SaveChanges();
         }
     }
 }

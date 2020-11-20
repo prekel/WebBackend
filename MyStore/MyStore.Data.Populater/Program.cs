@@ -21,12 +21,22 @@ namespace MyStore.Data.Populater
             api.SetLanguage(Language.Ru);
 
             var populater = new Populater(api);
-            populater.PopulateCustomers(200);
-            populater.PopulateProducts(200);
-            populater.PopulateCarts(200, 2, 3);
-            populater.PopulateOrdersOrderedProducts(300, 4);
-            populater.PopulateSupportOperators(50);
-            populater.PopulateSupportTickets(70);
+            var c = 4000;
+            for (var i = 72000; i < 500000; i += c)
+            {
+                populater.PopulateCustomers(c);
+            }
+            
+            populater.PopulateProducts(500000);
+            populater.PopulateCarts(500000, 2, 3);
+            populater.PopulateOrdersOrderedProducts(600000, 4);
+
+            for (var i = 0; i < 125000; i += c)
+            {
+                populater.PopulateSupportOperators(c);
+            }
+            
+            populater.PopulateSupportTickets(150000);
             populater.PopulateAnswersQuestions();
         }
     }
