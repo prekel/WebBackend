@@ -25,6 +25,10 @@ string GetCustomerFirstName(int id)
     return command.ExecuteScalar() as string ?? "";
 }
 
+Console.WriteLine("Имя покупателя с id=1");
+Console.WriteLine(GetCustomerFirstName(1));
+Console.WriteLine();
+
 IEnumerable<string> GetCustomerFirstNames(int startId, int endId)
 {
     using var command =
@@ -39,14 +43,21 @@ IEnumerable<string> GetCustomerFirstNames(int startId, int endId)
     }
 }
 
+Console.WriteLine("Имена покупателей с id от 1 по 5");
+foreach (var i in GetCustomerFirstNames(1, 5))
+{
+    Console.WriteLine(i);
+}
+
+Console.WriteLine();
+
 int AddCustomer(Customer customer)
 {
     using var command =
         new NpgsqlCommand(
             @"INSERT INTO ""Customers"" VALUES 
             (DEFAULT, @firstName, @lastName, @honorific, @email, @passwordHash, @passwordSalt, NULL) 
-            RETURNING ""CustomerId""",
-            conn);
+            RETURNING ""CustomerId""", conn);
     command.Parameters.AddWithValue("firstName", NpgsqlDbType.Varchar, customer.FirstName);
     command.Parameters.AddWithValue("lastName", NpgsqlDbType.Varchar, customer.LastName);
     command.Parameters.AddWithValue("honorific", NpgsqlDbType.Varchar, customer.Honorific);
@@ -56,16 +67,6 @@ int AddCustomer(Customer customer)
     return (int) (command.ExecuteScalar() ?? 0);
 }
 
-Console.WriteLine("Имя покупателя с id=1");
-Console.WriteLine(GetCustomerFirstName(1));
-Console.WriteLine();
-Console.WriteLine("Имена покупателей с id от 1 по 5");
-foreach (var i in GetCustomerFirstNames(1, 5))
-{
-    Console.WriteLine(i);
-}
-
-Console.WriteLine();
 var salt = Crypto.GenerateSaltForPassword();
 var newId = AddCustomer(new Customer
 {
@@ -77,5 +78,4 @@ var newId = AddCustomer(new Customer
     PasswordSalt = salt
 });
 Console.WriteLine($"Создан новый покупатель с id={newId} и именем {GetCustomerFirstName(newId)}");
-
 conn.Close();
