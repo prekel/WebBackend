@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Data.Populater", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.AdoNet", "MyStore.AdoNet\MyStore.AdoNet.csproj", "{36E43FC6-B79A-4928-922F-3AABA7457D49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.EfCore", "MyStore.EfCore\MyStore.EfCore.csproj", "{D66E3CA4-5412-4692-A056-49C0CC5A549F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{36E43FC6-B79A-4928-922F-3AABA7457D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36E43FC6-B79A-4928-922F-3AABA7457D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36E43FC6-B79A-4928-922F-3AABA7457D49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D66E3CA4-5412-4692-A056-49C0CC5A549F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D66E3CA4-5412-4692-A056-49C0CC5A549F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D66E3CA4-5412-4692-A056-49C0CC5A549F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D66E3CA4-5412-4692-A056-49C0CC5A549F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

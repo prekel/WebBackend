@@ -13,6 +13,7 @@ using MyStore.Data;
 Console.OutputEncoding = Encoding.UTF8;
 var conn = new NpgsqlConnection("Host=localhost;Database=postgres;Username=postgres;Password=qwerty123");
 conn.Open();
+
 using var cmd = new NpgsqlCommand("SELECT version();", conn);
 string ver = cmd.ExecuteScalar() as string ?? "";
 Console.WriteLine(ver);
@@ -78,4 +79,5 @@ var newId = AddCustomer(new Customer
     PasswordSalt = salt
 });
 Console.WriteLine($"Создан новый покупатель с id={newId} и именем {GetCustomerFirstName(newId)}");
+
 conn.Close();
