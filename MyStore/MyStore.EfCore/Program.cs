@@ -10,6 +10,45 @@ Console.OutputEncoding = Encoding.UTF8;
 
 using var context = new Context();
 
+var name = "Юлия";
+var g = context.SupportQuestions
+    .Join(context.SupportTickets, question => question.SupportTicketId, ticket => ticket.SupportTicketId,
+        (question, ticket) => new {question, ticket})
+    .Join(context.Customers, arg => arg.ticket.CustomerId, customer => customer.CustomerId,
+        (arg, customer) => new {arg.question, arg.ticket, customer})
+    .Where(arg => arg.customer.FirstName == name)
+    .Select(arg => new
+    {
+        arg.question.SupportTicketId,
+        IsQuestion = true,
+        arg.question.SendTimestamp,
+        ReadTimestamp = arg.question.ReadTimestamp ?? DateTimeOffset.MinValue,
+        arg.customer.FirstName,
+        arg.customer.LastName,
+        arg.question.Text
+    }).Union(context.SupportAnswers
+        .Join(context.SupportOperators, answer => answer.SupportOperatorId,
+            operator_ => operator_.SupportOperatorId,
+            (answer, operator_) => new {answer, operator_})
+        .Where(arg => arg.operator_.FirstName == name)
+        .Select(arg => new
+        {
+            arg.answer.SupportTicketId,
+            IsQuestion = false,
+            arg.answer.SendTimestamp,
+            ReadTimestamp = DateTimeOffset.MinValue,
+            arg.operator_.FirstName,
+            arg.operator_.LastName,
+            arg.answer.Text
+        }))
+    .OrderBy(arg => arg.SupportTicketId)
+    .ThenBy(arg => arg.SendTimestamp);
+foreach (var i in g)
+{
+    Console.WriteLine(i);
+}
+Console.WriteLine();
+
 string GetCustomerFirstName(int id)
 {
     return context.Customers.First(customer => customer.CustomerId == id).FirstName;
@@ -31,7 +70,6 @@ foreach (var i in GetCustomerFirstNames(4, 9))
 {
     Console.WriteLine(i);
 }
-
 Console.WriteLine();
 
 int AddCustomer(Customer customer)
@@ -51,5 +89,4 @@ var newId = AddCustomer(new Customer
     PasswordHash = Crypto.ComputePasswordHash("123456", salt),
     PasswordSalt = salt
 });
-
 Console.WriteLine($"Создан новый покупатель с id={newId} и именем {GetCustomerFirstName(newId)}");
