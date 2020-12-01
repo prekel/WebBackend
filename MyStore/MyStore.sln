@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.AdoNet", "MyStore.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.EfCore", "MyStore.EfCore\MyStore.EfCore.csproj", "{D66E3CA4-5412-4692-A056-49C0CC5A549F}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.SQLProvider", "MyStore.SQLProvider\MyStore.SQLProvider.fsproj", "{31E58E1C-6997-4137-BCFD-02810D8DCCCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{D66E3CA4-5412-4692-A056-49C0CC5A549F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D66E3CA4-5412-4692-A056-49C0CC5A549F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D66E3CA4-5412-4692-A056-49C0CC5A549F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31E58E1C-6997-4137-BCFD-02810D8DCCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31E58E1C-6997-4137-BCFD-02810D8DCCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31E58E1C-6997-4137-BCFD-02810D8DCCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31E58E1C-6997-4137-BCFD-02810D8DCCCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
