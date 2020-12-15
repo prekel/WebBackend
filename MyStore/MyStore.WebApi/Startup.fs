@@ -11,6 +11,7 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
+open MyStore.Data
 
 type Startup(configuration: IConfiguration) =
     member _.Configuration = configuration
@@ -19,6 +20,7 @@ type Startup(configuration: IConfiguration) =
     member _.ConfigureServices(services: IServiceCollection) =
         // Add framework services.
         services.AddControllers() |> ignore
+        services.AddDbContext<Context>() |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member _.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
