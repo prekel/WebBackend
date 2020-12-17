@@ -5,14 +5,21 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="WeatherForecast.fs" />
+        <Compile Include="Utils.fs" />
+        <Compile Include="DtoConvert.fs" />
         <Compile Include="Controllers\CustomersController.fs" />
+        <Compile Include="Controllers\CartsController.fs" />
         <Compile Include="Startup.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MyStore.Data\MyStore.Data.csproj" />
+      <ProjectReference Include="..\MyStore.Shared\MyStore.Shared.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
 </Project>
