@@ -15,25 +15,25 @@ open Microsoft.OpenApi.Models
 open MyStore.Data
 
 type Startup(configuration: IConfiguration) =
-    member _.Configuration = configuration
+    member this.Configuration = configuration
 
     // This method gets called by the runtime. Use this method to add services to the container.
-    member _.ConfigureServices(services: IServiceCollection) =
+    member this.ConfigureServices(services: IServiceCollection) =
         // Add framework services.
         services.AddControllers() |> ignore
 
-        services.AddSwaggerGen(fun c -> c.SwaggerDoc("v1", OpenApiInfo(Title = "WebApplication", Version = "v1")))
+        services.AddSwaggerGen(fun c -> c.SwaggerDoc("v1", OpenApiInfo(Title = "MyStore.WebApi", Version = "v1")))
         |> ignore
 
         services.AddDbContext<Context>() |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    member _.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
+    member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
         if (env.IsDevelopment()) then
             app.UseDeveloperExceptionPage() |> ignore
             app.UseSwagger() |> ignore
 
-            app.UseSwaggerUI(fun c -> c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication v1"))
+            app.UseSwaggerUI(fun c -> c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyStore.WebApi v1"))
             |> ignore
 
         app
