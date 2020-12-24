@@ -1,6 +1,7 @@
 module MyStore.WebApi.Utils
 
 open System
+open Microsoft.AspNetCore.Mvc
 
 let nullableLimitStartToSkipTake (start: Nullable<int>, limit: Nullable<int>) =
     let nskip =
@@ -14,3 +15,8 @@ let nullableLimitStartToSkipTake (start: Nullable<int>, limit: Nullable<int>) =
         | None -> Int32.MaxValue
 
     (nskip, ntake)
+
+module ActionResult =
+    let ofAsync (res: Async<IActionResult>) = res |> Async.StartAsTask
+
+    let ofAsyncT (res: Async<ActionResult<'T>>) = res |> Async.StartAsTask

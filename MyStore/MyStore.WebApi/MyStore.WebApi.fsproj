@@ -6,7 +6,6 @@
 
     <ItemGroup>
         <Compile Include="Utils.fs" />
-        <Compile Include="DtoConvert.fs" />
         <Compile Include="Controllers\CustomersController.fs" />
         <Compile Include="Controllers\CartsController.fs" />
         <Compile Include="Startup.fs" />
@@ -15,7 +14,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MyStore.Data\MyStore.Data.csproj" />
-      <ProjectReference Include="..\MyStore.Shared\MyStore.Shared.fsproj" />
     </ItemGroup>
 
     <ItemGroup>

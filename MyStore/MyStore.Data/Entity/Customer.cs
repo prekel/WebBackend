@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 using MyStore.Data.Entity.Support;
 
@@ -15,16 +16,24 @@ namespace MyStore.Data.Entity
         [EmailAddress]
         public string Email { get; set; }
 
-        public byte[] PasswordHash { get; set; }
+        [JsonIgnore]
+        public byte[]? PasswordHash { get; set; }
+
+        [JsonIgnore]
         public int PasswordSalt { get; set; }
 
         public int? CurrentCartId { get; set; }
+
+        [JsonIgnore]
         public Cart? CurrentCart { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        [JsonIgnore]
+        public ICollection<Order>? Orders { get; set; }
 
-        public ICollection<Cart> OwnedCarts { get; set; }
+        [JsonIgnore]
+        public ICollection<Cart>? OwnedCarts { get; set; }
 
-        public ICollection<Ticket> SupportTickets { get; set; }
+        [JsonIgnore]
+        public ICollection<Ticket>? SupportTickets { get; set; }
     }
 }

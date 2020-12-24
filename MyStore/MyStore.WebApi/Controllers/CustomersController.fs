@@ -6,12 +6,11 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
 open MyStore.Data
-open MyStore.Data
 open MyStore.Data.Entity
-open MyStore.Data
 open MyStore.WebApi.Utils
-open MyStore.Shared.Dtos
-open MyStore.WebApi.DtoConvert
+open Microsoft.EntityFrameworkCore
+open System.Linq
+open Microsoft.AspNetCore.Mvc.Infrastructure
 
 
 [<ApiController>]
@@ -21,91 +20,104 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpGet>]
     member this.GetOffset([<FromQuery>] start: Nullable<int>, [<FromQuery>] limit: Nullable<int>) =
-        let nskip, ntake =
-            nullableLimitStartToSkipTake (start, limit)
+        ActionResult.ofAsync
+        <| async {
+            let nskip, ntake =
+                nullableLimitStartToSkipTake (start, limit)
 
-        ActionResult<IEnumerable<CustomerDto>>
-            (query {
-                for i in context.Customers do
-                    sortBy i.CustomerId
-                    select i
-                    skip nskip
-                    take ntake
-             }
-             |> Seq.map customerDtoFromEntity)
+            return
+                this.Ok
+                    (query {
+                        for i in context.Customers do
+                            sortBy i.CustomerId
+                            select i
+                            skip nskip
+                            take ntake
+                     }) :> _
+           }
 
 
     [<HttpGet("{id}")>]
     member this.GetById(id) =
-        if (query {
-                for i in context.Customers do
-                    exists (i.CustomerId = id)
-            }) then
-            ActionResult<CustomerDto>
-                (query {
+        ActionResult.ofAsync
+        <| async {
+            if (query {
                     for i in context.Customers do
-                        where (i.CustomerId = id)
-                        exactlyOne
-                 } |> customerDtoFromEntity)
-        else
-            ActionResult<CustomerDto>(base.NotFound())
+                        exists (i.CustomerId = id)
+                }) then
+                return
+                    this.Ok
+                        (query {
+                            for i in context.Customers do
+                                where (i.CustomerId = id)
+                                exactlyOne
+                         }) :> _
+            else
+                return this.NotFound() :> _
+           }
 
     [<HttpDelete("{id}")>]
     member this.DeleteById(id) =
-        if (query {
-                for i in context.Customers do
-                    exists (i.CustomerId = id)
-            }) then
-            context.Customers.Remove
-                (query {
+        ActionResult.ofAsync
+        <| async {
+            if (query {
                     for i in context.Customers do
-                        where (i.CustomerId = id)
-                        exactlyOne
-                 })
-            |> ignore
+                        exists (i.CustomerId = id)
+                }) then
+                context.Customers.Remove
+                    (query {
+                        for i in context.Customers do
+                            where (i.CustomerId = id)
+                            exactlyOne
+                     })
+                |> ignore
 
-            context.SaveChanges() |> ignore
+                do! context.SaveChangesAsync()
+                    |> Async.AwaitTask
+                    |> Async.Ignore
 
-            ActionResult<CustomerDto>(base.NoContent())
-        else
-            ActionResult<CustomerDto>(base.NotFound())
+                return this.NoContent() :> _
+            else
+                return this.NotFound() :> _
+           }
+
 
     [<HttpPut("{id}")>]
-    member this.Update(id, [<FromBody>] customerDto) =
-        if (query {
-                for i in context.Customers do
-                    exists (i.CustomerId = id)
-            }) then
-
-            let customerEntity =
-                query {
+    member this.Update(id, [<FromBody>] customer: Customer) =
+        ActionResult.ofAsync
+        <| async {
+            if (query {
                     for i in context.Customers do
-                        where (i.CustomerId = id)
-                        exactlyOne
-                }
+                        exists (i.CustomerId = id)
+                }) then
+                customer.CustomerId <- id
 
-            customerEntity.FirstName <- customerDto.FirstName
-            customerEntity.LastName <- customerDto.LastName
-            customerEntity.Honorific <- customerDto.Honorific
-            customerEntity.Email <- customerDto.Email
+                context.Customers.Update(customer) |> ignore
 
-            context.SaveChanges() |> ignore
+                do! context.SaveChangesAsync()
+                    |> Async.AwaitTask
+                    |> Async.Ignore
 
-            ActionResult<Customer>(base.NoContent())
-        else
-            ActionResult<Customer>(base.NotFound())
+                return this.NoContent() :> _
+            else
+                return this.NotFound() :> _
+           }
 
     [<HttpPost>]
-    member this.Add([<FromBody>] customerDto) =
-        let customerEntity = Customer()
-        customerEntity.FirstName <- customerDto.FirstName
-        customerEntity.LastName <- customerDto.LastName
-        customerEntity.Honorific <- customerDto.Honorific
-        customerEntity.Email <- customerDto.Email
-        //customerEntity.PasswordSalt <- Crypto.GenerateSaltForPassword()
-        //customerEntity.PasswordHash <- Crypto.ComputePasswordHash(customerDto.Password, customerEntity.PasswordSalt)
+    member this.Add([<FromBody>] customer: Customer, [<FromQuery>] password) =
+        ActionResult.ofAsync
+        <| async {
+            customer.PasswordSalt <- Crypto.GenerateSaltForPassword()
+            customer.PasswordHash <- Crypto.ComputePasswordHash(password, customer.PasswordSalt)
 
-        context.Customers.Add(customerEntity) |> ignore
-        context.SaveChanges() |> ignore
+            do! context.Customers.AddAsync(customer).AsTask()
+                |> Async.AwaitTask
+                |> Async.Ignore
 
-        ActionResult<Customer>(base.Created($"customers/{customerEntity.CustomerId}", customerEntity))
+            do! context.SaveChangesAsync()
+                |> Async.AwaitTask
+                |> Async.Ignore
+ 
+
+            return this.Created($"customers/{customer.CustomerId}", customer) :> _
+           }
