@@ -24,15 +24,7 @@ let router =
 
                        router.children [ match state.CurrentUrl with
                                          | [] -> Html.h1 "Home"
-                                         | [ "users" ] ->
-                                             Customers
-                                                 {| Customers =
-                                                        [ { CustomerId = 0
-                                                            FirstName = "123"
-                                                            LastName = Some "123"
-                                                            Honorific = "123"
-                                                            Email = ""
-                                                            CurrentCartId = Some 12 } ] |}
+                                         | [ "users" ] -> Html.p "123"
                                          | [ "users"; Route.Int userId ] -> Html.h1 (sprintf "User ID %d" userId)
                                          | [ "customers" ] -> CustomersPage()
                                          | _ -> Html.h1 "Not found" ] ])

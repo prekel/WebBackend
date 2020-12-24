@@ -6,7 +6,7 @@ type Customer =
     { CustomerId: int
       FirstName: string
       LastName: string option
-      Honorific: string
+      Honorific: string option
       Email: string
       CurrentCartId: int option }
 
