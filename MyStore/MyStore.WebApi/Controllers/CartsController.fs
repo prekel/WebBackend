@@ -2,6 +2,9 @@ namespace MyStore.WebApi.Controllers
 
 open System
 open System.Collections.Generic
+open System.Linq
+open Microsoft.AspNetCore.Mvc
+open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Mvc
@@ -20,7 +23,7 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
 
     [<HttpGet("{id}")>]
     member this.GetById(id) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<Cart>
         <| async {
             if (query {
                     for i in context.Carts do
@@ -37,9 +40,10 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
                 return this.NotFound() :> _
            }
 
+
     [<HttpGet("{id}/products")>]
     member this.GetCartProducts(id) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<IEnumerable<Product>>
         <| async {
             if (query {
                     for i in context.Carts do
@@ -61,7 +65,7 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
 
     [<HttpPut("{id}/owner/{ownerId}")>]
     member this.SetOwner(id, [<FromQuery>] ownerId) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<unit>
         <| async {
             if (query {
                     for i in context.Carts do
@@ -92,7 +96,7 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
 
     [<HttpPost>]
     member this.Create([<FromBody>] cart: Cart) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<Cart>
         <| async {
             do! context.Carts.AddAsync(cart).AsTask()
                 |> Async.AwaitTask
@@ -107,7 +111,7 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
 
     [<HttpPut("{id}/products/{productId}")>]
     member this.AddProduct(id, productId) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<unit>
         <| async {
             if (query {
                     for i in context.Carts do

@@ -20,7 +20,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpGet>]
     member this.GetOffset([<FromQuery>] start: Nullable<int>, [<FromQuery>] limit: Nullable<int>) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<IEnumerable<Customer>>
         <| async {
             let nskip, ntake =
                 nullableLimitStartToSkipTake (start, limit)
@@ -39,7 +39,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpGet("{id}")>]
     member this.GetById(id) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<Customer>
         <| async {
             if (query {
                     for i in context.Customers do
@@ -58,7 +58,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpDelete("{id}")>]
     member this.DeleteById(id) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<unit>
         <| async {
             if (query {
                     for i in context.Customers do
@@ -84,7 +84,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpPut("{id}")>]
     member this.Update(id, [<FromBody>] customer: Customer) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<unit>
         <| async {
             if (query {
                     for i in context.Customers do
@@ -105,7 +105,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpPost>]
     member this.Add([<FromBody>] customer: Customer, [<FromQuery>] password) =
-        ActionResult.ofAsync
+        ActionResult.ofAsyncT1 ActionResult<Customer>
         <| async {
             customer.PasswordSalt <- Crypto.GenerateSaltForPassword()
             customer.PasswordHash <- Crypto.ComputePasswordHash(password, customer.PasswordSalt)
