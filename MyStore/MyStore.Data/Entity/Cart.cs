@@ -14,12 +14,12 @@ namespace MyStore.Data.Entity
         public Customer? OwnerCustomer { get; set; }
 
         [JsonIgnore]
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
 
         [JsonIgnore]
-        public ICollection<Customer> CurrentCustomers { get; set; }
+        public ICollection<Customer>? CurrentCustomers { get; set; }
 
         [JsonIgnore]
-        public List<CartProduct> CartProducts { get; set; }
+        public List<CartProduct>? CartProducts { get; set; }
     }
 }

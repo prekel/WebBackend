@@ -22,7 +22,7 @@ module ActionResult =
 
     let ofAsyncT (res: Async<ActionResult<'T>>) = res |> Async.StartAsTask
 
-    let ofAsyncT1 (n: ActionResult -> ActionResult<'T>) (res: Async<IActionResult>) =
+    let ofAsyncTA (n: ActionResult -> ActionResult<'T>) (res: Async<IActionResult>) =
         async {
             let! t = res
             return downcast t |> n

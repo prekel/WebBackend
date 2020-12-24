@@ -3,15 +3,10 @@
 open System
 open System.Collections.Generic
 open Microsoft.AspNetCore.Mvc
-open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
 open MyStore.Data
 open MyStore.Data.Entity
 open MyStore.WebApi.Utils
-open Microsoft.EntityFrameworkCore
-open System.Linq
-open Microsoft.AspNetCore.Mvc.Infrastructure
-
 
 [<ApiController>]
 [<Route("[controller]")>]
@@ -20,7 +15,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpGet>]
     member this.GetOffset([<FromQuery>] start: Nullable<int>, [<FromQuery>] limit: Nullable<int>) =
-        ActionResult.ofAsyncT1 ActionResult<IEnumerable<Customer>>
+        ActionResult.ofAsyncTA ActionResult<IEnumerable<Customer>>
         <| async {
             let nskip, ntake =
                 nullableLimitStartToSkipTake (start, limit)
@@ -39,7 +34,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpGet("{id}")>]
     member this.GetById(id) =
-        ActionResult.ofAsyncT1 ActionResult<Customer>
+        ActionResult.ofAsyncTA ActionResult<Customer>
         <| async {
             if (query {
                     for i in context.Customers do
@@ -58,7 +53,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpDelete("{id}")>]
     member this.DeleteById(id) =
-        ActionResult.ofAsyncT1 ActionResult<unit>
+        ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
             if (query {
                     for i in context.Customers do
@@ -84,7 +79,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpPut("{id}")>]
     member this.Update(id, [<FromBody>] customer: Customer) =
-        ActionResult.ofAsyncT1 ActionResult<unit>
+        ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
             if (query {
                     for i in context.Customers do
@@ -105,7 +100,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
 
     [<HttpPost>]
     member this.Add([<FromBody>] customer: Customer, [<FromQuery>] password) =
-        ActionResult.ofAsyncT1 ActionResult<Customer>
+        ActionResult.ofAsyncTA ActionResult<Customer>
         <| async {
             customer.PasswordSalt <- Crypto.GenerateSaltForPassword()
             customer.PasswordHash <- Crypto.ComputePasswordHash(password, customer.PasswordSalt)
@@ -117,7 +112,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
             do! context.SaveChangesAsync()
                 |> Async.AwaitTask
                 |> Async.Ignore
- 
+
 
             return this.Created($"customers/{customer.CustomerId}", customer) :> _
            }

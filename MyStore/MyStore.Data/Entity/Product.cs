@@ -14,12 +14,12 @@ namespace MyStore.Data.Entity
         public decimal Price { get; set; }
 
         [JsonIgnore]
-        public ICollection<Cart> Carts { get; set; }
+        public ICollection<Cart>? Carts { get; set; }
 
         [JsonIgnore]
-        public ICollection<OrderedProduct> OrderedProducts { get; set; }
+        public ICollection<OrderedProduct>? OrderedProducts { get; set; }
 
         [JsonIgnore]
-        public List<CartProduct> CartProducts { get; set; }
+        public List<CartProduct>? CartProducts { get; set; }
     }
 }
