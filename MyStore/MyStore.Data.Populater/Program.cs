@@ -26,7 +26,7 @@ namespace MyStore.Data.Populater
             {
                 populater.PopulateCustomers(c);
             }
-            
+
             populater.PopulateProducts(500000);
             populater.PopulateCarts(500000, 2, 3);
             populater.PopulateOrdersOrderedProducts(600000, 4);
@@ -35,7 +35,7 @@ namespace MyStore.Data.Populater
             {
                 populater.PopulateSupportOperators(c);
             }
-            
+
             populater.PopulateSupportTickets(150000);
             populater.PopulateAnswersQuestions();
         }

@@ -6,19 +6,21 @@
 
     <ItemGroup>
         <Compile Include="Utils.fs" />
+        <Compile Include="Repository.fs" />
         <Compile Include="Controllers\CustomersController.fs" />
         <Compile Include="Controllers\CartsController.fs" />
         <Compile Include="Controllers\ProductsController.fs" />
+        <Compile Include="Controllers\OrdersController.fs" />
         <Compile Include="Startup.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MyStore.Data\MyStore.Data.csproj" />
+        <ProjectReference Include="..\MyStore.Data\MyStore.Data.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
 </Project>

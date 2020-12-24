@@ -2,7 +2,6 @@ module MyStore.WebApi.Utils
 
 open System
 open Microsoft.AspNetCore.Mvc
-open Microsoft.AspNetCore.Mvc
 
 let nullableLimitStartToSkipTake (start: Nullable<int>, limit: Nullable<int>) =
     let nskip =

@@ -6,6 +6,7 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
 open MyStore.Data
 open MyStore.Data.Entity
+open MyStore.WebApi.Repository
 open MyStore.WebApi.Utils
 
 [<ApiController>]
@@ -13,46 +14,24 @@ open MyStore.WebApi.Utils
 type ProductsController(logger: ILogger<ProductsController>, context: Context) =
     inherit ControllerBase()
 
-    let exists' id =
-        query {
-            for i in context.Products do
-                exists (i.ProductId = id)
-        }
-
-    let exactlyOne' id =
-        query {
-            for i in context.Products do
-                where (i.ProductId = id)
-                exactlyOne
-        }
-
-    let skipTake (nskip, ntake) =
-        query {
-            for i in context.Products do
-                sortBy i.ProductId
-                select i
-                skip nskip
-                take ntake
-        }
-
     [<HttpGet("{id}")>]
     member this.GetById(id) =
         ActionResult.ofAsyncTA ActionResult<Product>
         <| async {
-            match exists' id with
-            | true -> return this.Ok(exactlyOne' id) :> _
+            match Products.exists context id with
+            | true -> return this.Ok(Products.exactlyOne context id) :> _
             | false -> return this.NotFound() :> _
            }
 
 
     [<HttpGet>]
     member this.GetOffset([<FromQuery>] start: Nullable<int>, [<FromQuery>] limit: Nullable<int>) =
-        ActionResult.ofAsyncTA ActionResult<IEnumerable<Customer>>
+        ActionResult.ofAsyncTA ActionResult<IEnumerable<Product>>
         <| async {
             return
                 this.Ok
                     (nullableLimitStartToSkipTake (start, limit)
-                     |> skipTake) :> _
+                     |> Products.skipTake context) :> _
            }
 
     [<HttpPost>]
@@ -75,7 +54,7 @@ type ProductsController(logger: ILogger<ProductsController>, context: Context) =
     member this.Update(id, [<FromBody>] product: Product) =
         ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
-            if exists' id then
+            if Products.exists context id then
                 product.ProductId <- id
 
                 context.Products.Update(product) |> ignore
@@ -93,8 +72,9 @@ type ProductsController(logger: ILogger<ProductsController>, context: Context) =
     member this.DeleteById(id) =
         ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
-            if exists' id then
-                context.Products.Remove(exactlyOne' id) |> ignore
+            if Products.exists context id then
+                context.Products.Remove(Products.exactlyOne context id)
+                |> ignore
 
                 do! context.SaveChangesAsync()
                     |> Async.AwaitTask

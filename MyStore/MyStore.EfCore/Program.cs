@@ -7,9 +7,7 @@ using MyStore.Data;
 using MyStore.Data.Entity;
 
 Console.OutputEncoding = Encoding.UTF8;
-
 using var context = new Context();
-
 var name = "Юлия";
 var g = context.SupportQuestions
     .Join(context.SupportTickets, question => question.SupportTicketId, ticket => ticket.SupportTicketId,
@@ -47,6 +45,7 @@ foreach (var i in g)
 {
     Console.WriteLine(i);
 }
+
 Console.WriteLine();
 
 string GetCustomerFirstName(int id)
@@ -70,6 +69,7 @@ foreach (var i in GetCustomerFirstNames(4, 9))
 {
     Console.WriteLine(i);
 }
+
 Console.WriteLine();
 
 int AddCustomer(Customer customer)

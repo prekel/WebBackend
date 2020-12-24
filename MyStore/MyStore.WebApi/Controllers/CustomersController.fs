@@ -7,6 +7,7 @@ open Microsoft.Extensions.Logging
 open MyStore.Data
 open MyStore.Data.Entity
 open MyStore.WebApi.Utils
+open MyStore.WebApi.Repository
 
 [<ApiController>]
 [<Route("[controller]")>]
@@ -17,18 +18,10 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
     member this.GetOffset([<FromQuery>] start: Nullable<int>, [<FromQuery>] limit: Nullable<int>) =
         ActionResult.ofAsyncTA ActionResult<IEnumerable<Customer>>
         <| async {
-            let nskip, ntake =
-                nullableLimitStartToSkipTake (start, limit)
-
             return
                 this.Ok
-                    (query {
-                        for i in context.Customers do
-                            sortBy i.CustomerId
-                            select i
-                            skip nskip
-                            take ntake
-                     }) :> _
+                    (nullableLimitStartToSkipTake (start, limit)
+                     |> Customers.skipTake context) :> _
            }
 
 
@@ -36,35 +29,17 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
     member this.GetById(id) =
         ActionResult.ofAsyncTA ActionResult<Customer>
         <| async {
-            if (query {
-                    for i in context.Customers do
-                        exists (i.CustomerId = id)
-                }) then
-                return
-                    this.Ok
-                        (query {
-                            for i in context.Customers do
-                                where (i.CustomerId = id)
-                                exactlyOne
-                         }) :> _
-            else
-                return this.NotFound() :> _
+            if (Customers.exists context id)
+            then return this.Ok(Customers.exactlyOne context id) :> _
+            else return this.NotFound() :> _
            }
 
     [<HttpDelete("{id}")>]
     member this.DeleteById(id) =
         ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
-            if (query {
-                    for i in context.Customers do
-                        exists (i.CustomerId = id)
-                }) then
-                context.Customers.Remove
-                    (query {
-                        for i in context.Customers do
-                            where (i.CustomerId = id)
-                            exactlyOne
-                     })
+            if Customers.exists context id then
+                context.Customers.Remove(Customers.exactlyOne context id)
                 |> ignore
 
                 do! context.SaveChangesAsync()
@@ -81,10 +56,7 @@ type CustomersController(logger: ILogger<CustomersController>, context: Context)
     member this.Update(id, [<FromBody>] customer: Customer) =
         ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
-            if (query {
-                    for i in context.Customers do
-                        exists (i.CustomerId = id)
-                }) then
+            if Customers.exists context id then
                 customer.CustomerId <- id
 
                 context.Customers.Update(customer) |> ignore

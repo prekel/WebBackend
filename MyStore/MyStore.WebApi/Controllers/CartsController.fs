@@ -5,49 +5,35 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
 open MyStore.Data
 open MyStore.Data.Entity
+open MyStore.WebApi.Repository
 open MyStore.WebApi.Utils
-open Microsoft.EntityFrameworkCore
 
 [<ApiController>]
 [<Route("[controller]")>]
 type CartsController(logger: ILogger<CartsController>, context: Context) =
     inherit ControllerBase()
 
-    let exists' id =
-        query {
-            for i in context.Carts do
-                exists (i.CartId = id)
-        }
-
-    let exactlyOne' id =
-        query {
-            for i in context.Carts do
-                where (i.CartId = id)
-                exactlyOne
-        }
-
     [<HttpGet("{id}")>]
     member this.GetById(id) =
         ActionResult.ofAsyncTA ActionResult<Cart>
-        <| async { if exists' id then return this.Ok(exactlyOne' id) :> _ else return this.NotFound() :> _ }
+        <| async {
+            if Carts.exists context id
+            then return this.Ok(Carts.exactlyOne context id) :> _
+            else return this.NotFound() :> _
+           }
 
 
     [<HttpGet("{id}/products")>]
     member this.GetCartProducts(id) =
         ActionResult.ofAsyncTA ActionResult<IEnumerable<Product>>
         <| async {
-            if exists' id then
-                let products =
-                    (query {
-                        for i in context.Carts.Include(fun j -> j.Products) do
-                            where (i.CartId = id)
-                            exactlyOne
-                     })
-                        .Products
-
-                return this.Ok(products) :> _
-            else
-                return this.NotFound() :> _
+            match Carts.exists context id with
+            | true ->
+                return
+                    this.Ok
+                        ((Carts.exactlyOneIncludeProducts context id)
+                            .Products) :> _
+            | false -> return this.NotFound() :> _
            }
 
 
@@ -55,12 +41,9 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
     member this.SetOwner(id, [<FromQuery>] ownerId) =
         ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
-            if (exists' id
-                && query {
-                    for i in context.Customers do
-                        exists (i.CustomerId = ownerId)
-                   }) then
-                let cart = exactlyOne' id
+            if (Carts.exists context id
+                && Customers.exists context ownerId) then
+                let cart = Carts.exactlyOne context id
 
                 cart.OwnerCustomerId <- ownerId
 
@@ -77,7 +60,7 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
     member this.Update(id, [<FromBody>] cart: Cart) =
         ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
-            if exists' id then
+            if Carts.exists context id then
                 cart.CartId <- id
 
                 context.Carts.Update(cart) |> ignore
@@ -110,19 +93,11 @@ type CartsController(logger: ILogger<CartsController>, context: Context) =
     member this.AddProduct(id, productId) =
         ActionResult.ofAsyncTA ActionResult<unit>
         <| async {
-            if (exists' id
-                && query {
-                    for j in context.Products do
-                        exists (j.ProductId = productId)
-                   }) then
-                let cart = exactlyOne' id
+            if (Carts.exists context id
+                && Products.exists context productId) then
+                let cart = Carts.exactlyOne context id
 
-                let product =
-                    query {
-                        for j in context.Products do
-                            where (j.ProductId = id)
-                            exactlyOne
-                    }
+                let product = Products.exactlyOne context productId
 
                 cart.Products.Add(product)
 
