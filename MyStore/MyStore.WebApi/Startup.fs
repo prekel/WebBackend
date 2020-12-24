@@ -11,10 +11,14 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
+open Microsoft.AspNetCore.Authorization
+open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.OpenApi.Models
 open MyStore.Data
 
 type Startup(configuration: IConfiguration) =
+    let MyAllowSpecificOrigins = "_myAllowSpecificOrigins"
+
     member this.Configuration = configuration
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -26,6 +30,8 @@ type Startup(configuration: IConfiguration) =
         |> ignore
 
         services.AddDbContext<Context>() |> ignore
+
+        services.AddCors() |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
@@ -39,6 +45,7 @@ type Startup(configuration: IConfiguration) =
         app
             .UseHttpsRedirection()
             .UseRouting()
-            .UseAuthorization()
+            //.UseAuthorization()
+            .UseCors(fun builder -> builder.AllowAnyOrigin() |> ignore)
             .UseEndpoints(fun endpoints -> endpoints.MapControllers() |> ignore)
         |> ignore
