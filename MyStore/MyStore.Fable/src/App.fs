@@ -5,7 +5,6 @@ open Feliz
 open Feliz.Router
 open Feliz.UseElmish
 open Customers
-open Models
 
 type State = { CurrentUrl: string list }
 type Msg = UrlChanged of string list

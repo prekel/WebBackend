@@ -19,7 +19,7 @@ let putCustomerById (id: int) customer =
     promise {
         let url = $"{baseUrl}/Customers/{id}"
 
-        return! Fetch.tryPost<Customer, unit> (url, data = customer, caseStrategy = CamelCase)
+        return! Fetch.tryPut<Customer, unit> (url, data = customer, caseStrategy = CamelCase)
     }
 
 let postCustomerById customer password =
