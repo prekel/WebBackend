@@ -4,6 +4,7 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="index.html" />
+        <Compile Include="Global.fs" />
         <Compile Include="Models.fs" />
         <Compile Include="Extensions.fs" />
         <Compile Include="Customers.fs" />

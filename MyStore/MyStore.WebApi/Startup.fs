@@ -1,24 +1,14 @@
 namespace MyStore.WebApi
 
-open System
-open System.Collections.Generic
-open System.Linq
-open System.Threading.Tasks
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
-open Microsoft.AspNetCore.HttpsPolicy
-open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
-open Microsoft.AspNetCore.Authorization
-open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.OpenApi.Models
 open MyStore.Data
 
 type Startup(configuration: IConfiguration) =
-    let MyAllowSpecificOrigins = "_myAllowSpecificOrigins"
-
     member this.Configuration = configuration
 
     // This method gets called by the runtime. Use this method to add services to the container.
@@ -46,6 +36,9 @@ type Startup(configuration: IConfiguration) =
             .UseHttpsRedirection()
             .UseRouting()
             //.UseAuthorization()
-            .UseCors(fun builder -> builder.AllowAnyOrigin() |> ignore)
+            .UseCors(fun builder ->
+                builder.AllowAnyOrigin() |> ignore
+                builder.AllowAnyHeader() |> ignore
+                builder.AllowAnyMethod() |> ignore)
             .UseEndpoints(fun endpoints -> endpoints.MapControllers() |> ignore)
         |> ignore

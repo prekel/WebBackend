@@ -6,7 +6,4 @@ open Fable.Core.JsInterop
 
 importAll "./styles/global.scss"
 
-ReactDOM.render(
-    App.HelloWorld(),
-    document.getElementById "feliz-app"
-)
+ReactDOM.render (App.HelloWorld(), document.getElementById "feliz-app")
