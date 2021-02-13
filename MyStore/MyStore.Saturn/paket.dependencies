@@ -5,7 +5,7 @@ framework: netcore5.0
 
 nuget FSharp.Core
 nuget Saturn
-nuget Microsoft.Data.Sqlite
+nuget Npgsql
 nuget Dapper
 
 

@@ -4,7 +4,7 @@ NUGET
   remote: https://api.nuget.org/v3/index.json
     Dapper (2.0.78)
     FSharp.Core (5.0.1)
-    Microsoft.Data.Sqlite (5.0.3)
+    Npgsql (5.0.3)
     Saturn (0.14.1)
 
 GROUP Build
