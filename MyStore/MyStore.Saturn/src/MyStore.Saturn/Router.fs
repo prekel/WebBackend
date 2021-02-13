@@ -22,7 +22,6 @@ let browserRouter = router {
     not_found_handler (htmlView NotFound.layout) //Use the default 404 webpage
     pipe_through browser //Use the default browser pipeline
     
-    forward "/books" Books.Controller.resource
     forward "" defaultView //Use the default view
 }
 

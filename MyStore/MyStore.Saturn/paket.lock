@@ -6,7 +6,6 @@ NUGET
     FSharp.Core (5.0.1)
     Microsoft.Data.Sqlite (5.0.3)
     Saturn (0.14.1)
-    Simple.Migrations (0.9.21)
 
 GROUP Build
 STORAGE: NONE
