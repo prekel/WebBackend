@@ -15,6 +15,10 @@
     <Compile Include="Books\BooksViews.fs" />
     <Compile Include="Books\BooksRepository.fs" />
     <Compile Include="Books\BooksController.fs" />
+    <Compile Include="Products\ProductsModel.fs" />
+    <Compile Include="Products\ProductsViews.fs" />
+    <Compile Include="Products\ProductsRepository.fs" />
+    <Compile Include="Products\ProductsController.fs" />
         <Compile Include="Router.fs" />
         <Compile Include="Program.fs" />
         <Content Include="static\*.*">
