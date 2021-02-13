@@ -20,6 +20,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "App", "MyStore.Fable\src\Ap
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tests", "MyStore.Fable\tests\Tests.fsproj", "{199AAE58-CCC0-4329-AAF6-D5C041FA5E8A}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.Saturn", "MyStore.Saturn\src\MyStore.Saturn\MyStore.Saturn.fsproj", "{421B0C53-DCE5-450A-B5CE-3FD095D97F4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{199AAE58-CCC0-4329-AAF6-D5C041FA5E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{199AAE58-CCC0-4329-AAF6-D5C041FA5E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{199AAE58-CCC0-4329-AAF6-D5C041FA5E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{421B0C53-DCE5-450A-B5CE-3FD095D97F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{421B0C53-DCE5-450A-B5CE-3FD095D97F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{421B0C53-DCE5-450A-B5CE-3FD095D97F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{421B0C53-DCE5-450A-B5CE-3FD095D97F4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

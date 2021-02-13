@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build": "dotnet fake build -t build",
+    "clean": "dotnet fake build -t clean",
+    "restore": "dotnet fake build -t restore",
+    "run": "dotnet fake build -t run"
+  }
+}
