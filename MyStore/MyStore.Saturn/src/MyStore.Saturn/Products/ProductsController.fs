@@ -10,7 +10,7 @@ module Controller =
     let indexAction (ctx: HttpContext) =
         task {
             let cnf = Controller.getConfig ctx
-            let! result = Database.getAll cnf.connectionString
+            let! result = Database.getAll cnf.connectionString 50
 
             match result with
             | Ok result -> return! Controller.renderHtml ctx (Views.index ctx (List.ofSeq result))
@@ -48,7 +48,6 @@ module Controller =
             let validateResult = Validation.validate input
 
             if validateResult.IsEmpty then
-
                 let cnf = Controller.getConfig ctx
                 let! result = Database.insert cnf.connectionString input
 
@@ -62,6 +61,7 @@ module Controller =
     let updateAction (ctx: HttpContext) (id: int) =
         task {
             let! input = Controller.getModel<Product> ctx
+            let input = { input with ProductId = id }
             let validateResult = Validation.validate input
 
             if validateResult.IsEmpty then

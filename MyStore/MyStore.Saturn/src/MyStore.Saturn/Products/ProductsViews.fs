@@ -3,54 +3,88 @@ namespace Products
 open Microsoft.AspNetCore.Http
 open Giraffe.GiraffeViewEngine
 open Saturn
-
-
+open Global
 
 module Views =
+    let rating r =
+        let arr1 = List.init r (fun _ -> true)
 
-    let product product =
-        div [ _class "card" ] [
-            //            div [ _class "card-image" ] [
-//                figure [ _class "image is-4by3" ] [
-//                    img [ _src "https://bulma.io/images/placeholders/1280x960.png"
-//                          _alt "qwerty" ]
-//                ]
-//            ]
-            div [ _class "card-content" ] [
-                str "qwerty1"
-                str product.Name
+        let arr2 = List.init (10 - r) (fun _ -> false)
+
+        let arr = arr1 @ arr2
+
+        arr
+        |> List.chunkBySize 2
+        |> List.map (function
+            | [ true; true ] -> FontAwesome.FaStar
+            | [ true; false ] -> FontAwesome.FaStarHalfEmpty
+            | [ false; false ] -> FontAwesome.FaStarO
+            | _ -> "")
+        |> List.map (fun cl -> div [ classes [ FontAwesome.Fa; cl ] ] [])
+
+    let product (ctx: HttpContext) product =
+        div [ _class Bulma.Card ] [
+            div [ _class Bulma.CardImage ] [
+                figure [ classes [ Bulma.Image; Bulma.Is4By3 ] ] [
+                    img [ _src "https://bulma.io/images/placeholders/1280x960.png"
+                          _alt "qwerty" ]
+                ]
+            ]
+            div [ _class Bulma.CardContent ] [
+                div [ _class Bulma.Columns ] [
+                    a [ _class Bulma.Column
+                        _href (Links.withId ctx product.ProductId) ] [
+                        str product.Name
+                    ]
+                    div [ _class Bulma.Column ] [
+                        str <| string product.Price
+                    ]
+                ]
+                div [] [ str product.Description ]
+                div [ _class Bulma.Columns ] [
+                    div [ _class Bulma.Column ] [
+                        yield! rating product.Rating
+                    ]
+                    div [ _class Bulma.Column ] []
+                ]
             ]
         ]
 
     let index (ctx: HttpContext) (objs: Product list) =
         let cnt =
-            [ div [ _class "container " ] [
-                h2 [ _class "title" ] [
-                    encodedText "Listing Products"
+            [ div [ _class Bulma.Container ] [
+                h2 [ _class Bulma.Title ] [
+                    str "Товары"
                 ]
                 div [] [
-                    for o in objs |> List.splitInto 3 do
-                        yield div [ _class "columns" ] [
-                            div [_class "column"] []
-                        ]
-                        yield div [] [ product (o|> List.head) ] 
+                    for o in objs |> List.chunkBySize 3 do
+                        yield
+                            div [ _class Bulma.Columns ] [
+                                for p in o do
+                                    yield
+                                        div [ classes [ Bulma.Column ] ] [
+                                            product ctx p
+                                        ]
+                                yield!
+                                    [ o |> List.length .. 3 - 1 ]
+                                    |> List.map (fun _ -> div [ _class Bulma.Column ] [])
+                            ]
                 ]
-                a [ _class "button is-text"
-                    _href (Links.add ctx) ] [
-                    encodedText "New Product"
+                a [ classes [ Bulma.Button; Bulma.IsText ]
+                    _href <| Links.add ctx ] [
+                    encodedText "Добавить товар"
                 ]
               ] ]
 
-        App.layout ([ section [ _class "section" ] cnt ])
+        App.layout ([ section [ _class Bulma.Section ] cnt ])
 
 
     let show (ctx: HttpContext) (o: Product) =
         let cnt =
-            [ div [ _class "container " ] [
-                h2 [ _class "title" ] [
-                    encodedText "Show Product"
+            [ div [ _class Bulma.Container ] [
+                h2 [ _class Bulma.Title ] [
+                    str "Товар"
                 ]
-
                 ul [] [
                     li [] [
                         strong [] [ encodedText "ProductId: " ]
@@ -70,82 +104,95 @@ module Views =
                         strong [] [ encodedText "Price: " ]
                         encodedText (string o.Price)
                     ]
+                    li [] [
+                        strong [] [ encodedText "Rating: " ]
+                        yield! rating o.Rating
+                    ]
                 ]
-                a [ _class "button is-text"
+                a [ classes [ Bulma.Button; Bulma.IsText ]
                     _href (Links.edit ctx o.ProductId) ] [
-                    encodedText "Edit"
+                    encodedText "Изменить"
                 ]
-                a [ _class "button is-text"
+                a [ classes [ Bulma.Button; Bulma.IsText ]
                     _href (Links.index ctx) ] [
-                    encodedText "Back"
+                    encodedText "Назад"
                 ]
               ] ]
 
-        App.layout ([ section [ _class "section" ] cnt ])
+        App.layout ([ section [ _class Bulma.Section ] cnt ])
 
     let private form (ctx: HttpContext) (o: Product option) (validationResult: Map<string, string>) isUpdate =
         let validationMessage =
-            div [ _class "notification is-danger" ] [
-                a [ _class "delete"
+            div [ classes [ Bulma.Notification
+                            Bulma.IsDanger ] ] [
+                a [ _class Bulma.Delete
                     attr "aria-label" "delete" ] []
-                encodedText "Oops, something went wrong! Please check the errors below."
+                str "Oops, something went wrong! Please check the errors below."
             ]
 
         let field selector lbl key =
-            div [ _class "field" ] [
+            div [ _class Bulma.Field ] [
                 yield
-                    label [ _class "label" ] [
+                    label [ _class Bulma.Label ] [
                         encodedText (string lbl)
                     ]
                 yield
-                    div [ _class "control has-icons-right" ] [
+                    div [ classes [ Bulma.Control
+                                    Bulma.HasIconsRight ] ] [
                         yield
-                            input [ _class (if validationResult.ContainsKey key then "input is-danger" else "input")
+                            input [ classes
+                                        (if validationResult.ContainsKey key then
+                                            [ Bulma.Input; Bulma.IsDanger ]
+                                         else
+                                             [ Bulma.Input ])
                                     _value (defaultArg (o |> Option.map selector) "")
                                     _name key
                                     _type "text" ]
                         if validationResult.ContainsKey key then
                             yield
-                                span [ _class "icon is-small is-right" ] [
-                                    i [ _class "fas fa-exclamation-triangle" ] []
+                                span [ classes [ Bulma.Icon
+                                                 Bulma.IsSmall
+                                                 Bulma.IsRight ] ] [
+                                    i [ classes [ FontAwesome.Fa
+                                                  FontAwesome.FaExclamationTriangle ] ] []
                                 ]
                     ]
                 if validationResult.ContainsKey key then
                     yield
-                        p [ _class "help is-danger" ] [
+                        p [ classes [ Bulma.Help; Bulma.IsDanger ] ] [
                             encodedText validationResult.[key]
                         ]
             ]
 
         let buttons =
-            div [ _class "field is-grouped" ] [
-                div [ _class "control" ] [
+            div [ classes [ Bulma.Field; Bulma.IsGrouped ] ] [
+                div [ _class Bulma.Control ] [
                     input [ _type "submit"
-                            _class "button is-link"
-                            _value "Submit" ]
+                            classes [ Bulma.Button; Bulma.IsLink ]
+                            _value "Отправить" ]
                 ]
-                div [ _class "control" ] [
-                    a [ _class "button is-text"
+                div [ _class Bulma.Control ] [
+                    a [ classes [ Bulma.Button; Bulma.IsText ]
                         _href (Links.index ctx) ] [
-                        encodedText "Cancel"
+                        encodedText "Отмена"
                     ]
                 ]
             ]
 
         let cnt =
-            [ div [ _class "container " ] [
+            [ div [ _class Bulma.Container ] [
                 form [ _action (if isUpdate then Links.withId ctx o.Value.ProductId else Links.index ctx)
                        _method "post" ] [
                     if not validationResult.IsEmpty then yield validationMessage
-                    yield field (fun i -> (string i.ProductId)) "ProductId" "ProductId"
                     yield field (fun i -> (string i.Name)) "Name" "Name"
                     yield field (fun i -> (string i.Description)) "Description" "Description"
                     yield field (fun i -> (string i.Price)) "Price" "Price"
+                    yield field (fun i -> (string i.Rating)) "Rating" "Rating"
                     yield buttons
                 ]
               ] ]
 
-        App.layout ([ section [ _class "section" ] cnt ])
+        App.layout ([ section [ _class Bulma.Section ] cnt ])
 
     let add (ctx: HttpContext) (o: Product option) (validationResult: Map<string, string>) =
         form ctx o validationResult false

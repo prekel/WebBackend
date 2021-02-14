@@ -2,61 +2,60 @@ module App
 
 open Giraffe.GiraffeViewEngine
 
+open Global
+
 let layout (content: XmlNode list) =
-    html [ _class "has-navbar-fixed-top" ] [
+    html [ _class Bulma.HasNavbarFixedTop ] [
         head [] [
             meta [ _charset "utf-8" ]
             meta [ _name "viewport"
                    _content "width=device-width, initial-scale=1" ]
-            title [] [
-                encodedText "MyStore"
-            ]
+            title [] [ encodedText "MyStore" ]
             link [ _rel "stylesheet"
-                   _href "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" ]
+                   _href FontAwesomeSource ]
             link [ _rel "stylesheet"
-                   _href "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" ]
+                   _href BulmaSource ]
             link [ _rel "stylesheet"
                    _href "/app.css" ]
         ]
         body [] [
             yield
-                nav [ _class "navbar is-fixed-top has-shadow" ] [
-                    div [ _class "navbar-brand" ] [
-                        a [ _class "navbar-item"; _href "/" ] [
-                            img [ _src "https://avatars0.githubusercontent.com/u/35305523?s=200"
+                nav [ classes [ Bulma.Navbar
+                                Bulma.IsFixedTop
+                                Bulma.HasShadow ] ] [
+                    div [ _class Bulma.NavbarBrand ] [
+                        a [ _class Bulma.NavbarItem
+                            _href "https://github.com/prekel" ] [
+                            img [ _src "https://avatars.githubusercontent.com/u/19646569?s=460"
                                   _width "28"
                                   _height "28" ]
                         ]
-                        div [ _class "navbar-burger burger"
-                              attr "data-target" "navMenu" ] [
-                            span [] []
-                            span [] []
-                            span [] []
-                        ]
                     ]
-                    div [ _class "navbar-menu"; _id "navMenu" ] [
-                        div [ _class "navbar-start" ] [
-                            a [ _class "navbar-item"
-                                _href "https://github.com/SaturnFramework/Saturn/blob/master/README.md" ] [
-                                rawText "Getting started"
+                    div [ _class Bulma.NavbarMenu ] [
+                        div [ _class Bulma.NavbarStart ] [
+                            a [ _class Bulma.NavbarItem; _href "/" ] [
+                                rawText "Главная страница"
+                            ]
+                            a [ _class Bulma.NavbarItem
+                                _href "/products" ] [
+                                rawText "Товары"
                             ]
                         ]
                     ]
                 ]
             yield! content
             yield
-                footer [ _class "footer is-fixed-bottom" ] [
-                    div [ _class "container" ] [
-                        div [ _class "content has-text-centered" ] [
+                footer [ classes [ Bulma.Footer
+                                   Bulma.IsFixedBottom ] ] [
+                    div [ _class Bulma.Container ] [
+                        div [ classes [ Bulma.Content
+                                        Bulma.HasTextCentered ] ] [
                             p [] [
-                                rawText "Powered by "
-                                a [ _href "https://github.com/SaturnFramework/Saturn" ] [
-                                    rawText "Saturn"
+                                rawText "Vladislav Prekel - "
+                                a [ _href "https://github.com/prekel/WebBackend" ] [
+                                    rawText "MyStore"
                                 ]
-                                rawText " - F# MVC framework created by "
-                                a [ _href "http://lambdafactory.io" ] [
-                                    rawText "λFactory"
-                                ]
+                                p [] [ str "2021" ]
                             ]
                         ]
                     ]

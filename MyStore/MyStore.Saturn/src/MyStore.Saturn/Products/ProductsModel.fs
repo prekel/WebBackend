@@ -5,17 +5,16 @@ type Product =
     { ProductId: int
       Name: string
       Description: string
-      Price: decimal }
+      Price: decimal
+      Rating: int }
 
 module Validation =
     let validate v =
         let validators =
-            [
-            //              fun u ->
-//                if isNull u.ProductId
-//                then Some("ProductId", "ProductId shouldn't be empty")
-//                else None
-            ]
+            [ fun u ->
+                if (1 > u.Rating || u.Rating > 10)
+                then Some("Rating", "Rating должен быть от 1 до 10")
+                else None ]
 
         validators
         |> List.fold (fun acc e ->

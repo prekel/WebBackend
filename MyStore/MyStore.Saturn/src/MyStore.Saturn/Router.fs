@@ -12,7 +12,7 @@ let browser =
         plug fetchSession
         set_header "x-pipeline-type" "Browser"
     }
-
+    
 let defaultView =
     router {
         get "/" (htmlView Index.layout)
