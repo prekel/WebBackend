@@ -4,54 +4,37 @@ open Microsoft.AspNetCore.Http
 open Giraffe.GiraffeViewEngine
 open Saturn
 
+
+
 module Views =
+
+    let product product =
+        div [ _class "card" ] [
+            //            div [ _class "card-image" ] [
+//                figure [ _class "image is-4by3" ] [
+//                    img [ _src "https://bulma.io/images/placeholders/1280x960.png"
+//                          _alt "qwerty" ]
+//                ]
+//            ]
+            div [ _class "card-content" ] [
+                str "qwerty1"
+                str product.Name
+            ]
+        ]
+
     let index (ctx: HttpContext) (objs: Product list) =
         let cnt =
             [ div [ _class "container " ] [
                 h2 [ _class "title" ] [
                     encodedText "Listing Products"
                 ]
-
-                table [ _class "table is-hoverable is-fullwidth" ] [
-                    thead [] [
-                        tr [] [
-                            th [] [ encodedText "ProductId" ]
-                            th [] [ encodedText "Name" ]
-                            th [] [ encodedText "Description" ]
-                            th [] [ encodedText "Price" ]
-                            th [] []
+                div [] [
+                    for o in objs |> List.splitInto 3 do
+                        yield div [ _class "columns" ] [
+                            div [_class "column"] []
                         ]
-                    ]
-                    tbody [] [
-                        for o in objs do
-                            yield
-                                tr [] [
-                                    td [] [
-                                        encodedText (string o.ProductId)
-                                    ]
-                                    td [] [ encodedText (string o.Name) ]
-                                    td [] [
-                                        encodedText (string o.Description)
-                                    ]
-                                    td [] [ encodedText (string o.Price) ]
-                                    td [] [
-                                        a [ _class "button is-text"
-                                            _href (Links.withId ctx o.ProductId) ] [
-                                            encodedText "Show"
-                                        ]
-                                        a [ _class "button is-text"
-                                            _href (Links.edit ctx o.ProductId) ] [
-                                            encodedText "Edit"
-                                        ]
-                                        a [ _class "button is-text is-delete"
-                                            attr "data-href" (Links.withId ctx o.ProductId) ] [
-                                            encodedText "Delete"
-                                        ]
-                                    ]
-                                ]
-                    ]
+                        yield div [] [ product (o|> List.head) ] 
                 ]
-
                 a [ _class "button is-text"
                     _href (Links.add ctx) ] [
                     encodedText "New Product"

@@ -9,7 +9,7 @@ let layout (content: XmlNode list) =
             meta [ _name "viewport"
                    _content "width=device-width, initial-scale=1" ]
             title [] [
-                encodedText "Hello SaturnSample"
+                encodedText "MyStore"
             ]
             link [ _rel "stylesheet"
                    _href "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" ]
