@@ -10,7 +10,7 @@ module Controller =
     let indexAction (ctx: HttpContext) =
         task {
             let cnf = Controller.getConfig ctx
-            let! result = Database.getAll cnf.connectionString
+            let! result = Database.getAll cnf.Context
 
             match result with
             | Ok result -> return! Controller.renderHtml ctx (Views.index ctx (List.ofSeq result))
@@ -20,7 +20,7 @@ module Controller =
     let showAction (ctx: HttpContext) (id: int) =
         task {
             let cnf = Controller.getConfig ctx
-            let! result = Database.getById cnf.connectionString id
+            let! result = Database.getById cnf.Context id
 
             match result with
             | Ok (Some result) -> return! Controller.renderHtml ctx (Views.show ctx result)
@@ -34,7 +34,7 @@ module Controller =
     let editAction (ctx: HttpContext) (id: int) =
         task {
             let cnf = Controller.getConfig ctx
-            let! result = Database.getById cnf.connectionString id
+            let! result = Database.getById cnf.Context id
 
             match result with
             | Ok (Some result) -> return! Controller.renderHtml ctx (Views.edit ctx result Map.empty)
@@ -50,7 +50,7 @@ module Controller =
             if validateResult.IsEmpty then
 
                 let cnf = Controller.getConfig ctx
-                let! result = Database.insert cnf.connectionString input
+                let! result = Database.insert cnf.Context input
 
                 match result with
                 | Ok _ -> return! Controller.redirect ctx (Links.index ctx)
@@ -66,7 +66,7 @@ module Controller =
 
             if validateResult.IsEmpty then
                 let cnf = Controller.getConfig ctx
-                let! result = Database.update cnf.connectionString input
+                let! result = Database.update cnf.Context input
 
                 match result with
                 | Ok _ -> return! Controller.redirect ctx (Links.index ctx)
@@ -78,7 +78,7 @@ module Controller =
     let deleteAction (ctx: HttpContext) (id: int) =
         task {
             let cnf = Controller.getConfig ctx
-            let! result = Database.delete cnf.connectionString id
+            let! result = Database.delete cnf.Context id
 
             match result with
             | Ok _ -> return! Controller.redirect ctx (Links.index ctx)

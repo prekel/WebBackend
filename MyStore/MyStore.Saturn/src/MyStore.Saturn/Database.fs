@@ -15,7 +15,7 @@ let execute (connection: #DbConnection) (sql: string) (data: _) =
         with ex -> return Error ex
     }
 
-let query (connection: #DbConnection) (sql: string) (parameters: IDictionary<string, obj> option) =
+let query1 (connection: #DbConnection) (sql: string) (parameters: IDictionary<string, obj> option) =
     task {
         try
             let! res =

@@ -19,11 +19,17 @@ let app =
         memory_cache
         use_static "static"
         use_gzip
-        use_config (fun _ -> { connectionString = "Host=localhost;Database=postgres;Username=postgres;Password=qwerty123" }) //TODO: Set development time configuration
+
+        use_config (fun _ ->
+            { Context = Sql.Sql.GetDataContext()
+              connectionString = "Host=localhost;Database=postgres;Username=postgres;Password=qwerty123" })
     }
 
 [<EntryPoint>]
 let main _ =
+    FSharp.Data.Sql.Common.QueryEvents.SqlQueryEvent
+    |> Event.add (printfn "Executing SQL: %O")
+
     printfn "Working directory - %s" (System.IO.Directory.GetCurrentDirectory())
     run app
     0 // return an integer exit code

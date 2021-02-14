@@ -9,7 +9,7 @@ module Database =
     let getAll connectionString: Task<Result<Book seq, exn>> =
         task {
             use connection = new NpgsqlConnection(connectionString)
-            return! query connection "SELECT id, title, author FROM Books" None
+            return! query1 connection "SELECT id, title, author FROM Books" None
         }
 
     let getById connectionString id: Task<Result<Book option, exn>> =

@@ -1,23 +1,28 @@
 open System
+open System.Collections.Generic
 open System.Text
 open System.Linq
 open FSharp.Data.Sql
-
-[<Literal>]
-let resolutionPath = __SOURCE_DIRECTORY__ + "/libraries"
-
-[<Literal>]
-let connectionString =
-    "Host=localhost;Database=postgres;Username=postgres;Password=qwerty123"
-
-type Sql = SqlDataProvider<Common.DatabaseProviderTypes.POSTGRESQL, connectionString, ResolutionPath=resolutionPath>
+open Sql
 
 let ctx = Sql.GetDataContext()
+
+let querySingle (connection: Sql.dataContext) (sql: IQueryable<_>) =
+    async {
+        try
+            let res = sql |> seq
+
+            return if isNull (box res) then Ok None else Ok(Some res)
+
+        with ex -> return Error ex
+    }
 
 [<EntryPoint>]
 let main argv =
     Console.OutputEncoding <- Encoding.UTF8
-    FSharp.Data.Sql.Common.QueryEvents.SqlQueryEvent |> Event.add (printfn "\nExecuting SQL: %O")
+
+    FSharp.Data.Sql.Common.QueryEvents.SqlQueryEvent
+    |> Event.add (printfn "\nExecuting SQL: %O")
 
     let queryForIndex name =
         let q1 =
@@ -91,6 +96,11 @@ let main argv =
                 select customer
                 take 10
         }
+
+    let qs = querySingle ctx annas
+    let r = qs |> Async.RunSynchronously
+
+
 
     printf "%s\n" customer34
 

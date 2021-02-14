@@ -1,3 +1,7 @@
 module Config
 
-type Config = { connectionString: string }
+open Sql
+
+type Config =
+    { Context: Sql.dataContext
+      connectionString: string }

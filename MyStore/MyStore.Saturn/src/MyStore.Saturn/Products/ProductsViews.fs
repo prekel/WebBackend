@@ -4,7 +4,7 @@ open Microsoft.AspNetCore.Http
 open Giraffe.GiraffeViewEngine
 open Saturn
 
-module Views =
+module Views =  
     let index (ctx: HttpContext) (objs: Product list) =
         let cnt =
             [ div [ _class "container " ] [
