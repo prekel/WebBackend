@@ -6,6 +6,7 @@
         <LangVersion>preview</LangVersion>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Domain.fs" />
         <Compile Include="Database.fs" />
         <Compile Include="Config.fs" />
         <Compile Include="Templates\Global.fs" />
@@ -13,9 +14,9 @@
         <Compile Include="Templates\Index.fs" />
         <Compile Include="Templates\NotFound.fs" />
         <Compile Include="Templates\InternalError.fs" />
+        <Compile Include="Customers\CustomersRepository.fs" />
         <Compile Include="Auth\Views.fs" />
         <Compile Include="Auth\Handlers.fs" />
-        <Compile Include="Auth\UsersRepository.fs" />
         <Compile Include="Products\ProductsModel.fs" />
         <Compile Include="Products\ProductsViews.fs" />
         <Compile Include="Products\ProductsRepository.fs" />
@@ -28,6 +29,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Dapper" Version="2.0.78" />
+        <PackageReference Include="FSharp.UMX" Version="1.0.0" />
         <PackageReference Include="Npgsql" Version="5.0.3" />
         <PackageReference Include="Saturn" Version="0.14.1" />
         <PackageReference Include="Zanaptak.TypedCssClasses" Version="0.4.0" />

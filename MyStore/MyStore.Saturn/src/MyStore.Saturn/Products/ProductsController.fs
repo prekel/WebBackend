@@ -52,7 +52,7 @@ let editAction (ctx: HttpContext) (id: int) =
 
 let createAction (ctx: HttpContext) =
     task {
-        let! input = Controller.getModel<Product> ctx
+        let! input = Controller.getModel<ProductDto> ctx
         let validateResult = Validation.validate input
 
         if validateResult.IsEmpty then
@@ -68,7 +68,7 @@ let createAction (ctx: HttpContext) =
 
 let updateAction (ctx: HttpContext) (id: int) =
     task {
-        let! input = Controller.getModel<Product> ctx
+        let! input = Controller.getModel<ProductDto> ctx
         let input = { input with ProductId = id }
         let validateResult = Validation.validate input
 

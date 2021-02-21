@@ -51,7 +51,7 @@ let product (ctx: HttpContext) product =
         ]
     ]
 
-let index (ctx: HttpContext) (objs: Product list) =
+let index (ctx: HttpContext) (objs: ProductDto list) =
     let cnt =
         [ div [ _class Bulma.Container ] [
             h2 [ _class Bulma.Title ] [
@@ -80,7 +80,7 @@ let index (ctx: HttpContext) (objs: Product list) =
     App.layout ([ section [ _class Bulma.Section ] cnt ])
 
 
-let show (ctx: HttpContext) (o: Product) =
+let show (ctx: HttpContext) (o: ProductDto) =
     let cnt =
         [ div [ _class Bulma.Container ] [
             h2 [ _class Bulma.Title ] [
@@ -122,7 +122,7 @@ let show (ctx: HttpContext) (o: Product) =
 
     App.layout ([ section [ _class Bulma.Section ] cnt ])
 
-let private form (ctx: HttpContext) (o: Product option) (validationResult: Map<string, string>) isUpdate =
+let private form (ctx: HttpContext) (o: ProductDto option) (validationResult: Map<string, string>) isUpdate =
     let validationMessage =
         div [ classes [ Bulma.Notification
                         Bulma.IsDanger ] ] [
@@ -195,8 +195,8 @@ let private form (ctx: HttpContext) (o: Product option) (validationResult: Map<s
 
     App.layout ([ section [ _class Bulma.Section ] cnt ])
 
-let add (ctx: HttpContext) (o: Product option) (validationResult: Map<string, string>) =
+let add (ctx: HttpContext) (o: ProductDto option) (validationResult: Map<string, string>) =
     form ctx o validationResult false
 
-let edit (ctx: HttpContext) (o: Product) (validationResult: Map<string, string>) =
+let edit (ctx: HttpContext) (o: ProductDto) (validationResult: Map<string, string>) =
     form ctx (Some o) validationResult true

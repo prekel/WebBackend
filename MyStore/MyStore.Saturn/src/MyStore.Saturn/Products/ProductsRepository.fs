@@ -6,7 +6,7 @@ open Npgsql
 
 open MyStore.Saturn.Database
 
-let getAll connectionString (limit: int): Task<Result<Product seq, exn>> =
+let getAll connectionString (limit: int): Task<Result<ProductDto seq, exn>> =
     task {
         use connection = new NpgsqlConnection(connectionString)
 
@@ -17,7 +17,7 @@ let getAll connectionString (limit: int): Task<Result<Product seq, exn>> =
                 (Some <| dict [ "Limit" => limit ])
     }
 
-let getById connectionString (id: int): Task<Result<Product option, exn>> =
+let getById connectionString (id: int): Task<Result<ProductDto option, exn>> =
     task {
         use connection = new NpgsqlConnection(connectionString)
 
@@ -28,7 +28,7 @@ let getById connectionString (id: int): Task<Result<Product option, exn>> =
                 (Some <| dict [ "ProductId" => id ])
     }
 
-let update connectionString (v: Product): Task<Result<int, exn>> =
+let update connectionString (v: ProductDto): Task<Result<int, exn>> =
     task {
         use connection = new NpgsqlConnection(connectionString)
 

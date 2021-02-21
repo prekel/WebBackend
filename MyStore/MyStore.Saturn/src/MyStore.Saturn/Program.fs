@@ -36,7 +36,7 @@ let app =
                     Task.CompletedTask)
 
         use_config (fun _ ->
-            { connectionString = "Host=;Database=postgres;Username=postgres;Password=" })
+            { connectionString = "Host=51.158.73.185;Database=postgres;Username=postgres;Password=zasxcd" })
     }
 
 [<EntryPoint>]
