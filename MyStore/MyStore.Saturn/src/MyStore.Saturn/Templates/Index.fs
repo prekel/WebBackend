@@ -1,4 +1,4 @@
-module Index
+module MyStore.Saturn.Templates.Index
 
 open Giraffe.GiraffeViewEngine
 open Global
@@ -36,6 +36,8 @@ let index =
               ]
           ]
       ]
-      section [ _class Bulma.Section ] [] ]
+      //section [ _class Bulma.Section ] []
+      //SignIn.signin
+      ]
 
 let layout = App.layout index

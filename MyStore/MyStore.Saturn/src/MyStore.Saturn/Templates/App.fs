@@ -1,4 +1,4 @@
-module App
+module MyStore.Saturn.Templates.App
 
 open Giraffe.GiraffeViewEngine
 

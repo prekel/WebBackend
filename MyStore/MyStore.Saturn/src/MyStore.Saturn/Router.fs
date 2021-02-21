@@ -1,4 +1,4 @@
-module Router
+module MyStore.Saturn.Router
 
 open System.Threading
 open Microsoft.AspNetCore.Http
@@ -6,7 +6,16 @@ open Saturn
 open Giraffe.Core
 open Giraffe.ResponseWriters
 open FSharp.Control.Tasks.ContextInsensitive
+open Saturn.Auth
+open Saturn.ChallengeType
+open System.Security.Claims
+open Microsoft.AspNetCore.Authentication.Cookies
+open Microsoft.AspNetCore.Authentication
+open Microsoft.AspNetCore.Http
+open Microsoft.Extensions.Logging
+open Giraffe
 
+open MyStore.Saturn.Templates
 
 let browser =
     pipeline {
@@ -23,12 +32,15 @@ let defaultView =
         get "/default.html" (redirectTo false "/")
     }
 
+let aut =
+    pipeline { plug (requireAuthentication Cookies) }
+
 let browserRouter =
     router {
         not_found_handler (htmlView NotFound.layout) //Use the default 404 webpage
         pipe_through browser //Use the default browser pipeline
+        pipe_through aut
 
-        forward "/books" Books.Controller.resource
         forward "/products" Products.Controller.resource
         forward "" defaultView //Use the default view
     }
@@ -41,8 +53,11 @@ let api =
         set_header "x-pipeline-type" "Api"
     }
 
+
 let someScopeOrController =
     router {
+        get "/signin" MyStore.Saturn.Auth.Handlers.signIn
+
         get "/long/%s" (fun (next: HttpFunc) (ctx: HttpContext) ->
             task { return! text "Successfully logged in" next ctx })
 
@@ -53,7 +68,8 @@ let someScopeOrController =
                 let! r = json (sprintf "%s short" i) func ctx
                 return r
             })
-        not_found_handler (text "Not Found") 
+
+        not_found_handler (text "Not Found")
     }
 
 let apiRouter =

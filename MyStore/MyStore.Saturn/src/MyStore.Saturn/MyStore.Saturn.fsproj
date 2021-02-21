@@ -6,32 +6,31 @@
         <LangVersion>preview</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Database.fs"/>
-        <Compile Include="Config.fs"/>
-        <Compile Include="Templates\Global.fs"/>
-        <Compile Include="Templates\App.fs"/>
-        <Compile Include="Templates\Index.fs"/>
-        <Compile Include="Templates\NotFound.fs"/>
-        <Compile Include="Templates\InternalError.fs"/>
-        <Compile Include="Books\BooksModel.fs"/>
-        <Compile Include="Books\BooksViews.fs"/>
-        <Compile Include="Books\BooksRepository.fs"/>
-        <Compile Include="Books\BooksController.fs"/>
-        <Compile Include="Products\ProductsModel.fs"/>
-        <Compile Include="Products\ProductsViews.fs"/>
-        <Compile Include="Products\ProductsRepository.fs"/>
-        <Compile Include="Products\ProductsController.fs"/>
-        <Compile Include="Router.fs"/>
-        <Compile Include="Program.fs"/>
+        <Compile Include="Database.fs" />
+        <Compile Include="Config.fs" />
+        <Compile Include="Templates\Global.fs" />
+        <Compile Include="Templates\App.fs" />
+        <Compile Include="Templates\Index.fs" />
+        <Compile Include="Templates\NotFound.fs" />
+        <Compile Include="Templates\InternalError.fs" />
+        <Compile Include="Auth\Views.fs" />
+        <Compile Include="Auth\Handlers.fs" />
+        <Compile Include="Auth\UsersRepository.fs" />
+        <Compile Include="Products\ProductsModel.fs" />
+        <Compile Include="Products\ProductsViews.fs" />
+        <Compile Include="Products\ProductsRepository.fs" />
+        <Compile Include="Products\ProductsController.fs" />
+        <Compile Include="Router.fs" />
+        <Compile Include="Program.fs" />
         <Content Include="static\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.0.78"/>
-        <PackageReference Include="Npgsql" Version="5.0.3"/>
-        <PackageReference Include="Saturn" Version="0.14.1"/>
-        <PackageReference Include="Zanaptak.TypedCssClasses" Version="0.4.0"/>
+        <PackageReference Include="Dapper" Version="2.0.78" />
+        <PackageReference Include="Npgsql" Version="5.0.3" />
+        <PackageReference Include="Saturn" Version="0.14.1" />
+        <PackageReference Include="Zanaptak.TypedCssClasses" Version="0.4.0" />
     </ItemGroup>
-<!--    <Import Project="..\..\.paket\Paket.Restore.targets"/>-->
+    <!--    <Import Project="..\..\.paket\Paket.Restore.targets"/>-->
 </Project>

@@ -1,7 +1,11 @@
-module Server
+module MyStore.Saturn.Server
 
+open System.Threading.Tasks
+open Microsoft.AspNetCore.Http
 open Saturn
-open Config
+
+open MyStore.Saturn.Config
+open MyStore.Saturn.Templates
 
 let endpointPipe =
     pipeline {
@@ -20,8 +24,19 @@ let app =
         use_static "static"
         use_gzip
 
+        use_cookies_authentication_with_config (fun options ->
+            options.Events.OnRedirectToLogin <-
+                fun context ->
+                    context.Response.StatusCode <- StatusCodes.Status401Unauthorized
+                    Task.CompletedTask
+
+            options.Events.OnRedirectToAccessDenied <-
+                fun context ->
+                    context.Response.StatusCode <- StatusCodes.Status403Forbidden
+                    Task.CompletedTask)
+
         use_config (fun _ ->
-            { connectionString = "Host=localhost;Database=postgres;Username=postgres;Password=qwerty123" })
+            { connectionString = "Host=;Database=postgres;Username=postgres;Password=" })
     }
 
 [<EntryPoint>]

@@ -1,9 +1,9 @@
-module Database
+module MyStore.Saturn.Database
 
-open Dapper
 open System.Data.Common
 open System.Collections.Generic
 open FSharp.Control.Tasks.ContextInsensitive
+open Dapper
 
 let inline (=>) k v = k, box v
 

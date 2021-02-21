@@ -1,4 +1,4 @@
-namespace Products
+namespace MyStore.Saturn.Products
 
 [<CLIMutable>]
 type Product =

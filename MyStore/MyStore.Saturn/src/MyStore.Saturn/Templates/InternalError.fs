@@ -1,4 +1,4 @@
-module InternalError
+module MyStore.Saturn.Templates.InternalError
 
 open System
 open Giraffe.GiraffeViewEngine

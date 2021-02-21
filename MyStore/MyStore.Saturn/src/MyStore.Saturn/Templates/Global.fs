@@ -1,7 +1,6 @@
-module Global
+module MyStore.Saturn.Templates.Global
 
 open Giraffe.GiraffeViewEngine
-
 open Zanaptak.TypedCssClasses
 
 [<Literal>]

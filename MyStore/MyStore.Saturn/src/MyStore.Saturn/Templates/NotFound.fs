@@ -1,4 +1,4 @@
-module NotFound
+module MyStore.Saturn.Templates.NotFound
 
 open Giraffe.GiraffeViewEngine
 
