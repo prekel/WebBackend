@@ -1,8 +1,11 @@
 module Router
 
+open System.Threading
+open Microsoft.AspNetCore.Http
 open Saturn
 open Giraffe.Core
 open Giraffe.ResponseWriters
+open FSharp.Control.Tasks.ContextInsensitive
 
 
 let browser =
@@ -12,7 +15,7 @@ let browser =
         plug fetchSession
         set_header "x-pipeline-type" "Browser"
     }
-    
+
 let defaultView =
     router {
         get "/" (htmlView Index.layout)
@@ -32,20 +35,37 @@ let browserRouter =
 
 //Other scopes may use different pipelines and error handlers
 
-// let api = pipeline {
-//     plug acceptJson
-//     set_header "x-pipeline-type" "Api"
-// }
+let api =
+    pipeline {
+        //plug acceptJson
+        set_header "x-pipeline-type" "Api"
+    }
 
-// let apiRouter = router {
-//     not_found_handler (text "Api 404")
-//     pipe_through api
-//
-//     forward "/someApi" someScopeOrController
-// }
+let someScopeOrController =
+    router {
+        get "/long/%s" (fun (next: HttpFunc) (ctx: HttpContext) ->
+            task { return! text "Successfully logged in" next ctx })
+
+        getf "/short/%s/%s" (fun (i, j) func ctx ->
+            task {
+                Controller.getConfig ctx |> printfn "%A"
+
+                let! r = json (sprintf "%s short" i) func ctx
+                return r
+            })
+        not_found_handler (text "Not Found") 
+    }
+
+let apiRouter =
+    router {
+        not_found_handler (text "Api 404")
+        pipe_through api
+
+        forward "/someApi" someScopeOrController
+    }
 
 let appRouter =
     router {
-        // forward "/api" apiRouter
+        forward "/api" apiRouter
         forward "" browserRouter
     }

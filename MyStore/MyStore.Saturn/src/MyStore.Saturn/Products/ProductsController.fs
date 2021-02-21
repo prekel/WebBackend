@@ -4,13 +4,19 @@ open Microsoft.AspNetCore.Http
 open FSharp.Control.Tasks.ContextInsensitive
 open Config
 open Saturn
+open Giraffe
 
 module Controller =
 
     let indexAction (ctx: HttpContext) =
         task {
             let cnf = Controller.getConfig ctx
-            let! result = Database.getAll cnf.connectionString 50
+            let! result =
+                Database.getAll
+                    cnf.connectionString
+                    (match ctx.TryGetQueryStringValue "limit" with
+                     | Some t -> int t
+                     | None -> 50)
 
             match result with
             | Ok result -> return! Controller.renderHtml ctx (Views.index ctx (List.ofSeq result))
@@ -21,6 +27,7 @@ module Controller =
         task {
             let cnf = Controller.getConfig ctx
             let! result = Database.getById cnf.connectionString id
+
 
             match result with
             | Ok (Some result) -> return! Controller.renderHtml ctx (Views.show ctx result)
@@ -84,6 +91,8 @@ module Controller =
             | Ok _ -> return! Controller.redirect ctx (Links.index ctx)
             | Error ex -> return raise ex
         }
+
+
 
     let resource =
         controller {
