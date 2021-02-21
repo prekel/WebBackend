@@ -113,3 +113,7 @@ type Customer =
       Email: MailAddress
       CurrentCart: CartLoad
       Orders: OrdersLoad }
+
+type User =
+    | Authorized of Customer
+    | Guest
