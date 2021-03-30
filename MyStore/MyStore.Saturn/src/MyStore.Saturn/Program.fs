@@ -2,6 +2,8 @@ module MyStore.Saturn.Server
 
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Http
+open FSharp.Data.LiteralProviders
+
 open Saturn
 
 open MyStore.Saturn.Config
@@ -24,23 +26,25 @@ let app =
         use_static "static"
         use_gzip
 
-        use_cookies_authentication_with_config (fun options ->
-            options.Events.OnRedirectToLogin <-
-                fun context ->
-                    context.Response.StatusCode <- StatusCodes.Status401Unauthorized
-                    Task.CompletedTask
+        use_cookies_authentication_with_config
+            (fun options ->
+                options.Events.OnRedirectToLogin <-
+                    fun context ->
+                        context.Response.StatusCode <- StatusCodes.Status401Unauthorized
+                        Task.CompletedTask
 
-            options.Events.OnRedirectToAccessDenied <-
-                fun context ->
-                    context.Response.StatusCode <- StatusCodes.Status403Forbidden
-                    Task.CompletedTask)
+                options.Events.OnRedirectToAccessDenied <-
+                    fun context ->
+                        context.Response.StatusCode <- StatusCodes.Status403Forbidden
+                        Task.CompletedTask)
 
-        use_config (fun _ ->
-            { connectionString = "Host=51.158.73.185;Database=postgres;Username=postgres;Password=zasxcd" })
+        use_config
+            (fun _ -> { connectionString = "Host=51.158.73.185;Database=postgres;Username=postgres;Password=zasxcd" })
     }
 
 [<EntryPoint>]
 let main _ =
-    printfn "Working directory - %s" (System.IO.Directory.GetCurrentDirectory())
+    printfn $"Working directory - %s{System.IO.Directory.GetCurrentDirectory()}"
+    printfn $"%s{BuildDate.Local}"
     run app
     0

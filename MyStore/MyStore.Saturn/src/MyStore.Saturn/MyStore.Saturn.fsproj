@@ -29,6 +29,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Dapper" Version="2.0.78" />
+        <PackageReference Include="FSharp.Data.LiteralProviders" Version="0.3.5" />
         <PackageReference Include="FSharp.UMX" Version="1.0.0" />
         <PackageReference Include="Npgsql" Version="5.0.3" />
         <PackageReference Include="Saturn" Version="0.14.1" />
