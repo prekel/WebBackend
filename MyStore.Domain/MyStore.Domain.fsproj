@@ -6,7 +6,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Library.fs"/>
+        <Compile Include="SimpleTypes.fs" />
+        <Compile Include="CompoundTypes.fs" />
+        <Compile Include="PublicTypes.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FSharp.UMX" Version="1.0.0" />
+      <PackageReference Include="FsToolkit.ErrorHandling" Version="2.1.2" />
     </ItemGroup>
 
 </Project>

@@ -35,5 +35,8 @@
         <PackageReference Include="Saturn" Version="0.14.1" />
         <PackageReference Include="Zanaptak.TypedCssClasses" Version="0.4.0" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\MyStore.Domain\MyStore.Domain.fsproj" />
+    </ItemGroup>
     <!--    <Import Project="..\..\.paket\Paket.Restore.targets"/>-->
 </Project>
