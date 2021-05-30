@@ -23,19 +23,53 @@ open Giraffe.Razor
 open MyStore.MvcFSharp.Models
 open MyStore.MvcFSharp.Router
 
+open JavaScriptEngineSwitcher.ChakraCore
+open JavaScriptEngineSwitcher.Extensions.MsDependencyInjection
+
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Http
+open Microsoft.Extensions.Configuration
+open Microsoft.Extensions.DependencyInjection
+open Microsoft.Extensions.Hosting
+
+open React.AspNet
+
 type Startup(configuration: IConfiguration) =
     // This method gets called by the runtime. Use this method to add services to the container.
     member this.ConfigureServices(services: IServiceCollection) =
-        // Add framework services.
+        // Add framework services. TODO?
         services
             .AddControllersWithViews()
             .AddRazorRuntimeCompilation()
         |> ignore
 
-        services.AddRazorPages() |> ignore
+        services
+            .AddJsEngineSwitcher(fun options -> options.DefaultEngineName <- ChakraCoreJsEngine.EngineName)
+            .AddChakraCore()
+        |> ignore
+
+        services.AddReact() |> ignore
+
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+        |> ignore
+
+        services.BuildServiceProvider() |> ignore
+
+        services.AddRazorPages() |> ignore // TODO?
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
+        // Initialise ReactJS.NET. Must be before static files.
+        app.UseReact
+            (fun config ->
+                config
+                    .SetReuseJavaScriptEngines(true)
+                    .SetLoadBabel(false)
+                    .SetLoadReact(false)
+                    .SetReactAppBuildPath("~/dist")
+                |> ignore)
+        |> ignore
+
         if (env.IsDevelopment()) then
             app.UseDeveloperExceptionPage() |> ignore
         else
