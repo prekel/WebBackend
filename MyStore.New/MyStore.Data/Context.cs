@@ -32,12 +32,12 @@ namespace MyStore.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .LogTo(Console.WriteLine)
-                .UseNpgsql("Host=localhost;Database=postgres;Username=postgres;Password=qwerty123");
+                .LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Customer>(
                 e =>
                 {

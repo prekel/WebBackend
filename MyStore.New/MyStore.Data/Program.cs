@@ -19,9 +19,7 @@ namespace MyStore.Data
                     services.AddDbContext<Context>(options =>
                         options.UseNpgsql(
                             hostContext.Configuration
-                                .GetConnectionString("SqlLiteConnection"))
+                                .GetConnectionString("DefaultConnection")));
                 });
     }
-}
-
 }
