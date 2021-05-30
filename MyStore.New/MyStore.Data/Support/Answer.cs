@@ -1,7 +1,6 @@
 using System;
-using System.Text.Json.Serialization;
 
-namespace MyStore.Data.Entity.Support
+namespace MyStore.Data.Support
 {
     public record Answer
     {

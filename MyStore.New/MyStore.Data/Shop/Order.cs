@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-using MyStore.Data.Entity.Support;
+using MyStore.Data.Support;
 
-namespace MyStore.Data.Entity
+namespace MyStore.Data.Shop
 {
     public record Order
     {

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-namespace MyStore.Data.Entity.Support
+using MyStore.Data.Shop;
+
+namespace MyStore.Data.Support
 {
     public record Ticket
     {

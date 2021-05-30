@@ -6,13 +6,19 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-using MyStore.Data.Entity;
-using MyStore.Data.Entity.Support;
+using MyStore.Data.Identity;
+using MyStore.Data.Shop;
+using MyStore.Data.Support;
 
 namespace MyStore.Data
 {
     public class Context : ApiAuthorizationDbContext<ApplicationUser>
     {
+        public Context(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(
+            options, operationalStoreOptions)
+        {
+        }
+
         public DbSet<Cart> Carts { get; set; } = null!;
         public DbSet<CartProduct> CartProducts { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
@@ -23,11 +29,6 @@ namespace MyStore.Data
         public DbSet<Operator> SupportOperators { get; set; } = null!;
         public DbSet<Question> SupportQuestions { get; set; } = null!;
         public DbSet<Ticket> SupportTickets { get; set; } = null!;
-
-        public Context(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(
-            options, operationalStoreOptions)
-        {
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -53,11 +54,10 @@ namespace MyStore.Data
                     e.Property(entity => entity.Email)
                         .HasMaxLength(60)
                         .IsRequired();
-                    e.Property(entity => entity.PasswordHash)
-                        .HasMaxLength(32)
-                        .IsRequired();
-                    e.Property(entity => entity.PasswordSalt)
-                        .IsRequired();
+                    e.HasOne(entity => entity.User)
+                        .WithOne()
+                        .HasForeignKey<Customer>(entity => entity.UserId)
+                        .IsRequired(false);
                     e.HasOne(entity => entity.CurrentCart)
                         .WithMany(cart => cart!.CurrentCustomers)
                         .HasForeignKey(customer => customer.CurrentCartId)
@@ -175,10 +175,10 @@ namespace MyStore.Data
                     b.Property(op => op.Email)
                         .HasMaxLength(60)
                         .IsRequired();
-                    b.Property(op => op.PasswordHash)
-                        .IsRequired();
-                    b.Property(op => op.PasswordSalt)
-                        .IsRequired();
+                    b.HasOne(entity => entity.User)
+                        .WithOne()
+                        .HasForeignKey<Operator>(entity => entity.UserId)
+                        .IsRequired(false);
                 });
 
             modelBuilder.Entity<Question>(b =>

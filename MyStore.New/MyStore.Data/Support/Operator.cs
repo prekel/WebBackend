@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-namespace MyStore.Data.Entity.Support
+using MyStore.Data.Identity;
+
+namespace MyStore.Data.Support
 {
     public record Operator
     {
@@ -10,11 +11,9 @@ namespace MyStore.Data.Entity.Support
         public string LastName { get; set; }
         public string Email { get; set; }
 
+        public string? UserId { get; set; }
 
-        public byte[] PasswordHash { get; set; }
-
-
-        public int PasswordSalt { get; set; }
+        public ApplicationUser? User { get; set; }
 
 
         public ICollection<Answer> SupportAnswers { get; set; }

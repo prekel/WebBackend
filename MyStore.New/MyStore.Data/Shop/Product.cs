@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-namespace MyStore.Data.Entity
+namespace MyStore.Data.Shop
 {
     public record Product
     {

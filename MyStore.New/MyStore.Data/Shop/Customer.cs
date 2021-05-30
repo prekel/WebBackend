@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-using Microsoft.AspNetCore.Identity;
+using MyStore.Data.Identity;
+using MyStore.Data.Support;
 
-using MyStore.Data.Entity.Support;
-
-namespace MyStore.Data.Entity
+namespace MyStore.Data.Shop
 {
     public class Customer
     {
@@ -18,9 +16,9 @@ namespace MyStore.Data.Entity
         [EmailAddress]
         public string Email { get; set; }
 
-        public byte[]? PasswordHash { get; set; }
+        public string? UserId { get; set; }
 
-        public int PasswordSalt { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public int? CurrentCartId { get; set; }
 

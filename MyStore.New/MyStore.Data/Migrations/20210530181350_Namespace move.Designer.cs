@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyStore.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyStore.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20210530181350_Namespace move")]
+    partial class Namespacemove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -381,15 +383,17 @@ namespace MyStore.Data.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("character varying(60)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("bytea");
+
+                    b.Property<int>("PasswordSalt")
+                        .HasColumnType("integer");
 
                     b.HasKey("CustomerId");
 
                     b.HasIndex("CurrentCartId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -511,13 +515,14 @@ namespace MyStore.Data.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("character varying(60)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<int>("PasswordSalt")
+                        .HasColumnType("integer");
 
                     b.HasKey("SupportOperatorId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("SupportOperators");
                 });
@@ -669,13 +674,7 @@ namespace MyStore.Data.Migrations
                         .WithMany("CurrentCustomers")
                         .HasForeignKey("CurrentCartId");
 
-                    b.HasOne("MyStore.Data.Identity.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("MyStore.Data.Shop.Customer", "UserId");
-
                     b.Navigation("CurrentCart");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyStore.Data.Shop.Order", b =>
@@ -725,15 +724,6 @@ namespace MyStore.Data.Migrations
                     b.Navigation("SupportOperator");
 
                     b.Navigation("SupportTicket");
-                });
-
-            modelBuilder.Entity("MyStore.Data.Support.Operator", b =>
-                {
-                    b.HasOne("MyStore.Data.Identity.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("MyStore.Data.Support.Operator", "UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MyStore.Data.Support.Question", b =>
