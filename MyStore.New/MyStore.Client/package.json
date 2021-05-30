@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf ../MyStore.MvcFSharp/wwwroot/dist && dotnet fable ./Content/fsharp && webpack"
+    "build": "rimraf ../MyStore.MvcFSharp/wwwroot/dist && dotnet fable -o ./Content/fsharp && webpack"
   },
   "dependencies": {
     "emotion": "^9.2.12",

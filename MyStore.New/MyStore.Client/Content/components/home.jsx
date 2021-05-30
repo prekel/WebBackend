@@ -10,15 +10,15 @@ import {
 
 import {CommentsBox} from './comments/Sample.jsx';
 
-import {Components_HelloWorld} from '../fsharp/Components.fs.js'
-import {Counter1} from '../fsharp/Counter1.fs.js'
+import {Components_HelloWorld} from '../fsharp/Components.js'
+import {Counter1} from '../fsharp/Counter1.js'
 
 class Navbar extends Component {
     render() {
         return (
             <ul>
                 <Components_HelloWorld/>
-                <Counter1 init={4222}/>
+                <Counter1 init={42212}/>
                 <li>
                     <Link to="/">Home</Link>
                 </li>
