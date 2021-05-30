@@ -19,6 +19,6 @@
     </ItemGroup>
 
     <Target Name="ReactBuild" AfterTargets="Build">
-        <Exec Command="npm i &amp;&amp; npm run build"/>
+        <Exec Command="npm i &amp;&amp; npm run build" WorkingDirectory="../MyStore.Content"/>
     </Target>
 </Project>
