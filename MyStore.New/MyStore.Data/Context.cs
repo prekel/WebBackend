@@ -1,33 +1,33 @@
 using System;
 
+using IdentityServer4.EntityFramework.Options;
+
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 using MyStore.Data.Entity;
 using MyStore.Data.Entity.Support;
 
 namespace MyStore.Data
 {
-    public class Context : DbContext
+    public class Context : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public Context()
+        public DbSet<Cart> Carts { get; set; } = null!;
+        public DbSet<CartProduct> CartProducts { get; set; } = null!;
+        public DbSet<Customer> Customers { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<OrderedProduct> OrderedProducts { get; set; } = null!;
+        public DbSet<Answer> SupportAnswers { get; set; } = null!;
+        public DbSet<Operator> SupportOperators { get; set; } = null!;
+        public DbSet<Question> SupportQuestions { get; set; } = null!;
+        public DbSet<Ticket> SupportTickets { get; set; } = null!;
+
+        public Context(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(
+            options, operationalStoreOptions)
         {
         }
-
-        public Context(DbContextOptions<Context> options)
-            : base(options)
-        {
-        }
-
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartProduct> CartProducts { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<OrderedProduct> OrderedProducts { get; set; }
-        public DbSet<Answer> SupportAnswers { get; set; }
-        public DbSet<Operator> SupportOperators { get; set; }
-        public DbSet<Question> SupportQuestions { get; set; }
-        public DbSet<Ticket> SupportTickets { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -59,7 +59,7 @@ namespace MyStore.Data
                     e.Property(entity => entity.PasswordSalt)
                         .IsRequired();
                     e.HasOne(entity => entity.CurrentCart)
-                        .WithMany(cart => cart.CurrentCustomers)
+                        .WithMany(cart => cart!.CurrentCustomers)
                         .HasForeignKey(customer => customer.CurrentCartId)
                         .IsRequired(false);
                 });
@@ -95,7 +95,7 @@ namespace MyStore.Data
                                 .HasForeignKey(cp => cp.CartId),
                             j => { j.HasKey(cp => new {cp.CartId, cp.ProductId}); });
                     e.HasOne(cart => cart.OwnerCustomer)
-                        .WithMany(customer => customer.OwnedCarts)
+                        .WithMany(customer => customer!.OwnedCarts)
                         .HasForeignKey(cart => cart.OwnerCustomerId);
                 });
 
@@ -157,7 +157,7 @@ namespace MyStore.Data
                         .HasDefaultValueSql("current_timestamp")
                         .IsRequired();
                     b.HasOne(ticket => ticket.Order)
-                        .WithOne(order => order.SupportTicket)
+                        .WithOne(order => order!.SupportTicket!)
                         .HasForeignKey<Ticket>(ticket => ticket.OrderId)
                         .IsRequired(false);
                 });

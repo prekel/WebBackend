@@ -10,16 +10,16 @@ namespace MyStore.Data.Entity
         public bool IsPublic { get; set; }
         public int? OwnerCustomerId { get; set; }
 
-        [JsonIgnore]
+
         public Customer? OwnerCustomer { get; set; }
 
-        [JsonIgnore]
+
         public ICollection<Product>? Products { get; set; }
 
-        [JsonIgnore]
+
         public ICollection<Customer>? CurrentCustomers { get; set; }
 
-        [JsonIgnore]
+
         public List<CartProduct>? CartProducts { get; set; }
     }
 }

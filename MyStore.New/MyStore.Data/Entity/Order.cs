@@ -12,15 +12,12 @@ namespace MyStore.Data.Entity
 
         public int CustomerId { get; set; }
 
-        [JsonIgnore]
         public Customer Customer { get; set; }
 
         public DateTimeOffset CreateTimeOffset { get; set; }
 
-        [JsonIgnore]
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
 
-        [JsonIgnore]
         public Ticket? SupportTicket { get; set; }
     }
 }

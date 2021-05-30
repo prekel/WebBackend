@@ -6,12 +6,10 @@ namespace MyStore.Data.Entity
     {
         public int ProductId { get; set; }
 
-        [JsonIgnore]
         public Product Product { get; set; }
 
         public int OrderId { get; set; }
 
-        [JsonIgnore]
         public Order Order { get; set; }
 
         public decimal OrderedPrice { get; set; }

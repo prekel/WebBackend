@@ -6,12 +6,12 @@ namespace MyStore.Data.Entity
     {
         public int CartId { get; set; }
 
-        [JsonIgnore]
+
         public Cart Cart { get; set; }
 
         public int ProductId { get; set; }
 
-        [JsonIgnore]
+
         public Product Product { get; set; }
     }
 }
