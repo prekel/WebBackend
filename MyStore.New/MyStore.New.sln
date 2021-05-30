@@ -9,6 +9,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "App", "MyStore.ReactNet\Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.AspNetCore", "MyStore.AspNetCore\MyStore.AspNetCore.csproj", "{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.GiraffeRazor", "MyStore.GiraffeRazor\MyStore.GiraffeRazor.fsproj", "{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}.Release|x64.Build.0 = Release|Any CPU
 		{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}.Release|x86.ActiveCfg = Release|Any CPU
 		{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}.Release|x86.Build.0 = Release|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Debug|x64.Build.0 = Debug|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Debug|x86.Build.0 = Debug|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Release|x64.ActiveCfg = Release|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Release|x64.Build.0 = Release|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Release|x86.ActiveCfg = Release|Any CPU
+		{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
