@@ -32,11 +32,51 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 
+open Microsoft.AspNetCore.Authentication
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Hosting
+open Microsoft.AspNetCore.Identity
+open Microsoft.AspNetCore.Identity.UI
+open Microsoft.AspNetCore.HttpsPolicy
+open Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer
+open Microsoft.EntityFrameworkCore
+
+open Microsoft.Extensions.Configuration
+open Microsoft.Extensions.DependencyInjection
+open Microsoft.Extensions.Hosting
+
 open React.AspNet
+
+open MyStore.Data
+open MyStore.Data.Identity
 
 type Startup(configuration: IConfiguration) =
     // This method gets called by the runtime. Use this method to add services to the container.
     member this.ConfigureServices(services: IServiceCollection) =
+        services.AddDbContext<Context>
+            (fun options ->
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                |> ignore)
+        |> ignore
+
+        services.AddDatabaseDeveloperPageExceptionFilter()
+        |> ignore
+
+        services
+            .AddDefaultIdentity<ApplicationUser>(fun options -> options.SignIn.RequireConfirmedAccount <- true)
+            .AddEntityFrameworkStores<Context>()
+        |> ignore
+
+        services
+            .AddIdentityServer()
+            .AddApiAuthorization<ApplicationUser, Context>()
+        |> ignore
+
+        services
+            .AddAuthentication()
+            .AddIdentityServerJwt()
+        |> ignore
+
         // Add framework services. TODO?
         services
             .AddControllersWithViews()
@@ -72,6 +112,7 @@ type Startup(configuration: IConfiguration) =
 
         if (env.IsDevelopment()) then
             app.UseDeveloperExceptionPage() |> ignore
+            app.UseMigrationsEndPoint() |> ignore
         else
             app.UseExceptionHandler("/Home/Error") |> ignore
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -82,6 +123,9 @@ type Startup(configuration: IConfiguration) =
 
         app.UseRouting() |> ignore
 
+        app.UseAuthentication() |> ignore
+
+        app.UseIdentityServer() |> ignore
         app.UseAuthorization() |> ignore
 
         app.UseEndpoints
@@ -91,6 +135,6 @@ type Startup(configuration: IConfiguration) =
                 //endpoints.MapControllerRoute(name = "default", pattern = "{controller=Home}/{action=Index}/{id?}")
                 //|> ignore
 
-                //endpoints.MapRazorPages() |> ignore
+                endpoints.MapRazorPages() |> ignore
                 )
         |> ignore

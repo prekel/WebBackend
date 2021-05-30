@@ -32,9 +32,21 @@
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="React.AspNet" Version="5.2.11" />
         <PackageReference Include="React.Router" Version="5.2.11" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6" />
     </ItemGroup>
-    
+
+    <ItemGroup>
+      <ProjectReference Include="..\MyStore.Data\MyStore.Data.csproj" />
+    </ItemGroup>
+
     <Target Name="ReactBuild" AfterTargets="Build">
-        <Exec Command="npm i &amp;&amp; npm run build" WorkingDirectory="../MyStore.Client"/>
+        <Exec Command="npm i &amp;&amp; npm run build" WorkingDirectory="../MyStore.Client" />
     </Target>
 </Project>
