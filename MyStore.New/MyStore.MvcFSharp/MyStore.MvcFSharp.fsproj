@@ -33,5 +33,8 @@
         <PackageReference Include="React.AspNet" Version="5.2.11" />
         <PackageReference Include="React.Router" Version="5.2.11" />
     </ItemGroup>
-
+    
+    <Target Name="ReactBuild" AfterTargets="Build">
+        <Exec Command="npm i &amp;&amp; npm run build" WorkingDirectory="../MyStore.Client"/>
+    </Target>
 </Project>

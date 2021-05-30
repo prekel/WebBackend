@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "MyStore.ReactNet\SampleApp.csproj", "{69C0CE24-1984-4BE9-8717-3A8B841CA00C}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "App", "MyStore.ReactNet\Content\fsharp\App.fsproj", "{E075C722-4E73-406C-8BFC-911582C07CCC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.AspNetCore", "MyStore.AspNetCore\MyStore.AspNetCore.csproj", "{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.GiraffeRazor", "MyStore.GiraffeRazor\MyStore.GiraffeRazor.fsproj", "{0B79E31E-7112-4F0C-A3CD-D55D6D6B6B44}"
@@ -16,6 +14,8 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.MvcFSharp", "MyStore.MvcFSharp\MyStore.MvcFSharp.fsproj", "{08FFE95F-29B8-48A1-8841-B3A203369192}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.MvcCSharp", "MyStore.MvcCSharp\MyStore.MvcCSharp.csproj", "{9ABAE420-65F3-4599-8F94-FE7385577CD5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.Client", "MyStore.Client\Content\fsharp\MyStore.Client.fsproj", "{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,18 +42,6 @@ Global
 		{69C0CE24-1984-4BE9-8717-3A8B841CA00C}.Release|x64.Build.0 = Release|Any CPU
 		{69C0CE24-1984-4BE9-8717-3A8B841CA00C}.Release|x86.ActiveCfg = Release|Any CPU
 		{69C0CE24-1984-4BE9-8717-3A8B841CA00C}.Release|x86.Build.0 = Release|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Debug|x64.Build.0 = Debug|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Debug|x86.Build.0 = Debug|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Release|x64.ActiveCfg = Release|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Release|x64.Build.0 = Release|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Release|x86.ActiveCfg = Release|Any CPU
-		{E075C722-4E73-406C-8BFC-911582C07CCC}.Release|x86.Build.0 = Release|Any CPU
 		{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8D268CE-C883-47FA-B6E0-5A4E2E40C471}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -114,5 +102,17 @@ Global
 		{9ABAE420-65F3-4599-8F94-FE7385577CD5}.Release|x64.Build.0 = Release|Any CPU
 		{9ABAE420-65F3-4599-8F94-FE7385577CD5}.Release|x86.ActiveCfg = Release|Any CPU
 		{9ABAE420-65F3-4599-8F94-FE7385577CD5}.Release|x86.Build.0 = Release|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Debug|x64.Build.0 = Debug|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Release|x64.Build.0 = Release|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{3BE5A25A-E8EB-4BB5-9982-793839EAF0C7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
