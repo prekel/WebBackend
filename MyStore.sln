@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "MyStore.O
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.Domain", "MyStore.Domain\MyStore.Domain.fsproj", "{568D630B-3733-4132-98E6-E15266C757A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "MyStore.ReactNet\SampleApp.csproj", "{D72A9351-A5F1-4FE3-95FA-6E617C47E8F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{568D630B-3733-4132-98E6-E15266C757A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{568D630B-3733-4132-98E6-E15266C757A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{568D630B-3733-4132-98E6-E15266C757A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72A9351-A5F1-4FE3-95FA-6E617C47E8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72A9351-A5F1-4FE3-95FA-6E617C47E8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72A9351-A5F1-4FE3-95FA-6E617C47E8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72A9351-A5F1-4FE3-95FA-6E617C47E8F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C4F2C215-3F85-4797-B239-35A9C97D283A} = {B8919ED7-BE8D-4C0D-B290-C59665EEED33}
