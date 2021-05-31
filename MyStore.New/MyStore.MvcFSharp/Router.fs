@@ -58,11 +58,16 @@ let antiforgeryTokenHandler =
     |> RequestErrors.badRequest
     |> validateAntiforgeryToken
 
+let mustBeLoggedIn : HttpHandler =
+    requiresAuthentication (redirectTo false "/Identity/Account/Login")
+
 let endpoints1 =
     [ subRoute "/foo" [ GET [ route "/bar" (text "Aloha!") ] ]
-      GET [ route "/" (text "Hello World")
+      GET [ route "/" (redirectTo false "/Home")
             routef "/%s/%i" handler2
-            routef "/%s/%s/%s/%i" handler3 ]
+            routef "/%s/%s/%s/%i" handler3
+            route "/private" (mustBeLoggedIn >=> (text "Private"))
+            route "/public" (text "public") ]
       GET_HEAD [ route "/foo" (text "Bar")
                  route "/x" (text "y")
                  route "/abc" (text "def") ]
