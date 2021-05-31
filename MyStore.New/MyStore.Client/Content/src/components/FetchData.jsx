@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import authService from './api-authorization/AuthorizeService'
+import authService from './api-authorization/AuthorizeService.jsx'
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
