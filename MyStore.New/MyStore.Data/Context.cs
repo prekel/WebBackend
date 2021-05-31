@@ -1,21 +1,18 @@
 using System;
 
-using IdentityServer4.EntityFramework.Options;
-
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 using MyStore.Data.Identity;
 using MyStore.Data.Shop;
 using MyStore.Data.Support;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 namespace MyStore.Data
 {
-    public class Context : ApiAuthorizationDbContext<ApplicationUser>
+    public class Context : IdentityDbContext<ApplicationUser>
     {
-        public Context(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(
-            options, operationalStoreOptions)
+        public Context(DbContextOptions options) : base(options)
         {
         }
 

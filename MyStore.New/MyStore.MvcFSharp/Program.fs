@@ -12,6 +12,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 
 module Program =
+
     let exitCode = 0
 
     let CreateHostBuilder args =

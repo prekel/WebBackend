@@ -67,14 +67,9 @@ type Startup(configuration: IConfiguration) =
             .AddEntityFrameworkStores<Context>()
         |> ignore
 
-        services
-            .AddIdentityServer()
-            .AddApiAuthorization<ApplicationUser, Context>()
-        |> ignore
 
         services
             .AddAuthentication()
-            .AddIdentityServerJwt()
         |> ignore
 
         // Add framework services. TODO?
@@ -125,7 +120,6 @@ type Startup(configuration: IConfiguration) =
 
         app.UseAuthentication() |> ignore
 
-        app.UseIdentityServer() |> ignore
         app.UseAuthorization() |> ignore
 
         app.UseEndpoints
