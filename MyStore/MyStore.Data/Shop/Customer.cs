@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 using MyStore.Data.Identity;
 using MyStore.Data.Support;
+using MyStore.Dto.Shop;
 
 namespace MyStore.Data.Shop
 {
@@ -32,5 +33,7 @@ namespace MyStore.Data.Shop
         public ICollection<Cart>? OwnedCarts { get; set; }
 
         public ICollection<Ticket>? SupportTickets { get; set; }
+
+        public CustomerDto ToDto() => new(CustomerId, FirstName, LastName, Honorific, Email, UserId, CurrentCartId);
     }
 }

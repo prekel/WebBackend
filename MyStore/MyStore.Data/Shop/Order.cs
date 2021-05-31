@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using MyStore.Data.Support;
+using MyStore.Dto.Shop;
 
 namespace MyStore.Data.Shop
 {
@@ -18,5 +19,7 @@ namespace MyStore.Data.Shop
         public ICollection<OrderedProduct> OrderedProducts { get; set; }
 
         public Ticket? SupportTicket { get; set; }
+
+        public OrderDto ToDto() => new(OrderId, CustomerId, CreateTimeOffset);
     }
 }

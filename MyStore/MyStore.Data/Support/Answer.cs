@@ -17,5 +17,8 @@ namespace MyStore.Data.Support
 
         public DateTimeOffset SendTimestamp { get; set; }
         public string Text { get; set; }
+
+        public Dto.Support.AnswerDto ToDto() =>
+            new(SupportAnswerId, SupportTicketId, SupportOperatorId, SendTimestamp, Text);
     }
 }

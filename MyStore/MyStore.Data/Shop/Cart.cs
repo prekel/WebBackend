@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+using MyStore.Dto.Shop;
+
 namespace MyStore.Data.Shop
 {
     public record Cart
@@ -20,5 +22,7 @@ namespace MyStore.Data.Shop
 
 
         public List<CartProduct>? CartProducts { get; set; }
+
+        public CartDto ToDto() => new(CartId, IsPublic, OwnerCustomerId);
     }
 }
