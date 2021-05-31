@@ -1,66 +1,44 @@
 ﻿namespace MyStore.Dto.Shop
 
 open System
-open System.ComponentModel.DataAnnotations
 
 type ProductDto =
-    { [<Required>]
-      ProductId: int
-      [<Required>]
-      Name: string
-      [<Required>]
-      Description: string
-      [<Required>]
-      Price: decimal }
+    { productId: int
+      name: string
+      description: string
+      price: decimal }
 
 type CustomerDto =
-    { [<Required>]
-      CustomerId: int
-      [<Required>]
-      FirstName: string
-      LastName: string
-      Honorific: string
-      [<Required>]
-      Email: string
-      UserId: string
-      CurrentCartId: Nullable<int> }
+    { customerId: int
+      firstName: string
+      lastName: string option
+      honorific: string option
+      email: string
+      userId: string option
+      currentCartId: int option }
 
 type CartDto =
-    { [<Required>]
-      CartId: int
-      [<Required>]
-      IsPublic: bool
-      OwnerCustomerId: Nullable<int> }
+    { cartId: int
+      isPublic: bool
+      ownerCustomerId: int option }
 
 type OrderDto =
-    { [<Required>]
-      OrderId: int
-      [<Required>]
-      CustomerId: int
-      [<Required>]
-      CreateTimeOffset: DateTimeOffset }
+    { orderId: int
+      customerId: int
+      createTimeOffset: DateTimeOffset }
 
 type OrderedProductDto =
-    { [<Required>]
-      ProductId: int
-      [<Required>]
-      OrderId: int
-      [<Required>]
-      OrderedPrice: decimal }
+    { productId: int
+      orderId: int
+      orderedPrice: decimal }
 
 
 type CartModel =
-    { [<Required>]
-      Cart: CartDto
-      [<Required>]
-      Products: ProductDto array }
+    { cart: CartDto
+      products: ProductDto array }
 
 type OrderModel =
-    { [<Required>]
-      Order: OrderDto
-      [<Required>]
-      OrderedProducts: OrderedProductDto array }
+    { order: OrderDto
+      orderedProducts: OrderedProductDto array }
 
-type ProductsModel =
-    { [<Required>]
-      Products: ProductDto array }
+type ProductsModel = { products: ProductDto array }

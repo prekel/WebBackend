@@ -41,7 +41,7 @@ namespace React.Sample.Webpack.CoreMvc
             // Initialise ReactJS.NET. Must be before static files.
             app.UseReact(config =>
             {
-                config
+                config.JsonSerializerSettings()
                     .SetReuseJavaScriptEngines(true)
                     .SetLoadBabel(false)
                     .SetLoadReact(false)

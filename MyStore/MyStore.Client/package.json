@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "webpack": "webpack",
     "build": "rimraf ../MyStore.Web/wwwroot/dist && dotnet fable -o ./Content/fsharp && webpack"
   },
   "dependencies": {
