@@ -43,7 +43,7 @@ export class QuestionDto extends Record {
 }
 
 export function QuestionDto$reflection() {
-    return record_type("MyStore.Dto.Support.QuestionDto", [], QuestionDto, () => [["supportQuestionId", int32_type], ["supportTicketId", int32_type], ["sendTimestamp", class_type("System.DateTimeOffset")], ["readTimestamp", option_type(class_type("System.DateTimeOffset"))], ["text", string_type]]);
+    return record_type("MyStore.Dto.Support.QuestionDto", [], QuestionDto, () => [["supportQuestionId", int32_type], ["supportTicketId", int32_type], ["sendTimestamp", class_type("System.DateTimeOffset")], ["readTimestamp", class_type("System.Nullable`1", [class_type("System.DateTimeOffset")])], ["text", string_type]]);
 }
 
 export class TicketDto extends Record {
@@ -58,6 +58,6 @@ export class TicketDto extends Record {
 }
 
 export function TicketDto$reflection() {
-    return record_type("MyStore.Dto.Support.TicketDto", [], TicketDto, () => [["supportTicketId", int32_type], ["customerId", int32_type], ["supportOperatorId", int32_type], ["orderId", option_type(int32_type)], ["createTimestamp", class_type("System.DateTimeOffset")]]);
+    return record_type("MyStore.Dto.Support.TicketDto", [], TicketDto, () => [["supportTicketId", int32_type], ["customerId", int32_type], ["supportOperatorId", int32_type], ["orderId", class_type("System.Nullable`1", [int32_type])], ["createTimestamp", class_type("System.DateTimeOffset")]]);
 }
 

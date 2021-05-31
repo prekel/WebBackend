@@ -1,44 +1,70 @@
 ﻿namespace MyStore.Dto.Shop
 
 open System
+#if FABLE_COMPILER
+open Fable.System.ComponentModel.Annotations
+#else
+open System.ComponentModel.DataAnnotations
+#endif
 
 type ProductDto =
-    { productId: int
+    { [<Required>]
+      productId: int
+      [<Required>]
       name: string
+      [<Required>]
       description: string
+      [<Required>]
       price: decimal }
 
 type CustomerDto =
-    { customerId: int
+    { [<Required>]
+      customerId: int
+      [<Required>]
       firstName: string
-      lastName: string option
-      honorific: string option
+      lastName: string
+      honorific: string
+      [<Required>]
       email: string
-      userId: string option
-      currentCartId: int option }
+      userId: string
+      currentCartId: Nullable<int> }
 
 type CartDto =
-    { cartId: int
+    { [<Required>]
+      cartId: int
+      [<Required>]
       isPublic: bool
-      ownerCustomerId: int option }
+      ownerCustomerId: Nullable<int> }
 
 type OrderDto =
-    { orderId: int
+    { [<Required>]
+      orderId: int
+      [<Required>]
       customerId: int
+      [<Required>]
       createTimeOffset: DateTimeOffset }
 
 type OrderedProductDto =
-    { productId: int
+    { [<Required>]
+      productId: int
+      [<Required>]
       orderId: int
-      orderedPrice: decimal }
+      [<Required>]
+      orderedPrice: double }
 
 
 type CartModel =
-    { cart: CartDto
+    { [<Required>]
+      cart: CartDto
+      [<Required>]
       products: ProductDto array }
 
 type OrderModel =
-    { order: OrderDto
+    { [<Required>]
+      order: OrderDto
+      [<Required>]
       orderedProducts: OrderedProductDto array }
 
-type ProductsModel = { products: ProductDto array }
+type ProductsModel =
+    { [<Required>]
+      products: ProductDto array }

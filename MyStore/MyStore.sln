@@ -10,6 +10,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.Client", "MyStore.C
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.Dto", "MyStore.Dto\MyStore.Dto.fsproj", "{7DEC5F81-F3A3-4295-840B-713F424E7D18}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.System.ComponentModel.Annotations", "Fable.System.ComponentModel.Annotations\Fable.System.ComponentModel.Annotations.fsproj", "{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{7DEC5F81-F3A3-4295-840B-713F424E7D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DEC5F81-F3A3-4295-840B-713F424E7D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DEC5F81-F3A3-4295-840B-713F424E7D18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

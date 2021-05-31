@@ -1,5 +1,5 @@
 import { Record } from "../.fable/fable-library.3.1.11/Types.js";
-import { array_type, bool_type, option_type, record_type, class_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
+import { array_type, float64_type, bool_type, record_type, class_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
 
 export class ProductDto extends Record {
     constructor(productId, name, description, price) {
@@ -29,7 +29,7 @@ export class CustomerDto extends Record {
 }
 
 export function CustomerDto$reflection() {
-    return record_type("MyStore.Dto.Shop.CustomerDto", [], CustomerDto, () => [["customerId", int32_type], ["firstName", string_type], ["lastName", option_type(string_type)], ["honorific", option_type(string_type)], ["email", string_type], ["userId", option_type(string_type)], ["currentCartId", option_type(int32_type)]]);
+    return record_type("MyStore.Dto.Shop.CustomerDto", [], CustomerDto, () => [["customerId", int32_type], ["firstName", string_type], ["lastName", string_type], ["honorific", string_type], ["email", string_type], ["userId", string_type], ["currentCartId", class_type("System.Nullable`1", [int32_type])]]);
 }
 
 export class CartDto extends Record {
@@ -42,7 +42,7 @@ export class CartDto extends Record {
 }
 
 export function CartDto$reflection() {
-    return record_type("MyStore.Dto.Shop.CartDto", [], CartDto, () => [["cartId", int32_type], ["isPublic", bool_type], ["ownerCustomerId", option_type(int32_type)]]);
+    return record_type("MyStore.Dto.Shop.CartDto", [], CartDto, () => [["cartId", int32_type], ["isPublic", bool_type], ["ownerCustomerId", class_type("System.Nullable`1", [int32_type])]]);
 }
 
 export class OrderDto extends Record {
@@ -68,7 +68,7 @@ export class OrderedProductDto extends Record {
 }
 
 export function OrderedProductDto$reflection() {
-    return record_type("MyStore.Dto.Shop.OrderedProductDto", [], OrderedProductDto, () => [["productId", int32_type], ["orderId", int32_type], ["orderedPrice", class_type("System.Decimal")]]);
+    return record_type("MyStore.Dto.Shop.OrderedProductDto", [], OrderedProductDto, () => [["productId", int32_type], ["orderId", int32_type], ["orderedPrice", float64_type]]);
 }
 
 export class CartModel extends Record {

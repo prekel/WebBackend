@@ -2,30 +2,53 @@
 
 open System
 
+#if FABLE_COMPILER
+open Fable.System.ComponentModel.Annotations
+#else
+open System.ComponentModel.DataAnnotations
+#endif
+
 type AnswerDto =
-    { supportAnswerId: int
+    { [<Required>]
+      supportAnswerId: int
+      [<Required>]
       supportTicketId: int
+      [<Required>]
       supportOperatorId: int
+      [<Required>]
       sendTimestamp: DateTimeOffset
+      [<Required>]
       text: string }
 
 type OperatorDto =
-    { supportOperatorId: int
+    { [<Required>]
+      supportOperatorId: int
+      [<Required>]
       firstName: string
+      [<Required>]
       lastName: string
+      [<Required>]
       email: string
       userId: string option }
 
 type QuestionDto =
-    { supportQuestionId: int
+    { [<Required>]
+      supportQuestionId: int
+      [<Required>]
       supportTicketId: int
+      [<Required>]
       sendTimestamp: DateTimeOffset
-      readTimestamp: DateTimeOffset option
+      readTimestamp: Nullable<DateTimeOffset>
+      [<Required>]
       text: string }
 
 type TicketDto =
-    { supportTicketId: int
+    { [<Required>]
+      supportTicketId: int
+      [<Required>]
       customerId: int
+      [<Required>]
       supportOperatorId: int
-      orderId: int option
+      orderId: Nullable<int>
+      [<Required>]
       createTimestamp: DateTimeOffset }

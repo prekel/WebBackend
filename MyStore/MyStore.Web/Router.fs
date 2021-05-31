@@ -60,7 +60,7 @@ let cartHandler (id: int) =
             let cart =
                 { CartDto.cartId = id
                   isPublic = true
-                  ownerCustomerId = Some 34 }
+                  ownerCustomerId = Nullable.op_Implicit 34 }
 
             let model =
                 { CartModel.cart = cart
