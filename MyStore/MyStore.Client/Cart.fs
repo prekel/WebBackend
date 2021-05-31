@@ -6,12 +6,11 @@ open Feliz
 open MyStore.Dto.Shop
 
 [<ReactComponent>]
-let Cart (props: {| cart: CartModel |}) =
-    JS.console.log props
-    JS.console.log props.cart
+let Cart (cart: CartModel) =
+    JS.console.log cart
 
-    let s = sprintf "%A" props
+    let s = sprintf "%A" cart
 
     Html.div [ Html.p s
-               for i in props.cart.products do
+               for i in cart.products do
                    Html.p i.name ]
