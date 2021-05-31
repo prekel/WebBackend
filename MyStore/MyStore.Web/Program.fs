@@ -1,4 +1,4 @@
-module MyStore.MvcFSharp.Program
+module MyStore.Web.Program
 
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting

@@ -1,4 +1,4 @@
-namespace MyStore.MvcFSharp
+namespace MyStore.Web
 
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -13,7 +13,7 @@ open JavaScriptEngineSwitcher.ChakraCore
 open JavaScriptEngineSwitcher.Extensions.MsDependencyInjection
 open React.AspNet
 
-open MyStore.MvcFSharp.Router
+open MyStore.Web.Router
 open MyStore.Data
 open MyStore.Data.Identity
 
