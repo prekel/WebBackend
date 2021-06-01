@@ -3,6 +3,7 @@ namespace MyStore.Web
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
+open Microsoft.AspNetCore.SignalR
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
@@ -14,14 +15,22 @@ open JavaScriptEngineSwitcher.ChakraCore
 open JavaScriptEngineSwitcher.Extensions.MsDependencyInjection
 open React.AspNet
 
+open Fable.SignalR
+open Fable.SignalR.SignalRExtension
+open FSharp.Control.Tasks
+
 open MyStore.Web.Router
 open MyStore.Data
 open MyStore.Data.Identity
+open MyStore.Domain.Chat
+open MyStore.Web.Chat
 
 type Startup(configuration: IConfiguration) =
     // This method gets called by the runtime. Use this method to add services to the container.
     member this.ConfigureServices(services: IServiceCollection) =
         services.AddGiraffe() |> ignore
+
+        services.AddSignalR(SignalRHub.config) |> ignore
 
         services.AddDbContext<Context>
             (fun options ->
@@ -34,13 +43,13 @@ type Startup(configuration: IConfiguration) =
 
         services
             .AddDefaultIdentity<ApplicationUser>(fun options -> options.SignIn.RequireConfirmedAccount <- true)
+            //.AddEntityFrameworkStores<Context>() TODO:
             .AddEntityFrameworkStores<Context>()
+            //.AddEntityFrameworkStores<Context>() TODO:
         |> ignore
 
 
-        services
-            .AddAuthentication()
-        |> ignore
+        services.AddAuthentication() |> ignore
 
         // Add framework services. TODO?
         services
@@ -64,6 +73,8 @@ type Startup(configuration: IConfiguration) =
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
+
+
         // Initialise ReactJS.NET. Must be before static files.
         app.UseReact
             (fun config ->
@@ -89,6 +100,8 @@ type Startup(configuration: IConfiguration) =
         app.UseRouting() |> ignore
 
         app.UseAuthentication() |> ignore
+
+        app.UseSignalR(SignalRHub.config) |> ignore
 
         app.UseAuthorization() |> ignore
 

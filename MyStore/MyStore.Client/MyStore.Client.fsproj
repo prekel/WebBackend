@@ -10,8 +10,10 @@
         <Compile Include="Carts.fs" />
         <Compile Include="Products.fs" />
         <Compile Include="Product.fs" />
+        <Compile Include="Chat.fs" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Fable.SignalR.Feliz" Version="0.11.4" />
         <PackageReference Include="Feliz" Version="1.45.0" />
         <PackageReference Include="Feliz.Router" Version="3.8.0" />
         <PackageReference Include="Fable.DateFunctions" Version="3.7.0" />

@@ -5,9 +5,9 @@ import { Product_ToDomain_Z6B097A11, Product$reflection } from "./MyStore.Domain
 import { map } from "./.fable/fable-library.3.1.11/Array.js";
 import { extra, acceptJson, baseUrl, pageToOffset, itemsPerPage, offsetToPage } from "./Extensions.js";
 import { Cmd_OfPromise_either, Cmd_ofSub, Cmd_none } from "./.fable/Fable.Elmish.3.1.0/cmd.fs.js";
-import { PromiseBuilder__Delay_62FBFDE1, PromiseBuilder__Run_212F1D4B } from "./.fable/Fable.Promise.2.0.0/Promise.fs.js";
+import { PromiseBuilder__Delay_62FBFDE1, PromiseBuilder__Run_212F1D4B } from "./.fable/Fable.Promise.2.1.0/Promise.fs.js";
 import { interpolate, toText } from "./.fable/fable-library.3.1.11/String.js";
-import { promise } from "./.fable/Fable.Promise.2.0.0/PromiseImpl.fs.js";
+import { promise } from "./.fable/Fable.Promise.2.1.0/PromiseImpl.fs.js";
 import { Fetch_get_5760677E } from "./.fable/Thoth.Fetch.2.0.0/Fetch.fs.js";
 import { CaseStrategy } from "./.fable/Thoth.Json.4.0.0/Types.fs.js";
 import { uncurry } from "./.fable/fable-library.3.1.11/Util.js";

@@ -94,4 +94,5 @@ let endpoints1 =
                 "/Product"
                 [ GET [ routef "/%i" Product.productById
                         route "/" Product.products ]
-                  POST [ routef "/%i/ToggleToCart" Product.toggleToCart ] ] ] ]
+                  POST [ routef "/%i/ToggleToCart" Product.toggleToCart ] ] ]
+      subRoute "/Support" [ subRoute "/Chat" [ GET [ route "/" Chat.chatPage ] ] ] ]

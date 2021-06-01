@@ -10,6 +10,7 @@
         <Compile Include="SimpleTypes.fs" />
         <Compile Include="Shop.fs" />
         <Compile Include="Support.fs" />
+        <Compile Include="Chat.fs" />
     </ItemGroup>
 
     <ItemGroup>

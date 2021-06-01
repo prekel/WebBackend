@@ -3,9 +3,9 @@ import { obj_type, record_type, bool_type, union_type, class_type, string_type, 
 import { ProductModel$reflection } from "./MyStore.Domain/Dto/Shop.js";
 import { Product_ToDomain_Z6B097A11, Product$reflection } from "./MyStore.Domain/Shop.js";
 import { Cmd_OfPromise_either, Cmd_ofSub, Cmd_none } from "./.fable/Fable.Elmish.3.1.0/cmd.fs.js";
-import { PromiseBuilder__Delay_62FBFDE1, PromiseBuilder__Run_212F1D4B } from "./.fable/Fable.Promise.2.0.0/Promise.fs.js";
+import { PromiseBuilder__Delay_62FBFDE1, PromiseBuilder__Run_212F1D4B } from "./.fable/Fable.Promise.2.1.0/Promise.fs.js";
 import { interpolate, toText } from "./.fable/fable-library.3.1.11/String.js";
-import { promise } from "./.fable/Fable.Promise.2.0.0/PromiseImpl.fs.js";
+import { promise } from "./.fable/Fable.Promise.2.1.0/PromiseImpl.fs.js";
 import { Fetch_get_5760677E } from "./.fable/Thoth.Fetch.2.0.0/Fetch.fs.js";
 import { extra, acceptJson, baseUrl } from "./Extensions.js";
 import { CaseStrategy } from "./.fable/Thoth.Json.4.0.0/Types.fs.js";
@@ -83,13 +83,12 @@ export function update(msg, state) {
 }
 
 export function Product(productModel) {
-    let value_9;
+    let value_7;
     const patternInput = useFeliz_React__React_useElmish_Static_645B1FB7(() => init(productModel, void 0), (msg, state) => update(msg, state), []);
     const state_1 = patternInput[0];
     const dispatch = patternInput[1];
     const patternInput_1 = useFeliz_React__React_useState_Static_1505(productModel.product.productId);
     const children = ofArray([createElement("input", {
-        defaultValue: productModel.product.productId,
         onChange: (ev) => {
             patternInput_1[1](parse(ev.target.value, 511, false, 32));
         },
@@ -103,8 +102,8 @@ export function Product(productModel) {
         onClick: (_arg2) => {
             dispatch(new Msg(3));
         },
-    }), (value_9 = toText(interpolate("%A%P()", [state_1])), createElement("p", {
-        children: [value_9],
+    }), (value_7 = toText(interpolate("%A%P()", [state_1])), createElement("p", {
+        children: [value_7],
     }))]);
     return createElement("div", {
         children: Interop_reactApi.Children.toArray(Array.from(children)),
