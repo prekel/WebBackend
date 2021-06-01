@@ -101,9 +101,9 @@ type Startup(configuration: IConfiguration) =
 
         app.UseAuthentication() |> ignore
 
-        app.UseSignalR(SignalRHub.config) |> ignore
-
         app.UseAuthorization() |> ignore
+
+        app.UseSignalR(SignalRHub.config) |> ignore
 
         app.UseEndpoints
             (fun endpoints ->
