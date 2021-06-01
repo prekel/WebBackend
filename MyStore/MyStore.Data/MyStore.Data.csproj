@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MyStore.Domain\MyStore.Domain.fsproj" />
       <ProjectReference Include="..\MyStore.Dto\MyStore.Dto.fsproj" />
     </ItemGroup>
 

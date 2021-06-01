@@ -1,6 +1,6 @@
 import { Record, Union } from "./.fable/fable-library.3.1.11/Types.js";
 import { obj_type, record_type, array_type, union_type, class_type, string_type, bool_type, int32_type } from "./.fable/fable-library.3.1.11/Reflection.js";
-import { CartsModel$reflection } from "./MyStore.Dto/Shop.js";
+import { CartsModel$reflection } from "./MyStore.Domain/Dto/Shop.js";
 import { Cart_ToDomain_268DEFC0, Cart$reflection } from "./MyStore.Domain/Shop.js";
 import { map } from "./.fable/fable-library.3.1.11/Array.js";
 import { extra, acceptJson, baseUrl, pageToOffset, itemsPerPage, offsetToPage } from "./Extensions.js";

@@ -2,7 +2,7 @@ import { Record } from "../.fable/fable-library.3.1.11/Types.js";
 import { bool_type, option_type, record_type, class_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
 import { toNumber } from "../.fable/fable-library.3.1.11/Decimal.js";
 import Decimal from "../.fable/fable-library.3.1.11/Decimal.js";
-import { OrderDto, CartDto, CustomerDto, ProductDto } from "../MyStore.Dto/Shop.js";
+import { OrderDto, CartDto, CustomerDto, ProductDto } from "./Dto/Shop.js";
 import { toNullable, map, ofNullable } from "../.fable/fable-library.3.1.11/Option.js";
 
 export class Product extends Record {

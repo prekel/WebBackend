@@ -1,7 +1,7 @@
 import { Record } from "../.fable/fable-library.3.1.11/Types.js";
 import { class_type, record_type, option_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
 import { toNullable, ofNullable, map } from "../.fable/fable-library.3.1.11/Option.js";
-import { TicketDto, QuestionDto, AnswerDto, OperatorDto } from "../MyStore.Dto/Support.js";
+import { TicketDto, QuestionDto, AnswerDto, OperatorDto } from "./Dto/Support.js";
 
 export class Operator extends Record {
     constructor(SupportOperatorId, FirstName, LastName, Email, UserId) {

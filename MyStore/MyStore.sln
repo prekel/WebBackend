@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Data", "MyStore.Dat
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.Client", "MyStore.Client\MyStore.Client.fsproj", "{519867F8-E95F-44F8-B0DE-D0BD63B40A2C}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MyStore.Dto", "MyStore.Dto\MyStore.Dto.fsproj", "{7DEC5F81-F3A3-4295-840B-713F424E7D18}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fable.System.ComponentModel.Annotations", "Fable.System.ComponentModel.Annotations\Fable.System.ComponentModel.Annotations.fsproj", "{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}"
 EndProject
 Global
@@ -34,10 +32,6 @@ Global
 		{519867F8-E95F-44F8-B0DE-D0BD63B40A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{519867F8-E95F-44F8-B0DE-D0BD63B40A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{519867F8-E95F-44F8-B0DE-D0BD63B40A2C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DEC5F81-F3A3-4295-840B-713F424E7D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DEC5F81-F3A3-4295-840B-713F424E7D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DEC5F81-F3A3-4295-840B-713F424E7D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DEC5F81-F3A3-4295-840B-713F424E7D18}.Release|Any CPU.Build.0 = Release|Any CPU
 		{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52AAC2E3-6DCF-428F-B5BF-937627D7C67B}.Release|Any CPU.ActiveCfg = Release|Any CPU
