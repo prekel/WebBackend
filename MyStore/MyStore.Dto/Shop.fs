@@ -68,3 +68,16 @@ type OrderModel =
 type ProductsModel =
     { [<Required>]
       products: ProductDto array }
+
+type CartsQuery =
+    { [<Required>]
+      isPublic: bool
+      [<Required>]
+      count: int
+      [<Required>]
+      offset: int }
+
+type CartsModel =
+    { [<Required>]
+      carts: CartDto array
+      query: CartsQuery }

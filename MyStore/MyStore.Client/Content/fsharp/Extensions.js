@@ -40,3 +40,17 @@ export const extra = (() => {
 
 export const acceptJson = singleton(new Types_HttpRequestHeaders(0, "application/json"));
 
+export function baseUrl() {
+    return window.location.origin;
+}
+
+export const itemsPerPage = 10;
+
+export function pageToOffset(page) {
+    return (page - 1) * itemsPerPage;
+}
+
+export function offsetToPage(offset) {
+    return (~(~(offset / itemsPerPage))) + 1;
+}
+

@@ -10,6 +10,7 @@ open MyStore.Domain.SimpleTypes
 open Thoth.Fetch
 open Thoth.Json
 open Feliz.UseElmish
+open Feliz.Router
 
 open MyStore.Dto.Shop
 open MyStore.Domain.Shop
@@ -30,8 +31,7 @@ let init cartModel () =
 
 let getCartById (id: int) =
     promise {
-        let url =
-            $"https://localhost:5001/Shop/Cart/%i{id}"
+        let url = $"%s{baseUrl ()}/Shop/Cart/%i{id}"
 
         let! model = Fetch.get (url, caseStrategy = CamelCase, extra = extra, headers = acceptJson)
         return Fetched model
@@ -42,7 +42,7 @@ let update msg state =
     | Fetch cartId -> state, Cmd.OfPromise.either getCartById %cartId id Failed
     | Fetched cartModel ->
         let cart, products = modelToDomain cartModel
-        { Cart = cart; Products = products }, Cmd.none
+        { Cart = cart; Products = products }, Cmd.navigatePath $"/Shop/Cart/%i{%cart.CartId}"
     | Failed exn ->
         JS.console.error exn
         state, Cmd.none

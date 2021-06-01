@@ -106,3 +106,28 @@ export function ProductsModel$reflection() {
     return record_type("MyStore.Dto.Shop.ProductsModel", [], ProductsModel, () => [["products", array_type(ProductDto$reflection())]]);
 }
 
+export class CartsQuery extends Record {
+    constructor(isPublic, count, offset) {
+        super();
+        this.isPublic = isPublic;
+        this.count = (count | 0);
+        this.offset = (offset | 0);
+    }
+}
+
+export function CartsQuery$reflection() {
+    return record_type("MyStore.Dto.Shop.CartsQuery", [], CartsQuery, () => [["isPublic", bool_type], ["count", int32_type], ["offset", int32_type]]);
+}
+
+export class CartsModel extends Record {
+    constructor(carts, query) {
+        super();
+        this.carts = carts;
+        this.query = query;
+    }
+}
+
+export function CartsModel$reflection() {
+    return record_type("MyStore.Dto.Shop.CartsModel", [], CartsModel, () => [["carts", array_type(CartDto$reflection())], ["query", CartsQuery$reflection()]]);
+}
+

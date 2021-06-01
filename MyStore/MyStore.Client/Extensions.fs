@@ -64,3 +64,10 @@ let extra : ExtraCoders =
 
 let acceptJson =
     [ HttpRequestHeaders.Accept "application/json" ]
+
+let baseUrl () = Browser.Dom.window.location.origin
+
+let itemsPerPage = 10
+
+let pageToOffset page = (page - 1) * itemsPerPage
+let offsetToPage offset = offset / itemsPerPage + 1

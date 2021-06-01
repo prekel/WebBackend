@@ -29,18 +29,9 @@ open MyStore.Data.Identity
 open MyStore.Web.Models
 open MyStore.Dto.Shop
 open MyStore.Domain.Shop
+open MyStore.Web.Core
 
-let razorOrJson viewName model viewData modelState : HttpHandler =
-    fun next ctx ->
-        if ctx.Request.GetTypedHeaders().Accept
-           |> Seq.exists (fun h -> h.ToString() = MediaTypeNames.Application.Json) then
-            match model with
-            | Some model -> json model next ctx
-            | None -> json null next ctx
-        else
-            razorHtmlView viewName model viewData modelState next ctx
-
-let cartHandler (id: int) : HttpHandler =
+let cartById (id: int) : HttpHandler =
     fun (next: HttpFunc) (ctx: HttpContext) ->
         task {
             let db = ctx.GetService<Context>()
@@ -50,31 +41,33 @@ let cartHandler (id: int) : HttpHandler =
 
             let! user = userManager.GetUserAsync(ctx.User)
 
-            let cartE =
+            let! cartE =
                 query {
                     for i in db.Carts.Include(fun w -> w.Products) do
                         where (id = i.CartId)
-                        head
                 }
+                |> fun qr -> qr.SingleAsync()
 
             let cartDto = cartE.ToDto()
             let cart = Cart.ToDomain cartDto
 
-            let isAccessed =
+            let! isAccessed =
                 match cart.OwnerCustomerId, cart.IsPublic with
                 | Some customerId, false ->
                     let customerId = %customerId
 
-                    let ownerUserId =
-                        query {
-                            for i in db.Customers do
-                                where (i.CustomerId = customerId)
-                                select i.UserId
-                                head
-                        }
+                    task {
+                        let! ownerUserId =
+                            query {
+                                for i in db.Customers do
+                                    where (i.CustomerId = customerId)
+                                    select i.UserId
+                            }
+                            |> fun a -> a.SingleAsync()
 
-                    user.Id = ownerUserId
-                | _, isPublic -> isPublic
+                        return user.Id = ownerUserId
+                    }
+                | _, isPublic -> Task.FromResult(isPublic)
 
             if isAccessed then
                 let productsDto =
@@ -86,8 +79,60 @@ let cartHandler (id: int) : HttpHandler =
                     { CartModel.cart = cartDto
                       products = productsDto }
 
-                return! razorOrJson "Shop/Cart" (Some model) None None next ctx
+                return! razorOrJson "Cart/Cart" (Some model) None None next ctx
             else
                 return! RequestErrors.FORBIDDEN "Forbidden" next ctx
 
+        }
+
+[<CLIMutable>]
+type private CartsQueryOption =
+    { isPublic: bool option
+      count: int option
+      offset: int option }
+
+let carts : HttpHandler =
+    fun (next: HttpFunc) (ctx: HttpContext) ->
+        task {
+            let db = ctx.GetService<Context>()
+
+            let userManager =
+                ctx.GetService<UserManager<ApplicationUser>>()
+
+            let! user = userManager.GetUserAsync(ctx.User)
+
+            let q = ctx.BindQueryString<CartsQueryOption>()
+
+            let q =
+                { CartsQuery.isPublic = q.isPublic |> Option.defaultValue false
+                  count = q.count |> Option.defaultValue 15
+                  offset = q.offset |> Option.defaultValue 0 }
+
+            let! cartsE =
+                if q.isPublic then
+                    query {
+                        for i in db.Carts do
+                            where (i.IsPublic = true)
+                            skip q.offset
+                            take q.count
+                            select i
+                    }
+                    |> fun a -> a.ToArrayAsync()
+                else
+                    query {
+                        for i in db.Carts.Include(fun i -> i.OwnerCustomer) do
+                            where (i.OwnerCustomer.UserId = user.Id)
+                            skip q.offset
+                            take q.count
+                            select i
+                    }
+                    |> fun a -> a.ToArrayAsync()
+
+            let cartsDto = cartsE |> Array.map (fun c -> c.ToDto())
+
+            let model =
+                { CartsModel.carts = cartsDto
+                  query = q }
+
+            return! razorOrJson "Cart/Index" (Some model) None None next ctx
         }
