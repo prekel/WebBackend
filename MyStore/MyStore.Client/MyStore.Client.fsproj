@@ -3,8 +3,8 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Counter1.fs" />
         <Compile Include="Extensions.fs" />
+        <Compile Include="Counter1.fs" />
         <Compile Include="Components.fs" />
         <Compile Include="Cart.fs" />
     </ItemGroup>

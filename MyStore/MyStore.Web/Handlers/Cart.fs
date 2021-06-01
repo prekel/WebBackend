@@ -1,6 +1,7 @@
 ﻿module MyStore.Web.Handlers.Cart
 
 open System
+open System.Net.Mime
 open System.Collections.Generic
 open System.Diagnostics
 open System.IO
@@ -15,17 +16,19 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.EntityFrameworkCore
+open Microsoft.AspNetCore.Identity
 
 open FSharp.Control.Tasks
-
-open System.Net.Mime
-
+open FSharp.UMX
 open Giraffe
 open Giraffe.EndpointRouting
 open Giraffe.Razor
+
 open MyStore.Data
+open MyStore.Data.Identity
 open MyStore.Web.Models
 open MyStore.Dto.Shop
+open MyStore.Domain.Shop
 
 let razorOrJson viewName model viewData modelState : HttpHandler =
     fun next ctx ->
@@ -37,10 +40,15 @@ let razorOrJson viewName model viewData modelState : HttpHandler =
         else
             razorHtmlView viewName model viewData modelState next ctx
 
-let cartHandler (id: int) =
+let cartHandler (id: int) : HttpHandler =
     fun (next: HttpFunc) (ctx: HttpContext) ->
         task {
             let db = ctx.GetService<Context>()
+
+            let userManager =
+                ctx.GetService<UserManager<ApplicationUser>>()
+
+            let! user = userManager.GetUserAsync(ctx.User)
 
             let cartE =
                 query {
@@ -49,16 +57,37 @@ let cartHandler (id: int) =
                         head
                 }
 
-            let cart = cartE.ToDto()
+            let cartDto = cartE.ToDto()
+            let cart = Cart.ToDomain cartDto
 
-            let products =
-                cartE.Products
-                |> Seq.map (fun p -> p.ToDto())
-                |> Seq.toArray
+            let isAccessed =
+                match cart.OwnerCustomerId, cart.IsPublic with
+                | Some customerId, false ->
+                    let customerId = %customerId
 
-            let model =
-                { CartModel.cart = cart
-                  products = products }
+                    let ownerUserId =
+                        query {
+                            for i in db.Customers do
+                                where (i.CustomerId = customerId)
+                                select i.UserId
+                                head
+                        }
 
-            return! razorOrJson "Shop/Cart" (Some model) None None next ctx
+                    user.Id = ownerUserId
+                | _, isPublic -> isPublic
+
+            if isAccessed then
+                let productsDto =
+                    cartE.Products
+                    |> Seq.map (fun p -> p.ToDto())
+                    |> Seq.toArray
+
+                let model =
+                    { CartModel.cart = cartDto
+                      products = productsDto }
+
+                return! razorOrJson "Shop/Cart" (Some model) None None next ctx
+            else
+                return! RequestErrors.FORBIDDEN "Forbidden" next ctx
+
         }
