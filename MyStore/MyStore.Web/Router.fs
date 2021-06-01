@@ -82,5 +82,11 @@ let endpoints1 =
           [ GET [ route "/" (indexHandler >=> antiforgeryTokenHandler)
                   route "/Privacy" privacyHandler
                   route "/Error" errorHandler ] ]
-      subRoute "/Shop" [ subRoute "/Cart" [ GET [ routef "/%i" cartById
-                                                  route "/" carts ] ] ] ]
+      subRoute
+          "/Shop"
+          [ subRoute
+                "/Cart"
+                [ GET [ routef "/%i" cartById
+                        route "/" carts
+                        route "/Current" currentCart ]
+                  POST [ routef "/%i/SetCurrentCart" setCurrentCart ] ] ] ]

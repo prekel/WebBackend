@@ -31,7 +31,66 @@ open MyStore.Dto.Shop
 open MyStore.Domain.Shop
 open MyStore.Web.Core
 
-let cartById (id: int) : HttpHandler =
+let private cartStuff (db: Context) (user: ApplicationUser) cartId =
+    task {
+        let! cartE =
+            query {
+                for i in db.Carts.Include(fun w -> w.Products) do
+                    where (cartId = i.CartId)
+            }
+            |> fun qr -> qr.SingleAsync()
+
+        let cartDto = cartE.ToDto()
+        let cart = Cart.ToDomain cartDto
+
+        let! isAccessed =
+            match cart.OwnerCustomerId with
+            | Some customerId ->
+                task {
+                    let customerId = %customerId
+
+                    let! owner =
+                        query {
+                            for i in db.Customers do
+                                where (i.CustomerId = customerId)
+                                select i
+                        }
+                        |> fun a -> a.SingleAsync()
+
+                    let isAccessed =
+                        if cart.IsPublic then
+                            true
+                        else
+                            user.Id = owner.UserId
+
+
+                    return isAccessed
+                }
+            | _ -> Task.FromResult cart.IsPublic
+
+        let! isCurrent =
+            task {
+                let! userCustomerCurrentCartId =
+                    query {
+                        for i in db.Customers do
+                            where (i.UserId = user.Id)
+                            select i.CurrentCartId
+                    }
+                    |> fun a -> a.SingleAsync()
+
+                let isCurrent =
+                    userCustomerCurrentCartId
+                    |> Option.ofNullable
+                    |> Option.map ((=) cartE.CartId)
+                    |> Option.defaultValue false
+
+                return isCurrent
+            }
+
+        return cartE, cartDto, cart, isAccessed, isCurrent
+    }
+
+let cartById (cartId: int) : HttpHandler =
     fun (next: HttpFunc) (ctx: HttpContext) ->
         task {
             let db = ctx.GetService<Context>()
@@ -41,33 +100,7 @@ let cartById (id: int) : HttpHandler =
 
             let! user = userManager.GetUserAsync(ctx.User)
 
-            let! cartE =
-                query {
-                    for i in db.Carts.Include(fun w -> w.Products) do
-                        where (id = i.CartId)
-                }
-                |> fun qr -> qr.SingleAsync()
-
-            let cartDto = cartE.ToDto()
-            let cart = Cart.ToDomain cartDto
-
-            let! isAccessed =
-                match cart.OwnerCustomerId, cart.IsPublic with
-                | Some customerId, false ->
-                    let customerId = %customerId
-
-                    task {
-                        let! ownerUserId =
-                            query {
-                                for i in db.Customers do
-                                    where (i.CustomerId = customerId)
-                                    select i.UserId
-                            }
-                            |> fun a -> a.SingleAsync()
-
-                        return user.Id = ownerUserId
-                    }
-                | _, isPublic -> Task.FromResult(isPublic)
+            let! cartE, cartDto, cart, isAccessed, isCurrent = cartStuff db user cartId
 
             if isAccessed then
                 let productsDto =
@@ -77,7 +110,8 @@ let cartById (id: int) : HttpHandler =
 
                 let model =
                     { CartModel.cart = cartDto
-                      products = productsDto }
+                      products = productsDto
+                      isCurrent = isCurrent }
 
                 return! razorOrJson "Cart/Cart" (Some model) None None next ctx
             else
@@ -86,7 +120,7 @@ let cartById (id: int) : HttpHandler =
         }
 
 [<CLIMutable>]
-type private CartsQueryOption =
+type CartsQueryOption =
     { isPublic: bool option
       count: int option
       offset: int option }
@@ -135,4 +169,78 @@ let carts : HttpHandler =
                   query = q }
 
             return! razorOrJson "Cart/Index" (Some model) None None next ctx
+        }
+
+[<CLIMutable>]
+type SetCurrentCartQueryOption = { setCurrent: bool option }
+
+let setCurrentCart cartId : HttpHandler =
+    fun (next: HttpFunc) (ctx: HttpContext) ->
+        task {
+            let db = ctx.GetService<Context>()
+
+            let userManager =
+                ctx.GetService<UserManager<ApplicationUser>>()
+
+            let! user = userManager.GetUserAsync(ctx.User)
+
+            let q =
+                ctx.BindQueryString<SetCurrentCartQueryOption>()
+
+            let! _, _, _, isAccessed, isCurrent = cartStuff db user cartId
+
+            let q =
+                { SetCurrentCartQuery.setCurrent =
+                      q.setCurrent
+                      |> Option.defaultValue (not isCurrent) }
+
+            if isAccessed then
+                let! customer =
+                    query {
+                        for i in db.Customers do
+                            where (i.UserId = user.Id)
+                            select i
+                    }
+                    |> fun qr -> qr.SingleAsync()
+
+                if q.setCurrent then
+                    customer.CurrentCartId <- cartId
+                else
+                    customer.CurrentCartId <- Nullable()
+
+                let! _ = db.SaveChangesAsync()
+
+                return! json q next ctx
+            else
+                return! RequestErrors.FORBIDDEN "Forbidden" next ctx
+        }
+
+let currentCart : HttpHandler =
+    fun next ctx ->
+        task {
+            let db = ctx.GetService<Context>()
+
+            let userManager =
+                ctx.GetService<UserManager<ApplicationUser>>()
+
+            let! user = userManager.GetUserAsync(ctx.User)
+
+            let! customer =
+                query {
+                    for i in db.Customers do
+                        where (i.UserId = user.Id)
+                        select i
+                }
+                |> fun qr -> qr.SingleAsync()
+
+            match customer.CurrentCartId |> Option.ofNullable with
+            | Some cartId -> return! redirectTo false $"/Shop/Cart/%i{cartId}" next ctx
+            | None ->
+                let cart =
+                    Shop.Cart(IsPublic = false, OwnerCustomerId = customer.CustomerId)
+
+                let! _ = db.Carts.AddAsync(cart)
+                customer.CurrentCart <- cart
+                let! _ = db.SaveChangesAsync()
+                return! redirectTo false $"/Shop/Cart/%i{cart.CartId}" next ctx
         }

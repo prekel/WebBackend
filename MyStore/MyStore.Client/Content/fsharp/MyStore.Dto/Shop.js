@@ -72,15 +72,16 @@ export function OrderedProductDto$reflection() {
 }
 
 export class CartModel extends Record {
-    constructor(cart, products) {
+    constructor(cart, products, isCurrent) {
         super();
         this.cart = cart;
         this.products = products;
+        this.isCurrent = isCurrent;
     }
 }
 
 export function CartModel$reflection() {
-    return record_type("MyStore.Dto.Shop.CartModel", [], CartModel, () => [["cart", CartDto$reflection()], ["products", array_type(ProductDto$reflection())]]);
+    return record_type("MyStore.Dto.Shop.CartModel", [], CartModel, () => [["cart", CartDto$reflection()], ["products", array_type(ProductDto$reflection())], ["isCurrent", bool_type]]);
 }
 
 export class OrderModel extends Record {
@@ -129,5 +130,16 @@ export class CartsModel extends Record {
 
 export function CartsModel$reflection() {
     return record_type("MyStore.Dto.Shop.CartsModel", [], CartsModel, () => [["carts", array_type(CartDto$reflection())], ["query", CartsQuery$reflection()]]);
+}
+
+export class SetCurrentCartQuery extends Record {
+    constructor(setCurrent) {
+        super();
+        this.setCurrent = setCurrent;
+    }
+}
+
+export function SetCurrentCartQuery$reflection() {
+    return record_type("MyStore.Dto.Shop.SetCurrentCartQuery", [], SetCurrentCartQuery, () => [["setCurrent", bool_type]]);
 }
 

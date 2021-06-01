@@ -57,7 +57,9 @@ type CartModel =
     { [<Required>]
       cart: CartDto
       [<Required>]
-      products: ProductDto array }
+      products: ProductDto array
+      [<Required>]
+      isCurrent: bool }
 
 type OrderModel =
     { [<Required>]
@@ -81,3 +83,5 @@ type CartsModel =
     { [<Required>]
       carts: CartDto array
       query: CartsQuery }
+
+type SetCurrentCartQuery = { setCurrent: bool }
