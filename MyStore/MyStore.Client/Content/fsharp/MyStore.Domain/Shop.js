@@ -28,28 +28,27 @@ export function Product__FromDomain(this$) {
 }
 
 export class Customer extends Record {
-    constructor(CustomerId, FirstName, LastName, Honorific, Email, UserId, CurrentCartId) {
+    constructor(CustomerId, FirstName, LastName, Honorific, Email, CurrentCartId) {
         super();
         this.CustomerId = (CustomerId | 0);
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.Honorific = Honorific;
         this.Email = Email;
-        this.UserId = UserId;
         this.CurrentCartId = CurrentCartId;
     }
 }
 
 export function Customer$reflection() {
-    return record_type("MyStore.Domain.Shop.Customer", [], Customer, () => [["CustomerId", int32_type], ["FirstName", string_type], ["LastName", option_type(string_type)], ["Honorific", option_type(string_type)], ["Email", string_type], ["UserId", option_type(string_type)], ["CurrentCartId", option_type(int32_type)]]);
+    return record_type("MyStore.Domain.Shop.Customer", [], Customer, () => [["CustomerId", int32_type], ["FirstName", string_type], ["LastName", option_type(string_type)], ["Honorific", option_type(string_type)], ["Email", string_type], ["CurrentCartId", option_type(int32_type)]]);
 }
 
 export function Customer_ToDomain_Z54B26620(dto) {
-    return new Customer(dto.customerId, dto.firstName, ofNullable(dto.lastName), ofNullable(dto.honorific), dto.email, map((x_6) => x_6, ofNullable(dto.userId)), map((x_10) => x_10, ofNullable(dto.currentCartId)));
+    return new Customer(dto.customerId, dto.firstName, ofNullable(dto.lastName), ofNullable(dto.honorific), dto.email, map((x_6) => x_6, ofNullable(dto.currentCartId)));
 }
 
 export function Customer__FromDomain(this$) {
-    return new CustomerDto(this$.CustomerId, this$.FirstName, toNullable(this$.LastName), toNullable(this$.Honorific), this$.Email, toNullable(map((x_6) => x_6, this$.UserId)), toNullable(map((x_10) => x_10, this$.CurrentCartId)));
+    return new CustomerDto(this$.CustomerId, this$.FirstName, toNullable(this$.LastName), toNullable(this$.Honorific), this$.Email, toNullable(map((x_6) => x_6, this$.CurrentCartId)));
 }
 
 export class Cart extends Record {

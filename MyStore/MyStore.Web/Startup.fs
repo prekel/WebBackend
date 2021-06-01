@@ -99,6 +99,5 @@ type Startup(configuration: IConfiguration) =
                 //endpoints.MapControllerRoute(name = "default", pattern = "{controller=Home}/{action=Index}/{id?}")
                 //|> ignore
 
-                endpoints.MapRazorPages() |> ignore
-                )
+                endpoints.MapRazorPages() |> ignore)
         |> ignore

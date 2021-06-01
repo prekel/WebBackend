@@ -11,13 +11,9 @@ namespace MyStore.Data.Support
         public string LastName { get; set; }
         public string Email { get; set; }
 
-        public string? UserId { get; set; }
-
         public ApplicationUser? User { get; set; }
 
-
         public ICollection<Answer> SupportAnswers { get; set; }
-
 
         public ICollection<Ticket> SupportTickets { get; set; }
     }

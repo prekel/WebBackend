@@ -26,7 +26,6 @@ type CustomerDto =
       honorific: string
       [<Required>]
       email: string
-      userId: string
       currentCartId: Nullable<int> }
 
 type CartDto =

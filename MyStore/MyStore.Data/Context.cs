@@ -36,6 +36,19 @@ namespace MyStore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationUser>(eb =>
+            {
+                eb.HasOne(user => user.Customer)
+                    .WithOne(customer => customer.User)
+                    .HasForeignKey<ApplicationUser>(user => user.CustomerId)
+                    .IsRequired(false);
+                eb.HasOne(user => user.Operator)
+                    .WithOne(operator1 => operator1.User)
+                    .HasForeignKey<ApplicationUser>(user => user.OperatorId)
+                    .IsRequired(false);
+            });
+
             modelBuilder.Entity<Customer>(
                 e =>
                 {
@@ -51,10 +64,6 @@ namespace MyStore.Data
                     e.Property(entity => entity.Email)
                         .HasMaxLength(60)
                         .IsRequired();
-                    e.HasOne(entity => entity.User)
-                        .WithOne()
-                        .HasForeignKey<Customer>(entity => entity.UserId)
-                        .IsRequired(false);
                     e.HasOne(entity => entity.CurrentCart)
                         .WithMany(cart => cart!.CurrentCustomers)
                         .HasForeignKey(customer => customer.CurrentCartId)
@@ -172,10 +181,6 @@ namespace MyStore.Data
                     b.Property(op => op.Email)
                         .HasMaxLength(60)
                         .IsRequired();
-                    b.HasOne(entity => entity.User)
-                        .WithOne()
-                        .HasForeignKey<Operator>(entity => entity.UserId)
-                        .IsRequired(false);
                 });
 
             modelBuilder.Entity<Question>(b =>

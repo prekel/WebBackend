@@ -31,6 +31,21 @@ open MyStore.Dto.Shop
 open MyStore.Domain.Shop
 open MyStore.Web.Core
 
+let customerStuff (db: Context) (user: ApplicationUser) =
+    task {
+        let! userCustomerE =
+            query {
+                for i in db.Customers do
+                    where (i.CustomerId = user.CustomerId.Value)
+                    select i
+            }
+            |> fun qr -> qr.SingleAsync()
+
+        let userCustomerDto = userCustomerE.ToDto()
+        let userCustomer = Customer.ToDomain userCustomerDto
+        return userCustomerE, userCustomerDto, userCustomer
+    }
+
 let private cartStuff (db: Context) (user: ApplicationUser) cartId =
     task {
         let! cartE =
@@ -43,51 +58,19 @@ let private cartStuff (db: Context) (user: ApplicationUser) cartId =
         let cartDto = cartE.ToDto()
         let cart = Cart.ToDomain cartDto
 
-        let! isAccessed =
+        let! userCustomerE, userCustomerDto, userCustomer = customerStuff db user
+
+        let isAccessed =
             match cart.OwnerCustomerId with
-            | Some customerId ->
-                task {
-                    let customerId = %customerId
+            | Some customerId -> customerId = userCustomer.CustomerId
+            | _ -> cart.IsPublic
 
-                    let! owner =
-                        query {
-                            for i in db.Customers do
-                                where (i.CustomerId = customerId)
-                                select i
-                        }
-                        |> fun a -> a.SingleAsync()
+        let isCurrent =
+            userCustomer.CurrentCartId
+            |> Option.map ((=) cart.CartId)
+            |> Option.defaultValue false
 
-                    let isAccessed =
-                        if cart.IsPublic then
-                            true
-                        else
-                            user.Id = owner.UserId
-
-
-                    return isAccessed
-                }
-            | _ -> Task.FromResult cart.IsPublic
-
-        let! isCurrent =
-            task {
-                let! userCustomerCurrentCartId =
-                    query {
-                        for i in db.Customers do
-                            where (i.UserId = user.Id)
-                            select i.CurrentCartId
-                    }
-                    |> fun a -> a.SingleAsync()
-
-                let isCurrent =
-                    userCustomerCurrentCartId
-                    |> Option.ofNullable
-                    |> Option.map ((=) cartE.CartId)
-                    |> Option.defaultValue false
-
-                return isCurrent
-            }
-
-        return cartE, cartDto, cart, isAccessed, isCurrent
+        return cartE, cartDto, cart, isAccessed, isCurrent, userCustomer
     }
 
 let cartById (cartId: int) : HttpHandler =
@@ -100,7 +83,7 @@ let cartById (cartId: int) : HttpHandler =
 
             let! user = userManager.GetUserAsync(ctx.User)
 
-            let! cartE, cartDto, cart, isAccessed, isCurrent = cartStuff db user cartId
+            let! cartE, cartDto, cart, isAccessed, isCurrent, _ = cartStuff db user cartId
 
             if isAccessed then
                 let productsDto =
@@ -142,6 +125,15 @@ let carts : HttpHandler =
                   count = q.count |> Option.defaultValue 15
                   offset = q.offset |> Option.defaultValue 0 }
 
+            let! userCustomerE =
+                query {
+                    for i in db.Customers do
+                        where (i.CustomerId = user.CustomerId.Value)
+                        select i
+                }
+                |> fun qr -> qr.SingleAsync()
+
+
             let! cartsE =
                 if q.isPublic then
                     query {
@@ -154,8 +146,8 @@ let carts : HttpHandler =
                     |> fun a -> a.ToArrayAsync()
                 else
                     query {
-                        for i in db.Carts.Include(fun i -> i.OwnerCustomer) do
-                            where (i.OwnerCustomer.UserId = user.Id)
+                        for i in db.Carts do
+                            where (i.OwnerCustomerId.Value = userCustomerE.CustomerId)
                             skip q.offset
                             take q.count
                             select i
@@ -187,18 +179,21 @@ let setCurrentCart cartId : HttpHandler =
             let q =
                 ctx.BindQueryString<SetCurrentCartQueryOption>()
 
-            let! _, _, _, isAccessed, isCurrent = cartStuff db user cartId
+            let! _, _, _, isAccessed, isCurrent, userCustomer = cartStuff db user cartId
 
             let q =
                 { SetCurrentCartQuery.setCurrent =
                       q.setCurrent
                       |> Option.defaultValue (not isCurrent) }
 
+
             if isAccessed then
+                let userCustomerId = %userCustomer.CustomerId
+
                 let! customer =
                     query {
                         for i in db.Customers do
-                            where (i.UserId = user.Id)
+                            where (i.CustomerId = userCustomerId)
                             select i
                     }
                     |> fun qr -> qr.SingleAsync()
@@ -225,22 +220,16 @@ let currentCart : HttpHandler =
 
             let! user = userManager.GetUserAsync(ctx.User)
 
-            let! customer =
-                query {
-                    for i in db.Customers do
-                        where (i.UserId = user.Id)
-                        select i
-                }
-                |> fun qr -> qr.SingleAsync()
+            let! userCustomerE, _, _ = customerStuff db user
 
-            match customer.CurrentCartId |> Option.ofNullable with
+            match userCustomerE.CurrentCartId |> Option.ofNullable with
             | Some cartId -> return! redirectTo false $"/Shop/Cart/%i{cartId}" next ctx
             | None ->
                 let cart =
-                    Shop.Cart(IsPublic = false, OwnerCustomerId = customer.CustomerId)
+                    Shop.Cart(IsPublic = false, OwnerCustomerId = userCustomerE.CustomerId)
 
                 let! _ = db.Carts.AddAsync(cart)
-                customer.CurrentCart <- cart
+                userCustomerE.CurrentCart <- cart
                 let! _ = db.SaveChangesAsync()
                 return! redirectTo false $"/Shop/Cart/%i{cart.CartId}" next ctx
         }

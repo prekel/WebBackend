@@ -17,12 +17,9 @@ namespace MyStore.Data.Shop
         [EmailAddress]
         public string Email { get; set; }
 
-        public string? UserId { get; set; }
-
-        public ApplicationUser? User { get; set; }
-
         public int? CurrentCartId { get; set; }
 
+        public ApplicationUser? User { get; set; }
 
         public Cart? CurrentCart { get; set; }
 
@@ -34,6 +31,6 @@ namespace MyStore.Data.Shop
 
         public ICollection<Ticket>? SupportTickets { get; set; }
 
-        public CustomerDto ToDto() => new(CustomerId, FirstName, LastName, Honorific, Email, UserId, CurrentCartId);
+        public CustomerDto ToDto() => new(CustomerId, FirstName, LastName, Honorific, Email, CurrentCartId);
     }
 }

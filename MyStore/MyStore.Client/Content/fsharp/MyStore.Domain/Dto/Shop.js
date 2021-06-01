@@ -16,20 +16,19 @@ export function ProductDto$reflection() {
 }
 
 export class CustomerDto extends Record {
-    constructor(customerId, firstName, lastName, honorific, email, userId, currentCartId) {
+    constructor(customerId, firstName, lastName, honorific, email, currentCartId) {
         super();
         this.customerId = (customerId | 0);
         this.firstName = firstName;
         this.lastName = lastName;
         this.honorific = honorific;
         this.email = email;
-        this.userId = userId;
         this.currentCartId = currentCartId;
     }
 }
 
 export function CustomerDto$reflection() {
-    return record_type("MyStore.Dto.Shop.CustomerDto", [], CustomerDto, () => [["customerId", int32_type], ["firstName", string_type], ["lastName", string_type], ["honorific", string_type], ["email", string_type], ["userId", string_type], ["currentCartId", class_type("System.Nullable`1", [int32_type])]]);
+    return record_type("MyStore.Dto.Shop.CustomerDto", [], CustomerDto, () => [["customerId", int32_type], ["firstName", string_type], ["lastName", string_type], ["honorific", string_type], ["email", string_type], ["currentCartId", class_type("System.Nullable`1", [int32_type])]]);
 }
 
 export class CartDto extends Record {

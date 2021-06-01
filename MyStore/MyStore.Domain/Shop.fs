@@ -29,7 +29,6 @@ type Customer =
       LastName: string option
       Honorific: string option
       Email: Email
-      UserId: UserId option
       CurrentCartId: CartId option }
     static member ToDomain(dto: CustomerDto) =
         { CustomerId = %dto.customerId
@@ -37,7 +36,6 @@ type Customer =
           LastName = dto.lastName |> Option.ofObj
           Honorific = dto.honorific |> Option.ofObj
           Email = %dto.email
-          UserId = dto.userId |> Option.ofObj |> Option.map (~%)
           CurrentCartId =
               dto.currentCartId
               |> Option.ofNullable
@@ -49,7 +47,6 @@ type Customer =
           lastName = this.LastName |> Option.toObj
           honorific = this.Honorific |> Option.toObj
           email = %this.Email
-          userId = this.UserId |> Option.map (~%) |> Option.toObj
           currentCartId =
               this.CurrentCartId
               |> Option.map (~%)
