@@ -22,6 +22,7 @@ open Giraffe.EndpointRouting
 open Giraffe.Razor
 open MyStore.Web.Models
 open MyStore.Dto.Shop
+open MyStore.Web.Handlers.Cart
 
 let handler1 : HttpHandler =
     fun (_: HttpFunc) (ctx: HttpContext) -> ctx.WriteTextAsync "Hello World"
@@ -54,28 +55,7 @@ let errorHandler =
             return! razorHtmlView "Home/Error" (Some { RequestId = reqId }) None None next ctx
         }
 
-let cartHandler (id: int) =
-    fun (next: HttpFunc) (ctx: HttpContext) ->
-        task {
-            let cart =
-                { CartDto.cartId = id
-                  isPublic = true
-                  ownerCustomerId = Nullable.op_Implicit 34 }
 
-            let model =
-                { CartModel.cart = cart
-                  products =
-                      [| { productId = 1
-                           name = "asd"
-                           description = "asdd"
-                           price = 12. }
-                         { productId = 2
-                           name = "asd2"
-                           description = "asdd2"
-                           price = 122. } |] }
-
-            return! razorHtmlView "Shop/Cart" (Some model) None None next ctx
-        }
 
 let antiforgeryTokenHandler =
     text "Bad antiforgery token"

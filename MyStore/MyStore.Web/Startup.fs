@@ -8,6 +8,7 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.EntityFrameworkCore
 
+open Giraffe
 open Giraffe.EndpointRouting
 open JavaScriptEngineSwitcher.ChakraCore
 open JavaScriptEngineSwitcher.Extensions.MsDependencyInjection
@@ -20,6 +21,8 @@ open MyStore.Data.Identity
 type Startup(configuration: IConfiguration) =
     // This method gets called by the runtime. Use this method to add services to the container.
     member this.ConfigureServices(services: IServiceCollection) =
+        services.AddGiraffe() |> ignore
+
         services.AddDbContext<Context>
             (fun options ->
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))

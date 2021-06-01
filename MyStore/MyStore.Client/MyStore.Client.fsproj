@@ -13,6 +13,7 @@
         <PackageReference Include="Feliz.Router" Version="3.8.0" />
         <PackageReference Include="Fable.DateFunctions" Version="3.7.0" />
         <PackageReference Include="Feliz.UseDeferred" Version="1.4.1" />
+        <PackageReference Include="Thoth.Fetch" Version="2.0.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\MyStore.Domain\MyStore.Domain.fsproj" />
