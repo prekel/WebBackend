@@ -30,9 +30,10 @@ open MyStore.Dto.Shop
 let razorOrJson viewName model viewData modelState : HttpHandler =
     fun next ctx ->
         if ctx.Request.GetTypedHeaders().Accept
-           |> Seq.map string
-           |> Seq.exists (fun h -> h = MediaTypeNames.Application.Json) then
-            json (model |> Option.defaultValue Unchecked.defaultof<_>) next ctx
+           |> Seq.exists (fun h -> h.ToString() = MediaTypeNames.Application.Json) then
+            match model with
+            | Some model -> json model next ctx
+            | None -> json null next ctx
         else
             razorHtmlView viewName model viewData modelState next ctx
 
