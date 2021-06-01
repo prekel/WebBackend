@@ -1,5 +1,5 @@
 import { Record } from "../.fable/fable-library.3.1.11/Types.js";
-import { array_type, float64_type, bool_type, record_type, class_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
+import { array_type, bool_type, class_type, record_type, float64_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
 
 export class ProductDto extends Record {
     constructor(productId, name, description, price) {
@@ -12,7 +12,7 @@ export class ProductDto extends Record {
 }
 
 export function ProductDto$reflection() {
-    return record_type("MyStore.Dto.Shop.ProductDto", [], ProductDto, () => [["productId", int32_type], ["name", string_type], ["description", string_type], ["price", class_type("System.Decimal")]]);
+    return record_type("MyStore.Dto.Shop.ProductDto", [], ProductDto, () => [["productId", int32_type], ["name", string_type], ["description", string_type], ["price", float64_type]]);
 }
 
 export class CustomerDto extends Record {

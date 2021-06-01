@@ -29,7 +29,7 @@ type OperatorDto =
       lastName: string
       [<Required>]
       email: string
-      userId: string option }
+      userId: string }
 
 type QuestionDto =
     { [<Required>]

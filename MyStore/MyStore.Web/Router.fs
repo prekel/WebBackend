@@ -68,11 +68,11 @@ let cartHandler (id: int) =
                       [| { productId = 1
                            name = "asd"
                            description = "asdd"
-                           price = 12m }
+                           price = 12. }
                          { productId = 2
                            name = "asd2"
                            description = "asdd2"
-                           price = 122m } |] }
+                           price = 122. } |] }
 
             return! razorHtmlView "Shop/Cart" (Some model) None None next ctx
         }

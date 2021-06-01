@@ -1,5 +1,5 @@
 import { Record } from "../.fable/fable-library.3.1.11/Types.js";
-import { option_type, record_type, string_type, class_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
+import { record_type, string_type, class_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
 
 export class AnswerDto extends Record {
     constructor(supportAnswerId, supportTicketId, supportOperatorId, sendTimestamp, text) {
@@ -28,7 +28,7 @@ export class OperatorDto extends Record {
 }
 
 export function OperatorDto$reflection() {
-    return record_type("MyStore.Dto.Support.OperatorDto", [], OperatorDto, () => [["supportOperatorId", int32_type], ["firstName", string_type], ["lastName", string_type], ["email", string_type], ["userId", option_type(string_type)]]);
+    return record_type("MyStore.Dto.Support.OperatorDto", [], OperatorDto, () => [["supportOperatorId", int32_type], ["firstName", string_type], ["lastName", string_type], ["email", string_type], ["userId", string_type]]);
 }
 
 export class QuestionDto extends Record {

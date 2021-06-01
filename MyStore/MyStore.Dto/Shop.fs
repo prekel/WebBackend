@@ -15,7 +15,7 @@ type ProductDto =
       [<Required>]
       description: string
       [<Required>]
-      price: decimal }
+      price: double }
 
 type CustomerDto =
     { [<Required>]

@@ -20,6 +20,6 @@ namespace MyStore.Data.Shop
 
         public List<CartProduct>? CartProducts { get; set; }
 
-        public ProductDto ToDto() => new(ProductId, Name, Description, Price);
+        public ProductDto ToDto() => new(ProductId, Name, Description, (double) Price);
     }
 }

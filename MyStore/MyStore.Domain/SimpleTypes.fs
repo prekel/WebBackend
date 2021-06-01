@@ -1,13 +1,11 @@
 ﻿namespace MyStore.Domain.SimpleTypes
 
 open System
-open System.Net.Mail
+
 open FSharp.UMX
-open FsToolkit.ErrorHandling
 
 [<Measure>]
 type private productId
-
 
 [<Measure>]
 type private rouble
@@ -26,6 +24,38 @@ type ProductId = int<productId>
 
 type ProductPrice = decimal<rouble>
 
-type String50 = private String50 of string
+[<Measure>]
+type private userId
 
-type EmailAddress = private EmailAddress of MailAddress
+type UserId = string<userId>
+
+[<Measure>]
+type private email
+
+type Email = string<email>
+
+
+[<Measure>]
+type private operatorId
+
+type OperatorId = int<operatorId>
+
+[<Measure>]
+type private answerId
+
+type AnswerId = int<answerId>
+
+[<Measure>]
+type private ticketId
+
+type TicketId = int<ticketId>
+
+[<Measure>]
+type private questionId
+
+type QuestionId = int<questionId>
+
+
+[<Measure>]
+type private orderId;
+type OrderId = int<orderId>
