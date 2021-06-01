@@ -8,6 +8,8 @@
         <Compile Include="Components.fs" />
         <Compile Include="Cart.fs" />
         <Compile Include="Carts.fs" />
+        <Compile Include="Products.fs" />
+        <Compile Include="Product.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Feliz" Version="1.45.0" />

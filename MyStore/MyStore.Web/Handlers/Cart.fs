@@ -30,48 +30,8 @@ open MyStore.Web.Models
 open MyStore.Dto.Shop
 open MyStore.Domain.Shop
 open MyStore.Web.Core
+open MyStore.Web.Database
 
-let customerStuff (db: Context) (user: ApplicationUser) =
-    task {
-        let! userCustomerE =
-            query {
-                for i in db.Customers do
-                    where (i.CustomerId = user.CustomerId.Value)
-                    select i
-            }
-            |> fun qr -> qr.SingleAsync()
-
-        let userCustomerDto = userCustomerE.ToDto()
-        let userCustomer = Customer.ToDomain userCustomerDto
-        return userCustomerE, userCustomerDto, userCustomer
-    }
-
-let private cartStuff (db: Context) (user: ApplicationUser) cartId =
-    task {
-        let! cartE =
-            query {
-                for i in db.Carts.Include(fun w -> w.Products) do
-                    where (cartId = i.CartId)
-            }
-            |> fun qr -> qr.SingleAsync()
-
-        let cartDto = cartE.ToDto()
-        let cart = Cart.ToDomain cartDto
-
-        let! userCustomerE, userCustomerDto, userCustomer = customerStuff db user
-
-        let isAccessed =
-            match cart.OwnerCustomerId with
-            | Some customerId -> customerId = userCustomer.CustomerId
-            | _ -> cart.IsPublic
-
-        let isCurrent =
-            userCustomer.CurrentCartId
-            |> Option.map ((=) cart.CartId)
-            |> Option.defaultValue false
-
-        return cartE, cartDto, cart, isAccessed, isCurrent, userCustomer
-    }
 
 let cartById (cartId: int) : HttpHandler =
     fun (next: HttpFunc) (ctx: HttpContext) ->
@@ -122,7 +82,7 @@ let carts : HttpHandler =
 
             let q =
                 { CartsQuery.isPublic = q.isPublic |> Option.defaultValue false
-                  count = q.count |> Option.defaultValue 15
+                  count = q.count |> Option.defaultValue 10
                   offset = q.offset |> Option.defaultValue 0 }
 
             let! userCustomerE =

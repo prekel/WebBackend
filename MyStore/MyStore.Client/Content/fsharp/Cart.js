@@ -13,7 +13,7 @@ import { CaseStrategy } from "./.fable/Thoth.Json.4.0.0/Types.fs.js";
 import { uncurry } from "./.fable/fable-library.3.1.11/Util.js";
 import { RouterModule_nav } from "./.fable/Feliz.Router.3.8.0/Router.fs.js";
 import { singleton } from "./.fable/fable-library.3.1.11/List.js";
-import { value as value_8, some } from "./.fable/fable-library.3.1.11/Option.js";
+import { value as value_10, some } from "./.fable/fable-library.3.1.11/Option.js";
 import { useFeliz_React__React_useElmish_Static_645B1FB7 } from "./.fable/Feliz.UseElmish.1.5.1/UseElmish.fs.js";
 import { useReact_useInputRef } from "./.fable/Feliz.1.45.0/React.fs.js";
 import { map as map_1, singleton as singleton_1, append, delay, toList } from "./.fable/fable-library.3.1.11/Seq.js";
@@ -108,9 +108,10 @@ export function Cart(cart) {
     const children = toList(delay(() => append(singleton_1(createElement("input", {
         ref: idRef,
     })), delay(() => append(singleton_1(createElement("button", {
+        children: "GetById",
         onClick: (_arg1) => {
             if (idRef.current != null) {
-                dispatch(new Msg(0, parse(value_8(idRef.current).value, 511, false, 32)));
+                dispatch(new Msg(0, parse(value_10(idRef.current).value, 511, false, 32)));
             }
         },
     })), delay(() => append(singleton_1(createElement("button", {
@@ -119,15 +120,15 @@ export function Cart(cart) {
             dispatch(new Msg(3, !state_1.IsCurrent));
         },
     })), delay(() => {
-        let value_5;
-        return append(singleton_1((value_5 = toText(interpolate("%A%P()", [state_1])), createElement("p", {
-            children: [value_5],
+        let value_7;
+        return append(singleton_1((value_7 = toText(interpolate("%A%P()", [state_1])), createElement("p", {
+            children: [value_7],
         }))), delay(() => append(singleton_1(createElement("i", {
             children: [state_1.Cart.CartId],
         })), delay(() => map_1((i) => {
-            const value_7 = toText(interpolate("%i%P()%s%P()", [i.ProductId, i.Description]));
+            const value_9 = toText(interpolate("%i%P()%s%P()", [i.ProductId, i.Description]));
             return createElement("p", {
-                children: [value_7],
+                children: [value_9],
             });
         }, state_1.Products)))));
     }))))))));

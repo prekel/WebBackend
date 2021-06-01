@@ -1,0 +1,16 @@
+﻿@using React.AspNet
+@using React.RenderFunctions
+@using React.Router
+@model MyStore.Dto.Shop.ProductModel
+@{
+    ViewData["Title"] = "Product";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Product</h1>
+</div>
+
+@Html.React("Components.Product", Model)
+@{
+
+}

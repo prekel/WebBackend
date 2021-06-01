@@ -79,7 +79,8 @@ let Cart (cart: CartModel) =
     JS.console.log state
 
     Html.div [ Html.input [ prop.ref idRef ]
-               Html.button [ prop.onClick
+               Html.button [ prop.text "GetById"
+                             prop.onClick
                                  (fun _ ->
                                      if idRef.current.IsSome then
                                          dispatch (Fetch %(int idRef.current.Value.value))) ]

@@ -66,9 +66,6 @@ type OrderModel =
       [<Required>]
       orderedProducts: OrderedProductDto array }
 
-type ProductsModel =
-    { [<Required>]
-      products: ProductDto array }
 
 type CartsQuery =
     { [<Required>]
@@ -81,6 +78,24 @@ type CartsQuery =
 type CartsModel =
     { [<Required>]
       carts: CartDto array
+      [<Required>]
       query: CartsQuery }
 
 type SetCurrentCartQuery = { setCurrent: bool }
+
+type ProductModel =
+    { [<Required>]
+      product: ProductDto
+      isInCart: bool }
+
+type ProductsQuery =
+    { [<Required>]
+      count: int
+      [<Required>]
+      offset: int }
+
+type ProductsModel =
+    { [<Required>]
+      products: ProductDto array
+      [<Required>]
+      query: ProductsQuery }

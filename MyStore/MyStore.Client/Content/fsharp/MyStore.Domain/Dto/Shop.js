@@ -95,17 +95,6 @@ export function OrderModel$reflection() {
     return record_type("MyStore.Dto.Shop.OrderModel", [], OrderModel, () => [["order", OrderDto$reflection()], ["orderedProducts", array_type(OrderedProductDto$reflection())]]);
 }
 
-export class ProductsModel extends Record {
-    constructor(products) {
-        super();
-        this.products = products;
-    }
-}
-
-export function ProductsModel$reflection() {
-    return record_type("MyStore.Dto.Shop.ProductsModel", [], ProductsModel, () => [["products", array_type(ProductDto$reflection())]]);
-}
-
 export class CartsQuery extends Record {
     constructor(isPublic, count, offset) {
         super();
@@ -140,5 +129,41 @@ export class SetCurrentCartQuery extends Record {
 
 export function SetCurrentCartQuery$reflection() {
     return record_type("MyStore.Dto.Shop.SetCurrentCartQuery", [], SetCurrentCartQuery, () => [["setCurrent", bool_type]]);
+}
+
+export class ProductModel extends Record {
+    constructor(product, isInCart) {
+        super();
+        this.product = product;
+        this.isInCart = isInCart;
+    }
+}
+
+export function ProductModel$reflection() {
+    return record_type("MyStore.Dto.Shop.ProductModel", [], ProductModel, () => [["product", ProductDto$reflection()], ["isInCart", bool_type]]);
+}
+
+export class ProductsQuery extends Record {
+    constructor(count, offset) {
+        super();
+        this.count = (count | 0);
+        this.offset = (offset | 0);
+    }
+}
+
+export function ProductsQuery$reflection() {
+    return record_type("MyStore.Dto.Shop.ProductsQuery", [], ProductsQuery, () => [["count", int32_type], ["offset", int32_type]]);
+}
+
+export class ProductsModel extends Record {
+    constructor(products, query) {
+        super();
+        this.products = products;
+        this.query = query;
+    }
+}
+
+export function ProductsModel$reflection() {
+    return record_type("MyStore.Dto.Shop.ProductsModel", [], ProductsModel, () => [["products", array_type(ProductDto$reflection())], ["query", ProductsQuery$reflection()]]);
 }
 

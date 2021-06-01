@@ -22,7 +22,7 @@ open Giraffe.EndpointRouting
 open Giraffe.Razor
 open MyStore.Web.Models
 open MyStore.Dto.Shop
-open MyStore.Web.Handlers.Cart
+open MyStore.Web.Handlers
 
 let handler1 : HttpHandler =
     fun (_: HttpFunc) (ctx: HttpContext) -> ctx.WriteTextAsync "Hello World"
@@ -85,8 +85,13 @@ let endpoints1 =
       subRoute
           "/Shop"
           [ subRoute
-                "/Cart"
-                [ GET [ routef "/%i" cartById
-                        route "/" carts
-                        route "/Current" currentCart ]
-                  POST [ routef "/%i/SetCurrentCart" setCurrentCart ] ] ] ]
+              "/Cart"
+              [ GET [ routef "/%i" Cart.cartById
+                      route "/" Cart.carts
+                      route "/Current" Cart.currentCart ]
+                POST [ routef "/%i/SetCurrentCart" Cart.setCurrentCart ] ]
+            subRoute
+                "/Product"
+                [ GET [ routef "/%i" Product.productById
+                        route "/" Product.products ]
+                  POST [ routef "/%i/ToggleToCart" Product.toggleToCart ] ] ] ]
