@@ -23,7 +23,7 @@ jobs:
         dotnet-version: '5.0.x'
 
     - name: Build client
-      run: cd MyStore.Client && dotnet tool install fable --version 3.1.11 && npm run build
+      run: cd MyStore.Client && dotnet tool install fable --version 3.1.11 && npm install && npm run build
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
