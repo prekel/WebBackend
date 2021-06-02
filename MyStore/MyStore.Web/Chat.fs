@@ -15,6 +15,7 @@ module SignalRHub =
     let invoke (msg: SignalRHub.Action) _ = task { return update msg }
 
     let send (msg: SignalRHub.Action) (hubContext: FableHub<SignalRHub.Action, SignalRHub.Response>) =
+
         update msg |> hubContext.Clients.Caller.Send
 
     let config =

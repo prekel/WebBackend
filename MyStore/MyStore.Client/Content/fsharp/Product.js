@@ -88,21 +88,22 @@ export function Product(productModel) {
     const state_1 = patternInput[0];
     const dispatch = patternInput[1];
     const patternInput_1 = useFeliz_React__React_useState_Static_1505(productModel.product.productId);
+    const cartButton = productModel.isLoggedIn ? createElement("button", {
+        children: state_1.IsInCart ? "Remove from cart" : "Add to cart",
+        onClick: (_arg1) => {
+            dispatch(new Msg(3));
+        },
+    }) : createElement("div", {});
     const children = ofArray([createElement("input", {
         onChange: (ev) => {
             patternInput_1[1](parse(ev.target.value, 511, false, 32));
         },
     }), createElement("button", {
         children: "GetById",
-        onClick: (_arg1) => {
+        onClick: (_arg2) => {
             dispatch(new Msg(0, patternInput_1[0]));
         },
-    }), createElement("button", {
-        children: state_1.IsInCart ? "Remove from cart" : "Add to cart",
-        onClick: (_arg2) => {
-            dispatch(new Msg(3));
-        },
-    }), (value_7 = toText(interpolate("%A%P()", [state_1])), createElement("p", {
+    }), cartButton, (value_7 = toText(interpolate("%A%P()", [state_1])), createElement("p", {
         children: [value_7],
     }))]);
     return createElement("div", {

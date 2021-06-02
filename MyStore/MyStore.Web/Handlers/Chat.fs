@@ -59,5 +59,27 @@ let chats : HttpHandler =
             return! razorHtmlView "Chat/Index" (Some model) None None next ctx
         }
 
+let newChat : HttpHandler =
+    fun next ctx ->
+        task {
+            let db = ctx.GetService<Context>()
+
+            let userManager =
+                ctx.GetService<UserManager<ApplicationUser>>()
+
+            let! user = userManager.GetUserAsync(ctx.User)
+
+            let! customerE, _, _ = customerStuff db user
+
+            let ticket =
+                Support.Ticket(CustomerId = customerE.CustomerId)
+
+            let! _ = db.SupportTickets.AddAsync ticket
+            let! _ = db.SaveChangesAsync()
+
+            return! redirectTo false $"/Support/Chat/%i{ticket.SupportTicketId}" next ctx
+        }
+
+
 let chatPage (ticketId: int) : HttpHandler =
     fun (next: HttpFunc) (ctx: HttpContext) -> task { return! razorHtmlView "Chat/Chat" None None None next ctx }

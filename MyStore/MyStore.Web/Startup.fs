@@ -3,7 +3,6 @@ namespace MyStore.Web
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
-open Microsoft.AspNetCore.SignalR
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
@@ -14,10 +13,7 @@ open Giraffe.EndpointRouting
 open JavaScriptEngineSwitcher.ChakraCore
 open JavaScriptEngineSwitcher.Extensions.MsDependencyInjection
 open React.AspNet
-
 open Fable.SignalR
-open Fable.SignalR.SignalRExtension
-open FSharp.Control.Tasks
 
 open MyStore.Web.Router
 open MyStore.Data
@@ -26,7 +22,6 @@ open MyStore.Domain.Chat
 open MyStore.Web.Chat
 
 type Startup(configuration: IConfiguration) =
-    // This method gets called by the runtime. Use this method to add services to the container.
     member this.ConfigureServices(services: IServiceCollection) =
         services.AddGiraffe() |> ignore
 
@@ -47,7 +42,6 @@ type Startup(configuration: IConfiguration) =
             .AddEntityFrameworkStores<Context>()
             //.AddEntityFrameworkStores<Context>() TODO:
         |> ignore
-
 
         services.AddAuthentication() |> ignore
 
@@ -71,11 +65,7 @@ type Startup(configuration: IConfiguration) =
 
         services.AddRazorPages() |> ignore // TODO?
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
-
-
-        // Initialise ReactJS.NET. Must be before static files.
         app.UseReact
             (fun config ->
                 config
@@ -91,19 +81,18 @@ type Startup(configuration: IConfiguration) =
             app.UseMigrationsEndPoint() |> ignore
         else
             app.UseExceptionHandler("/Home/Error") |> ignore
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts() |> ignore
 
         app.UseHttpsRedirection() |> ignore
         app.UseStaticFiles() |> ignore
+
+        app.UseSignalR(SignalRHub.config) |> ignore
 
         app.UseRouting() |> ignore
 
         app.UseAuthentication() |> ignore
 
         app.UseAuthorization() |> ignore
-
-        //app.UseSignalR(SignalRHub.config) |> ignore
 
         app.UseEndpoints
             (fun endpoints ->

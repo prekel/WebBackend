@@ -14,10 +14,10 @@ namespace MyStore.Data.Support
 
         public Customer Customer { get; set; }
 
-        public int SupportOperatorId { get; set; }
+        public int? SupportOperatorId { get; set; }
 
 
-        public Operator SupportOperator { get; set; }
+        public Operator? SupportOperator { get; set; }
 
         public int? OrderId { get; set; }
 

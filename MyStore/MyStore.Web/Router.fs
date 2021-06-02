@@ -102,4 +102,5 @@ let endpoints1 =
             subRoute
                 "/Chat"
                 [ GET [ routef "/%i" Chat.chatPage
-                        route "/" Chat.chats ] ] ] ]
+                        route "/" Chat.chats ]
+                  POST [ route "/New" Chat.newChat ] ] ] ]

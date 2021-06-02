@@ -46,8 +46,7 @@ type TicketDto =
       supportTicketId: int
       [<Required>]
       customerId: int
-      [<Required>]
-      supportOperatorId: int
+      supportOperatorId: Nullable<int>
       orderId: Nullable<int>
       [<Required>]
       createTimestamp: DateTimeOffset }

@@ -155,7 +155,8 @@ namespace MyStore.Data
                     b.HasKey(ticket => ticket.SupportTicketId);
                     b.HasOne(ticket => ticket.SupportOperator)
                         .WithMany(op => op.SupportTickets)
-                        .HasForeignKey(ticket => ticket.SupportOperatorId);
+                        .HasForeignKey(ticket => ticket.SupportOperatorId)
+                        .IsRequired(false);
                     b.HasOne(ticket => ticket.Customer)
                         .WithMany(customer => customer.SupportTickets)
                         .HasForeignKey(ticket => ticket.CustomerId);

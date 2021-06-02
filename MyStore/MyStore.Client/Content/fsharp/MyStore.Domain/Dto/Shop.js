@@ -132,15 +132,16 @@ export function SetCurrentCartQuery$reflection() {
 }
 
 export class ProductModel extends Record {
-    constructor(product, isInCart) {
+    constructor(product, isInCart, isLoggedIn) {
         super();
         this.product = product;
         this.isInCart = isInCart;
+        this.isLoggedIn = isLoggedIn;
     }
 }
 
 export function ProductModel$reflection() {
-    return record_type("MyStore.Dto.Shop.ProductModel", [], ProductModel, () => [["product", ProductDto$reflection()], ["isInCart", bool_type]]);
+    return record_type("MyStore.Dto.Shop.ProductModel", [], ProductModel, () => [["product", ProductDto$reflection()], ["isInCart", bool_type], ["isLoggedIn", bool_type]]);
 }
 
 export class ProductsQuery extends Record {

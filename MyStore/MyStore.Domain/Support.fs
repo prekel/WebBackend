@@ -74,14 +74,17 @@ type Question =
 type Ticket =
     { SupportTicketId: TicketId
       CustomerId: CustomerId
-      SupportOperatorId: OperatorId
+      SupportOperatorId: OperatorId option
       OrderId: OrderId option
       CreateTimestamp: DateTimeOffset }
 
     static member ToDomain(dto: TicketDto) =
         { SupportTicketId = %dto.supportTicketId
           CustomerId = %dto.customerId
-          SupportOperatorId = %dto.supportOperatorId
+          SupportOperatorId =
+              dto.supportOperatorId
+              |> Option.ofNullable
+              |> Option.map (~%)
           OrderId =
               dto.orderId
               |> Option.ofNullable
@@ -91,7 +94,9 @@ type Ticket =
     member this.FromDomain() =
         { TicketDto.supportTicketId = %this.SupportTicketId
           customerId = %this.CustomerId
-          supportOperatorId = %this.SupportOperatorId
+          supportOperatorId = this.SupportOperatorId
+              |> Option.map (~%)
+              |> Option.toNullable
           orderId =
               this.OrderId
               |> Option.map (~%)
