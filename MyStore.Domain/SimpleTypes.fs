@@ -1,13 +1,11 @@
 ﻿namespace MyStore.Domain.SimpleTypes
 
 open System
-open System.Net.Mail
+
 open FSharp.UMX
-open FsToolkit.ErrorHandling
 
 [<Measure>]
 type private productId
-
 
 [<Measure>]
 type private rouble
@@ -26,66 +24,38 @@ type ProductId = int<productId>
 
 type ProductPrice = decimal<rouble>
 
-type String50 = private String50 of string
+[<Measure>]
+type private userId
 
-type EmailAddress = private EmailAddress of MailAddress
+type UserId = string<userId>
 
-module ConstrainedType =
-    let createString fieldName ctor maxLen str =
-        if String.IsNullOrEmpty(str) then
-            Error $"%s{fieldName} must not be null or empty"
-        elif str.Length > maxLen then
-            Error $"%s{fieldName} must not be more than %i{maxLen} chars"
-        else
-            Ok(ctor str)
+[<Measure>]
+type private email
 
-    let createStringOption fieldName ctor maxLen str =
-        if String.IsNullOrEmpty(str) then
-            Ok None
-        elif str.Length > maxLen then
-            Error $"%s{fieldName} must not be more than %i{maxLen} chars"
-        else
-            Ok(ctor str |> Some)
+type Email = string<email>
 
-    let createInt fieldName ctor minVal maxVal i =
-        if i < minVal then
-            Error $"%s{fieldName}: Must not be less than %i{minVal}"
-        elif i > maxVal then
-            Error $"%s{fieldName}: Must not be greater than %i{maxVal}"
-        else
-            Ok(ctor i)
 
-    let createDecimal fieldName ctor minVal maxVal i =
-        if i < minVal then
-            Error $"%s{fieldName}: Must not be less than %M{minVal}"
-        elif i > maxVal then
-            Error $"%s{fieldName}: Must not be greater than %M{maxVal}"
-        else
-            Ok(ctor i)
+[<Measure>]
+type private operatorId
 
-    let createLike fieldName ctor pattern str =
-        if String.IsNullOrEmpty(str) then
-            Error $"%s{fieldName}: Must not be null or empty"
-        elif System.Text.RegularExpressions.Regex.IsMatch(str, pattern) then
-            Ok(ctor str)
-        else
-            Error $"%s{fieldName}: '%s{str}' must match the pattern '%s{pattern}'"
+type OperatorId = int<operatorId>
 
-module String50 =
-    let value (String50 str) = str
+[<Measure>]
+type private answerId
 
-    let create fieldName str =
-        ConstrainedType.createString fieldName String50 50 str
+type AnswerId = int<answerId>
 
-    let createOption fieldName str =
-        ConstrainedType.createStringOption fieldName String50 50 str
+[<Measure>]
+type private ticketId
 
-module EmailAddress =
-    let value (EmailAddress email) = email
+type TicketId = int<ticketId>
 
-    let create str =
-        result {
-            try
-                return EmailAddress <| MailAddress(str)
-            with _ -> return! Error "Not valid email"
-        }
+[<Measure>]
+type private questionId
+
+type QuestionId = int<questionId>
+
+
+[<Measure>]
+type private orderId;
+type OrderId = int<orderId>
