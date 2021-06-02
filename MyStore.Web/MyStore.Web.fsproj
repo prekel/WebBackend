@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
+      <UserSecretsId>a0f80b59-4477-448d-91c8-d780ea5c5bf9</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <Compile Include="Core.fs" />
@@ -74,7 +75,6 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6" />
     </ItemGroup>
 
@@ -83,7 +83,7 @@
       <ProjectReference Include="..\MyStore.Domain\MyStore.Domain.fsproj" />
     </ItemGroup>
 
-<!--    <Target Name="ReactBuild" AfterTargets="Build">-->
-<!--        <Exec Command="npm i &amp;&amp; npm run build" WorkingDirectory="../MyStore.Client" />-->
-<!--    </Target>-->
+   <Target Name="ReactBuild" AfterTargets="Build">
+       <Exec Command="npm i &amp;&amp; npm run build" WorkingDirectory="../MyStore.Client" />
+   </Target>
 </Project>
