@@ -13,7 +13,7 @@
     "emotion": "^9.2.12",
     "emotion-server": "^9.2.12",
     "jquery": "^3.5.1",
-    "merge": "^1.2.1",
+    "merge": "^2.1.1",
     "oidc-client": "^1.9.0",
     "react-emotion": "^9.2.12",
     "react-helmet": "^6.0.0",
