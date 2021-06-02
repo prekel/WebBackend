@@ -53,7 +53,7 @@ let productById (id: int) : HttpHandler =
 
             let! user = userManager.GetUserAsync(ctx.User)
 
-            let productModel =
+            let! productModel =
                 if isNotNull user then
                     task {
                         let! userCustomerE, _, _ = customerStuff db user

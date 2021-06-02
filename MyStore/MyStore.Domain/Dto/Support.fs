@@ -51,4 +51,14 @@ type TicketDto =
       [<Required>]
       createTimestamp: DateTimeOffset }
 
-type TicketsModel = { tickets: TicketDto array }
+type TicketsModel =
+    { [<Required>]
+      tickets: TicketDto array }
+
+type ChatModel =
+    { [<Required>]
+      ticket: TicketDto
+      [<Required>]
+      questions: QuestionDto array
+      [<Required>]
+      answers: AnswerDto array }

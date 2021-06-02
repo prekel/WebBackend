@@ -1,7 +1,7 @@
 ﻿@using React.AspNet
 @using React.RenderFunctions
 @using React.Router
-@* @model MyStore.Dto.Shop.ProductsModel *@
+@model MyStore.Dto.Support.ChatModel
 @{
     ViewData["Title"] = "Chat";
 }
@@ -10,7 +10,7 @@
     <h1 class="display-4">Chat</h1>
 </div>
 
-@Html.React("Components.Chat", "")
+@Html.React("Components.Chat", Model)
 @{
 
 }

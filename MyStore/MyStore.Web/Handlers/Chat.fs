@@ -82,4 +82,61 @@ let newChat : HttpHandler =
 
 
 let chatPage (ticketId: int) : HttpHandler =
-    fun (next: HttpFunc) (ctx: HttpContext) -> task { return! razorHtmlView "Chat/Chat" None None None next ctx }
+    fun (next: HttpFunc) (ctx: HttpContext) ->
+        task {
+            let db = ctx.GetService<Context>()
+
+            let userManager =
+                ctx.GetService<UserManager<ApplicationUser>>()
+
+            let! user = userManager.GetUserAsync(ctx.User)
+
+            let! customerE, _, _ = customerStuff db user
+
+            let! ticketE =
+                query {
+                    for i in db
+                        .SupportTickets
+                        .Include(fun t -> t.SupportAnswers)
+                        .Include(fun t -> t.SupportQuestions) do
+                        where (i.SupportTicketId = ticketId)
+                        select i
+                }
+                |> fun qr -> qr.FirstOrDefaultAsync()
+
+            if isNull ticketE then
+                return! RequestErrors.notFound (text "Not found") next ctx
+            else
+                let isAccessedCustomer =
+                    match user.CustomerId |> Option.ofNullable with
+                    | Some userCustomerId -> userCustomerId = ticketE.CustomerId
+                    | None -> false
+
+                let isAccessedOperator =
+                    match user.OperatorId |> Option.ofNullable with
+                    | Some userOperatorId ->
+                        match ticketE.SupportOperatorId |> Option.ofNullable with
+                        | Some tickerOperatorId -> tickerOperatorId = userOperatorId
+                        | None -> true
+                    | None -> false
+
+                if not (isAccessedCustomer || isAccessedOperator) then
+                    return! RequestErrors.forbidden (text "Forbidden") next ctx
+                else
+                    let questions =
+                        ticketE.SupportQuestions
+                        |> Seq.map (fun q -> q.ToDto())
+                        |> Seq.toArray
+
+                    let answers =
+                        ticketE.SupportAnswers
+                        |> Seq.map (fun q -> q.ToDto())
+                        |> Seq.toArray
+
+                    let chatModel =
+                        { ChatModel.ticket = ticketE.ToDto()
+                          questions = questions
+                          answers = answers }
+
+                    return! razorHtmlView "Chat/Chat" (Some chatModel) None None next ctx
+        }

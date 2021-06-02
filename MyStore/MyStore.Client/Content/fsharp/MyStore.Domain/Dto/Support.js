@@ -50,14 +50,14 @@ export class TicketDto extends Record {
         super();
         this.supportTicketId = (supportTicketId | 0);
         this.customerId = (customerId | 0);
-        this.supportOperatorId = (supportOperatorId | 0);
+        this.supportOperatorId = supportOperatorId;
         this.orderId = orderId;
         this.createTimestamp = createTimestamp;
     }
 }
 
 export function TicketDto$reflection() {
-    return record_type("MyStore.Dto.Support.TicketDto", [], TicketDto, () => [["supportTicketId", int32_type], ["customerId", int32_type], ["supportOperatorId", int32_type], ["orderId", class_type("System.Nullable`1", [int32_type])], ["createTimestamp", class_type("System.DateTimeOffset")]]);
+    return record_type("MyStore.Dto.Support.TicketDto", [], TicketDto, () => [["supportTicketId", int32_type], ["customerId", int32_type], ["supportOperatorId", class_type("System.Nullable`1", [int32_type])], ["orderId", class_type("System.Nullable`1", [int32_type])], ["createTimestamp", class_type("System.DateTimeOffset")]]);
 }
 
 export class TicketsModel extends Record {
@@ -69,5 +69,18 @@ export class TicketsModel extends Record {
 
 export function TicketsModel$reflection() {
     return record_type("MyStore.Dto.Support.TicketsModel", [], TicketsModel, () => [["tickets", array_type(TicketDto$reflection())]]);
+}
+
+export class ChatModel extends Record {
+    constructor(ticket, questions, answers) {
+        super();
+        this.ticket = ticket;
+        this.questions = questions;
+        this.answers = answers;
+    }
+}
+
+export function ChatModel$reflection() {
+    return record_type("MyStore.Dto.Support.ChatModel", [], ChatModel, () => [["ticket", TicketDto$reflection()], ["questions", array_type(QuestionDto$reflection())], ["answers", array_type(AnswerDto$reflection())]]);
 }
 

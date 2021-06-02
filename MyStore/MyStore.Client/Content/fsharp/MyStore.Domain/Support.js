@@ -76,21 +76,21 @@ export class Ticket extends Record {
         super();
         this.SupportTicketId = (SupportTicketId | 0);
         this.CustomerId = (CustomerId | 0);
-        this.SupportOperatorId = (SupportOperatorId | 0);
+        this.SupportOperatorId = SupportOperatorId;
         this.OrderId = OrderId;
         this.CreateTimestamp = CreateTimestamp;
     }
 }
 
 export function Ticket$reflection() {
-    return record_type("MyStore.Domain.Support.Ticket", [], Ticket, () => [["SupportTicketId", int32_type], ["CustomerId", int32_type], ["SupportOperatorId", int32_type], ["OrderId", option_type(int32_type)], ["CreateTimestamp", class_type("System.DateTimeOffset")]]);
+    return record_type("MyStore.Domain.Support.Ticket", [], Ticket, () => [["SupportTicketId", int32_type], ["CustomerId", int32_type], ["SupportOperatorId", option_type(int32_type)], ["OrderId", option_type(int32_type)], ["CreateTimestamp", class_type("System.DateTimeOffset")]]);
 }
 
 export function Ticket_ToDomain_5519A0CB(dto) {
-    return new Ticket(dto.supportTicketId, dto.customerId, dto.supportOperatorId, map((x_9) => x_9, ofNullable(dto.orderId)), dto.createTimestamp);
+    return new Ticket(dto.supportTicketId, dto.customerId, map((x_6) => x_6, ofNullable(dto.supportOperatorId)), map((x_10) => x_10, ofNullable(dto.orderId)), dto.createTimestamp);
 }
 
 export function Ticket__FromDomain(this$) {
-    return new TicketDto(this$.SupportTicketId, this$.CustomerId, this$.SupportOperatorId, toNullable(map((x_9) => x_9, this$.OrderId)), this$.CreateTimestamp);
+    return new TicketDto(this$.SupportTicketId, this$.CustomerId, toNullable(map((x_6) => x_6, this$.SupportOperatorId)), toNullable(map((x_10) => x_10, this$.OrderId)), this$.CreateTimestamp);
 }
 

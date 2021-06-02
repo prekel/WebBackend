@@ -1,16 +1,9 @@
 ﻿module MyStore.Client.Chat
 
-
-open Elmish
-open FSharp.UMX
 open Fable.Core
 open Fable.Import
 open Feliz
 open MyStore.Domain.SimpleTypes
-open Thoth.Fetch
-open Thoth.Json
-open Feliz.UseElmish
-open Feliz.Router
 
 open Fable.SignalR.Feliz
 open Fable.SignalR
@@ -19,32 +12,96 @@ open Fable.SignalR
 open MyStore.Dto.Support
 open MyStore.Domain.Support
 open MyStore.Domain.Chat
+open MyStore.Domain.Chat.SignalRHub
 
-let TextDisplay (input: {| count: int; text: string |}) =
-    React.fragment [ Html.div input.count
-                     Html.div input.text ]
+type Status =
+    | Join
+    | Leave
+    | Undefined
+    | ForbiddenStatus
+    | NotFoundStatus
+
+type State =
+    { Ticket: Ticket
+      Questions: Question list
+      Answers: Answer list
+      Status: Status }
+
+type QuestionOrAnswer =
+    | Question of Question
+    | Answer of Answer
+
+//[<ReactComponent>]
+let ChatDisplay chat =
+    let messages =
+        [ yield! chat.Answers |> List.map Answer
+          yield! chat.Questions |> List.map Question ]
+        |> List.sortBy
+            (function
+            | Question q -> q.SendTimestamp
+            | Answer a -> a.SendTimestamp)
+
+    Html.div [ Html.p $"Ticket: %A{chat.Ticket}"
+               for i in messages do
+                   Html.p $"%A{i}" ]
+
+//[<ReactComponent>]
+let Buttons
+    (input: {| ticketId: TicketId
+               text: string
+               hub: Hub<Action, Response> |})
+    =
+    React.fragment [ Html.button [ prop.text "Send as operator"
+                                   prop.onClick
+                                   <| fun _ ->
+                                       input.hub.sendNow
+                                           { Action.Role = Operator
+                                             TicketId = input.ticketId
+                                             Action = JoinRoom } ]
+                     Html.button [ prop.text "Send as customer"
+                                   prop.onClick
+                                   <| fun _ ->
+                                       input.hub.sendNow
+                                           { Action.Role = Customer
+                                             TicketId = input.ticketId
+                                             Action = JoinRoom } ]
+                     Html.button [ prop.text "Join as operator"
+                                   prop.onClick
+                                   <| fun _ ->
+                                       input.hub.sendNow
+                                           { Action.Role = Operator
+                                             TicketId = input.ticketId
+                                             Action = Message input.text } ]
+                     Html.button [ prop.text "Join as customer"
+                                   prop.onClick
+                                   <| fun _ ->
+                                       input.hub.sendNow
+                                           { Action.Role = Customer
+                                             TicketId = input.ticketId
+                                             Action = Message input.text } ]
+                     Html.button [ prop.text "Leave as operator"
+                                   prop.onClick
+                                   <| fun _ ->
+                                       input.hub.sendNow
+                                           { Action.Role = Operator
+                                             TicketId = input.ticketId
+                                             Action = LeaveRoom } ]
+                     Html.button [ prop.text "Leave as customer"
+                                   prop.onClick
+                                   <| fun _ ->
+                                       input.hub.sendNow
+                                           { Action.Role = Customer
+                                             TicketId = input.ticketId
+                                             Action = LeaveRoom } ] ]
 
 [<ReactComponent>]
-let Buttons
-    (input: {| count: int
-               hub: Hub<SignalRHub.Action, SignalRHub.Response> |})
-    =
-    React.fragment [ Html.button [ prop.text "Increment"
-                                   prop.onClick
-                                   <| fun _ -> input.hub.sendNow (SignalRHub.Action.IncrementCount input.count) ]
-                     Html.button [ prop.text "Decrement"
-                                   prop.onClick
-                                   <| fun _ -> input.hub.sendNow (SignalRHub.Action.DecrementCount input.count) ]
-                     Html.button [ prop.text "Get Random Character"
-                                   prop.onClick
-                                   <| fun _ -> input.hub.sendNow (SignalRHub.Action.DecrementCount 10) ] ]
+let TrueChat (st: {| chat: State |}) =
+    let state, setState = React.useState st.chat
 
-let TrueChat () =
-    let count, setCount = React.useState 0
     let text, setText = React.useState ""
 
     let hub =
-        React.useSignalR<SignalRHub.Action, SignalRHub.Response>
+        React.useSignalR<Action, Response>
             (fun hub ->
                 hub.withUrl(Endpoints.Root).withAutomaticReconnect()
                     .configureLogging(
@@ -52,25 +109,51 @@ let TrueChat () =
                 )
                     .onMessage
                 <| function
-                | SignalRHub.Response.NewCount i -> setCount i
-                | SignalRHub.Response.TickerCount str -> setText str)
+                | Joined newTicket ->
+                    setState
+                        { state with
+                              Ticket = newTicket
+                              Status = Join }
+                | NewAnswer answer ->
+                    setState
+                        { state with
+                              Answers = answer :: state.Answers }
+                | NewQuestion question ->
+                    setState
+                        { state with
+                              Questions = question :: state.Questions }
+                | LeaveDone _ -> setState { state with Status = Leave }
+                | Forbidden _ -> setState { state with Status = ForbiddenStatus }
+                | NotFound _ -> setState { state with Status = NotFoundStatus })
 
-    Html.div [ prop.children [ TextDisplay {| count = count; text = text |}
-                               Buttons {| count = count; hub = hub.current |} ] ]
+    Html.div [ Html.input [ prop.onChange setText ]
+               ChatDisplay state
+               Buttons
+                   {| ticketId = state.Ticket.SupportTicketId
+                      text = text
+                      hub = hub.current |} ]
 
 [<ReactComponent>]
-let Chat obj =
-    //let conn, setConn = React.useState false
+let Chat (chatModel: ChatModel) =
+    let state =
+        { Ticket = chatModel.ticket |> Ticket.ToDomain
+          Questions =
+              chatModel.questions
+              |> Array.map Question.ToDomain
+              |> Array.toList
+          Answers =
+              chatModel.answers
+              |> Array.map Answer.ToDomain
+              |> Array.toList
+          Status = Undefined }
 
     let isServer =
         try
             JS.console.log Browser.Dom.window.location.origin
-            true
-        with ex -> false
+            false
+        with ex -> true
 
     if isServer then
-        TrueChat()
-    else
         Html.div []
-//else
-//    Html.button [ prop.onClick (fun _ -> setConn true) ]
+    else
+        TrueChat {| chat = state |}
