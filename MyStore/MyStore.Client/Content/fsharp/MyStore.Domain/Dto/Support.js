@@ -1,5 +1,5 @@
 import { Record } from "../../.fable/fable-library.3.1.11/Types.js";
-import { record_type, string_type, class_type, int32_type } from "../../.fable/fable-library.3.1.11/Reflection.js";
+import { array_type, record_type, string_type, class_type, int32_type } from "../../.fable/fable-library.3.1.11/Reflection.js";
 
 export class AnswerDto extends Record {
     constructor(supportAnswerId, supportTicketId, supportOperatorId, sendTimestamp, text) {
@@ -17,18 +17,17 @@ export function AnswerDto$reflection() {
 }
 
 export class OperatorDto extends Record {
-    constructor(supportOperatorId, firstName, lastName, email, userId) {
+    constructor(supportOperatorId, firstName, lastName, email) {
         super();
         this.supportOperatorId = (supportOperatorId | 0);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userId = userId;
     }
 }
 
 export function OperatorDto$reflection() {
-    return record_type("MyStore.Dto.Support.OperatorDto", [], OperatorDto, () => [["supportOperatorId", int32_type], ["firstName", string_type], ["lastName", string_type], ["email", string_type], ["userId", string_type]]);
+    return record_type("MyStore.Dto.Support.OperatorDto", [], OperatorDto, () => [["supportOperatorId", int32_type], ["firstName", string_type], ["lastName", string_type], ["email", string_type]]);
 }
 
 export class QuestionDto extends Record {
@@ -59,5 +58,16 @@ export class TicketDto extends Record {
 
 export function TicketDto$reflection() {
     return record_type("MyStore.Dto.Support.TicketDto", [], TicketDto, () => [["supportTicketId", int32_type], ["customerId", int32_type], ["supportOperatorId", int32_type], ["orderId", class_type("System.Nullable`1", [int32_type])], ["createTimestamp", class_type("System.DateTimeOffset")]]);
+}
+
+export class TicketsModel extends Record {
+    constructor(tickets) {
+        super();
+        this.tickets = tickets;
+    }
+}
+
+export function TicketsModel$reflection() {
+    return record_type("MyStore.Dto.Support.TicketsModel", [], TicketsModel, () => [["tickets", array_type(TicketDto$reflection())]]);
 }
 

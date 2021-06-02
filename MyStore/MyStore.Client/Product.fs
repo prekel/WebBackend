@@ -56,14 +56,20 @@ let Product (productModel: ProductModel) =
     let inputState, setInputState =
         React.useState productModel.product.productId
 
+    let cartButton =
+        if productModel.isLoggedIn then
+            Html.button [ prop.text (
+                              if state.IsInCart then
+                                  "Remove from cart"
+                              else
+                                  "Add to cart"
+                          )
+                          prop.onClick (fun _ -> dispatch ToCart) ]
+        else
+            Html.div []
+
     Html.div [ Html.input [ prop.onChange (fun a -> setInputState (int a)) ]
                Html.button [ prop.text "GetById"
                              prop.onClick (fun _ -> dispatch (Fetch %inputState)) ]
-               Html.button [ prop.text (
-                                 if state.IsInCart then
-                                     "Remove from cart"
-                                 else
-                                     "Add to cart"
-                             )
-                             prop.onClick (fun _ -> dispatch ToCart) ]
+               cartButton
                Html.p $"%A{state}" ]

@@ -1,29 +1,28 @@
 import { Record } from "../.fable/fable-library.3.1.11/Types.js";
-import { class_type, record_type, option_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
-import { toNullable, ofNullable, map } from "../.fable/fable-library.3.1.11/Option.js";
+import { option_type, class_type, record_type, string_type, int32_type } from "../.fable/fable-library.3.1.11/Reflection.js";
 import { TicketDto, QuestionDto, AnswerDto, OperatorDto } from "./Dto/Support.js";
+import { toNullable, ofNullable, map } from "../.fable/fable-library.3.1.11/Option.js";
 
 export class Operator extends Record {
-    constructor(SupportOperatorId, FirstName, LastName, Email, UserId) {
+    constructor(SupportOperatorId, FirstName, LastName, Email) {
         super();
         this.SupportOperatorId = (SupportOperatorId | 0);
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.Email = Email;
-        this.UserId = UserId;
     }
 }
 
 export function Operator$reflection() {
-    return record_type("MyStore.Domain.Support.Operator", [], Operator, () => [["SupportOperatorId", int32_type], ["FirstName", string_type], ["LastName", string_type], ["Email", string_type], ["UserId", option_type(string_type)]]);
+    return record_type("MyStore.Domain.Support.Operator", [], Operator, () => [["SupportOperatorId", int32_type], ["FirstName", string_type], ["LastName", string_type], ["Email", string_type]]);
 }
 
 export function Operator_ToDomain_Z2DE961B1(dto) {
-    return new Operator(dto.supportOperatorId, dto.firstName, dto.lastName, dto.email, map((x_6) => x_6, ofNullable(dto.userId)));
+    return new Operator(dto.supportOperatorId, dto.firstName, dto.lastName, dto.email);
 }
 
 export function Operator__FromDomain(this$) {
-    return new OperatorDto(this$.SupportOperatorId, this$.FirstName, this$.LastName, this$.Email, toNullable(map((x_6) => x_6, this$.UserId)));
+    return new OperatorDto(this$.SupportOperatorId, this$.FirstName, this$.LastName, this$.Email);
 }
 
 export class Answer extends Record {

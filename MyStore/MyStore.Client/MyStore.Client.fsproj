@@ -9,8 +9,11 @@
         <Compile Include="Cart.fs" />
         <Compile Include="Carts.fs" />
         <Compile Include="Products.fs" />
+        <Compile Include="Chats.fs" />
         <Compile Include="Product.fs" />
+        <Compile Include="Customer.fs" />
         <Compile Include="Chat.fs" />
+        <Compile Include="Operator.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Fable.SignalR.Feliz" Version="0.11.4" />

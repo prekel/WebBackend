@@ -13,6 +13,8 @@
         <Compile Include="Handlers\Cart.fs" />
         <Compile Include="Handlers\Product.fs" />
         <Compile Include="Handlers\Chat.fs" />
+        <Compile Include="Handlers\Customer.fs" />
+        <Compile Include="Handlers\Operator.fs" />
         <Compile Include="Chat.fs" />
         <Compile Include="Router.fs" />
         <Compile Include="Startup.fs" />
@@ -35,6 +37,15 @@
         <Content Update="wwwroot\**">
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
           <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="Views\Customer\Index.cshtml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="Views\Operator\Index.cshtml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="Views\Chat\Chat.cshtml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

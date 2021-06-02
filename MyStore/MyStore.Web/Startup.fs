@@ -103,12 +103,12 @@ type Startup(configuration: IConfiguration) =
 
         app.UseAuthorization() |> ignore
 
-        app.UseSignalR(SignalRHub.config) |> ignore
+        //app.UseSignalR(SignalRHub.config) |> ignore
 
         app.UseEndpoints
             (fun endpoints ->
                 endpoints.MapGiraffeEndpoints(endpoints1)
-
+                //endpoints.MapHub(Endpoints.Root) |> ignore
                 //endpoints.MapControllerRoute(name = "default", pattern = "{controller=Home}/{action=Index}/{id?}")
                 //|> ignore
 

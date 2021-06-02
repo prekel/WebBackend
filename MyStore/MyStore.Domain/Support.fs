@@ -11,21 +11,18 @@ type Operator =
     { SupportOperatorId: OperatorId
       FirstName: string
       LastName: string
-      Email: Email
-      UserId: UserId option }
+      Email: Email }
     static member ToDomain(dto: OperatorDto) =
         { SupportOperatorId = %dto.supportOperatorId
           FirstName = dto.firstName
           LastName = dto.lastName
-          Email = %dto.email
-          UserId = dto.userId |> Option.ofObj |> Option.map (~%) }
+          Email = %dto.email }
 
     member this.FromDomain() =
         { OperatorDto.supportOperatorId = %this.SupportOperatorId
           firstName = this.FirstName
           lastName = this.LastName
-          email = %this.Email
-          userId = this.UserId |> Option.map (~%) |> Option.toObj }
+          email = %this.Email }
 
 type Answer =
     { SupportAnswerId: AnswerId

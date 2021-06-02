@@ -58,7 +58,9 @@ let Carts (carts: CartsModel) =
     let state, dispatch =
         React.useElmish (init carts, update, [||])
 
-    Html.div [ Html.input [ prop.isChecked state.IsPublic
+    Html.div [ Html.a [ prop.children [ Html.p "Current cart" ]
+                        prop.href "/Shop/Cart/Current" ]
+               Html.input [ prop.isChecked state.IsPublic
                             prop.type' "checkbox"
                             prop.onCheckedChange (fun a -> SetPublic a |> dispatch) ]
                Html.button [ prop.text "+"

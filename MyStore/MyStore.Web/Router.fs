@@ -84,15 +84,22 @@ let endpoints1 =
                   route "/Error" errorHandler ] ]
       subRoute
           "/Shop"
-          [ subRoute
-              "/Cart"
-              [ GET [ routef "/%i" Cart.cartById
-                      route "/" Cart.carts
-                      route "/Current" Cart.currentCart ]
-                POST [ routef "/%i/SetCurrentCart" Cart.setCurrentCart ] ]
+          [ GET [ route "/Customer" Customer.customer ]
+            subRoute
+                "/Cart"
+                [ GET [ routef "/%i" Cart.cartById
+                        route "/" Cart.carts
+                        route "/Current" Cart.currentCart ]
+                  POST [ routef "/%i/SetCurrentCart" Cart.setCurrentCart ] ]
             subRoute
                 "/Product"
                 [ GET [ routef "/%i" Product.productById
                         route "/" Product.products ]
                   POST [ routef "/%i/ToggleToCart" Product.toggleToCart ] ] ]
-      subRoute "/Support" [ subRoute "/Chat" [ GET [ route "/" Chat.chatPage ] ] ] ]
+      subRoute
+          "/Support"
+          [ GET [ route "/Operator" Operator.operator ]
+            subRoute
+                "/Chat"
+                [ GET [ routef "/%i" Chat.chatPage
+                        route "/" Chat.chats ] ] ] ]

@@ -1,16 +1,16 @@
 ﻿@using React.AspNet
 @using React.RenderFunctions
 @using React.Router
-@model MyStore.Dto.Support.TicketsModel
+@* @model MyStore.Dto.Shop.ProductsModel *@
 @{
-    ViewData["Title"] = "Chats";
+    ViewData["Title"] = "Chat";
 }
 
 <div class="text-center">
     <h1 class="display-4">Chat</h1>
 </div>
 
-@Html.React("Components.Chats", Model)
+@Html.React("Components.Chat", "")
 @{
 
 }

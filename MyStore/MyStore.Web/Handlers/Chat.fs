@@ -31,6 +31,33 @@ open MyStore.Dto.Shop
 open MyStore.Domain.Shop
 open MyStore.Web.Core
 open MyStore.Web.Database
+open MyStore.Dto.Support
 
-let chatPage : HttpHandler =
-    fun (next: HttpFunc) (ctx: HttpContext) -> task { return! razorHtmlView "Chat/Index" None None None next ctx }
+let chats : HttpHandler =
+    fun next ctx ->
+        task {
+            let db = ctx.GetService<Context>()
+
+            let userManager =
+                ctx.GetService<UserManager<ApplicationUser>>()
+
+            let! user = userManager.GetUserAsync(ctx.User)
+
+            let! ticketsE =
+                query {
+                    for i in db.SupportTickets do
+                        join j in db.Users on (i.CustomerId = j.CustomerId.Value)
+                        select i
+                }
+                |> fun qr -> qr.ToArrayAsync()
+
+            let ticketsDto =
+                ticketsE |> Array.map (fun t -> t.ToDto())
+
+            let model = { TicketsModel.tickets = ticketsDto }
+
+            return! razorHtmlView "Chat/Index" (Some model) None None next ctx
+        }
+
+let chatPage (ticketId: int) : HttpHandler =
+    fun (next: HttpFunc) (ctx: HttpContext) -> task { return! razorHtmlView "Chat/Chat" None None None next ctx }

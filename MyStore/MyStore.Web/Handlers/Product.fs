@@ -40,7 +40,6 @@ let productById (id: int) : HttpHandler =
             let userManager =
                 ctx.GetService<UserManager<ApplicationUser>>()
 
-            let! user = userManager.GetUserAsync(ctx.User)
 
             let! product =
                 query {
@@ -52,29 +51,45 @@ let productById (id: int) : HttpHandler =
 
             let productDto = product.ToDto()
 
-            let! userCustomerE, _, _ = customerStuff db user
-
-            let! carts =
-                query {
-                    for i in db.Customers do
-                        join j in db.Carts.Include(fun cart -> cart.Products) on (i.CurrentCartId.Value = j.CartId)
-                        where (i.CustomerId = userCustomerE.CustomerId)
-                        select j
-                }
-                |> fun qr -> qr.ToArrayAsync()
-
-            let cart = carts |> Array.tryHead
-
-            let isInCart =
-                match cart with
-                | Some cart ->
-                    cart.Products
-                    |> Seq.exists (fun p -> p.ProductId = id)
-                | None -> false
+            let! user = userManager.GetUserAsync(ctx.User)
 
             let productModel =
-                { ProductModel.product = productDto
-                  isInCart = isInCart }
+                if isNotNull user then
+                    task {
+                        let! userCustomerE, _, _ = customerStuff db user
+
+                        let! carts =
+                            query {
+                                for i in db.Customers do
+                                    join j in db.Carts.Include
+                                                  (fun cart -> cart.Products)
+                                                  on
+                                                  (i.CurrentCartId.Value = j.CartId)
+
+                                    where (i.CustomerId = userCustomerE.CustomerId)
+                                    select j
+                            }
+                            |> fun qr -> qr.ToArrayAsync()
+
+                        let cart = carts |> Array.tryHead
+
+                        let isInCart =
+                            match cart with
+                            | Some cart ->
+                                cart.Products
+                                |> Seq.exists (fun p -> p.ProductId = id)
+                            | None -> false
+
+                        return
+                            { ProductModel.product = productDto
+                              isInCart = isInCart
+                              isLoggedIn = true }
+                    }
+                else
+                    { ProductModel.product = productDto
+                      isInCart = false
+                      isLoggedIn = false }
+                    |> Task.FromResult
 
             return! razorOrJson "Product/Product" (Some productModel) None None next ctx
         }

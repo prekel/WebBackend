@@ -28,8 +28,7 @@ type OperatorDto =
       [<Required>]
       lastName: string
       [<Required>]
-      email: string
-      userId: string }
+      email: string }
 
 type QuestionDto =
     { [<Required>]
@@ -52,3 +51,5 @@ type TicketDto =
       orderId: Nullable<int>
       [<Required>]
       createTimestamp: DateTimeOffset }
+
+type TicketsModel = { tickets: TicketDto array }

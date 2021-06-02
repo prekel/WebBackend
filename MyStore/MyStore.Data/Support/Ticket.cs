@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using MyStore.Data.Shop;
+using MyStore.Dto.Support;
 
 namespace MyStore.Data.Support
 {
@@ -30,5 +31,7 @@ namespace MyStore.Data.Support
 
 
         public ICollection<Question> SupportQuestions { get; set; }
+
+        public TicketDto ToDto() => new(SupportTicketId, CustomerId, SupportOperatorId, OrderId, CreateTimestamp);
     }
 }

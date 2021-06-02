@@ -88,7 +88,12 @@ export function Carts(carts) {
     const patternInput = useFeliz_React__React_useElmish_Static_645B1FB7(() => init(carts, void 0), (msg, state) => update(msg, state), []);
     const state_1 = patternInput[0];
     const dispatch = patternInput[1];
-    const children = toList(delay(() => append(singleton_1(createElement("input", {
+    const children = toList(delay(() => append(singleton_1(createElement("a", {
+        children: Interop_reactApi.Children.toArray([createElement("p", {
+            children: ["Current cart"],
+        })]),
+        href: "/Shop/Cart/Current",
+    })), delay(() => append(singleton_1(createElement("input", {
         checked: state_1.IsPublic,
         type: "checkbox",
         onChange: (ev) => {
@@ -100,24 +105,24 @@ export function Carts(carts) {
             dispatch(new Msg(0, state_1.Page + 1));
         },
     })), delay(() => {
-        let value_8;
-        return append(singleton_1((value_8 = toText(interpolate("Page: %i%P()", [state_1.Page])), createElement("p", {
-            children: [value_8],
+        let value_12;
+        return append(singleton_1((value_12 = toText(interpolate("Page: %i%P()", [state_1.Page])), createElement("p", {
+            children: [value_12],
         }))), delay(() => append(singleton_1(createElement("button", {
             children: "-",
             onClick: (_arg2) => {
                 dispatch(new Msg(0, state_1.Page - 1));
             },
         })), delay(() => map_1((i) => {
-            let value_12;
+            let value_16;
             return createElement("a", {
-                children: Interop_reactApi.Children.toArray([(value_12 = toText(interpolate("%A%P()", [i])), createElement("p", {
-                    children: [value_12],
+                children: Interop_reactApi.Children.toArray([(value_16 = toText(interpolate("%A%P()", [i])), createElement("p", {
+                    children: [value_16],
                 }))]),
                 href: toText(interpolate("/Shop/Cart/%i%P()", [i.CartId])),
             });
         }, state_1.Carts)))));
-    }))))));
+    }))))))));
     return createElement("div", {
         children: Interop_reactApi.Children.toArray(Array.from(children)),
     });

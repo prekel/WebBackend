@@ -86,7 +86,10 @@ type SetCurrentCartQuery = { setCurrent: bool }
 type ProductModel =
     { [<Required>]
       product: ProductDto
-      isInCart: bool }
+      [<Required>]
+      isInCart: bool
+      [<Required>]
+      isLoggedIn: bool }
 
 type ProductsQuery =
     { [<Required>]
