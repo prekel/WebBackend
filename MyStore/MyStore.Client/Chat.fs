@@ -32,18 +32,27 @@ type QuestionOrAnswer =
     | Answer of Answer
 
 //[<ReactComponent>]
-let ChatDisplay chat =
-    let messages =
-        [ yield! chat.Answers |> List.map Answer
-          yield! chat.Questions |> List.map Question ]
-        |> List.sortBy
-            (function
-            | Question q -> q.SendTimestamp
-            | Answer a -> a.SendTimestamp)
-
-    Html.div [ Html.p $"Ticket: %A{chat.Ticket}"
-               for i in messages do
+let ChatDisplay (st: {| chat: State |}) =
+    Html.div [ Html.p $"%A{st.chat}"
+               Html.p $"Ticket: %A{st.chat.Ticket}"
+               Html.p "Answers:"
+               for i in st.chat.Answers do
+                   Html.p $"%A{i}"
+               Html.p "Questions: "
+               for i in st.chat.Questions do
                    Html.p $"%A{i}" ]
+//    let messages =
+//        st.chat.Answers
+//        |> List.map Answer
+//        |> List.append (st.chat.Questions |> List.map Question)
+//        |> List.sortBy
+//            (function
+//            | Question q -> q.SendTimestamp
+//            | Answer a -> a.SendTimestamp)
+//
+//    Html.div [ Html.p $"Ticket: %A{st.chat.Ticket}"
+//               for i in messages do
+//                   Html.p $"%A{i}" ]
 
 //[<ReactComponent>]
 let Buttons
@@ -51,28 +60,28 @@ let Buttons
                text: string
                hub: Hub<Action, Response> |})
     =
-    React.fragment [ Html.button [ prop.text "Send as operator"
+    React.fragment [ Html.button [ prop.text "Join as operator"
                                    prop.onClick
                                    <| fun _ ->
                                        input.hub.sendNow
                                            { Action.Role = Operator
                                              TicketId = input.ticketId
                                              Action = JoinRoom } ]
-                     Html.button [ prop.text "Send as customer"
+                     Html.button [ prop.text "Join as customer"
                                    prop.onClick
                                    <| fun _ ->
                                        input.hub.sendNow
                                            { Action.Role = Customer
                                              TicketId = input.ticketId
                                              Action = JoinRoom } ]
-                     Html.button [ prop.text "Join as operator"
+                     Html.button [ prop.text "Send as operator"
                                    prop.onClick
                                    <| fun _ ->
                                        input.hub.sendNow
                                            { Action.Role = Operator
                                              TicketId = input.ticketId
                                              Action = Message input.text } ]
-                     Html.button [ prop.text "Join as customer"
+                     Html.button [ prop.text "Send as customer"
                                    prop.onClick
                                    <| fun _ ->
                                        input.hub.sendNow
@@ -127,7 +136,7 @@ let TrueChat (st: {| chat: State |}) =
                 | NotFound _ -> setState { state with Status = NotFoundStatus })
 
     Html.div [ Html.input [ prop.onChange setText ]
-               ChatDisplay state
+               ChatDisplay {| chat = state |}
                Buttons
                    {| ticketId = state.Ticket.SupportTicketId
                       text = text
@@ -154,6 +163,6 @@ let Chat (chatModel: ChatModel) =
         with ex -> true
 
     if isServer then
-        Html.div []
+        ChatDisplay {| chat = state |}
     else
         TrueChat {| chat = state |}

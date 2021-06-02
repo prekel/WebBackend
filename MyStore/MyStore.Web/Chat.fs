@@ -55,7 +55,6 @@ module SignalRHub =
                 hubContext.Services.GetService(typeof<UserManager<ApplicationUser>>) :?> UserManager<ApplicationUser>
 
             let! user = userManager.GetUserAsync(ctx.User)
-            let! userCustomerE, _, _ = customerStuff db user
 
             let ticketId = %msg.TicketId
 
@@ -174,7 +173,8 @@ module SignalRHub =
         :> Task
 
     let config =
-        { Fable.SignalR.SignalR.Settings.EndpointPattern = Endpoints.Root
-          Fable.SignalR.SignalR.Settings.Send = send
-          Fable.SignalR.SignalR.Settings.Invoke = invoke
-          Fable.SignalR.SignalR.Settings.Config = None }
+        SignalR.ConfigBuilder(Endpoints.Root, send, invoke)
+            .AfterUseRouting(fun app -> app.UseAuthorization())
+            .EndpointConfig(fun builder -> builder.RequireAuthorization())
+            .Build()
+

@@ -86,13 +86,14 @@ type Startup(configuration: IConfiguration) =
         app.UseHttpsRedirection() |> ignore
         app.UseStaticFiles() |> ignore
 
-        app.UseSignalR(SignalRHub.config) |> ignore
 
         app.UseRouting() |> ignore
 
         app.UseAuthentication() |> ignore
 
         app.UseAuthorization() |> ignore
+
+        app.UseSignalR(SignalRHub.config) |> ignore
 
         app.UseEndpoints
             (fun endpoints ->
